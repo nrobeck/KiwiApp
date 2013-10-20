@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <!--https://android.googlesource.com/platform/developers/samples/android/+/master/ui/actionbar/DoneBar/res/layout/actionbar_custom_view_done_cancel.xml-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:divider="?android:attr/dividerVertical"
+    android:showDividers="end"
+    android:dividerPadding="12dp">
+
+    <include layout="@layout/include_done_button" />
+
+</LinearLayout>

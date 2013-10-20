@@ -1,0 +1,7 @@
+Kiwi/bin
+Kiwi/build
+Kiwi/gen
+tests/bin
+tests/build
+tests/gen
+.settings

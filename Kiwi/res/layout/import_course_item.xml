@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.mikewadsten.test.kiwi.widget.ImportCourseLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/check_area"
+    tools:layout_height="48dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical">
+<LinearLayout
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
+    android:orientation="vertical"
+    android:layout_weight="4"
+    android:paddingLeft="8dp">
+    <TextView
+        android:layout_height="wrap_content"
+        android:id="@+id/title"
+        tools:text="Test!"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:textSize="@dimen/card_title"
+        android:textStyle="bold"/>
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:id="@+id/content"
+        tools:text="Every Monday"
+        android:textSize="@dimen/card_content"/>
+</LinearLayout>
+    <CheckBox
+        android:id="@+id/checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false" />
+</com.mikewadsten.test.kiwi.widget.ImportCourseLayout>
