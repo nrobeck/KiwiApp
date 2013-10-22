@@ -2,12 +2,18 @@ package com.mikewadsten.test.kiwi;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+
+import com.espian.showcaseview.ShowcaseView;
 
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.CursorWrapper;
 import android.os.Bundle;
@@ -22,8 +28,10 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements ShowcaseView.OnShowcaseEventListener {
     private Cursor mCursor = null;
+    private ShowcaseView showcaseView;
+    
     private static final String[] COLS = new String[] {
             CalendarContract.Events.TITLE,
             CalendarContract.Events.RRULE,
@@ -133,7 +141,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_import_courses);
         
         ActionBar b = getActionBar();
         if (b != null) {
@@ -141,9 +149,19 @@ public class MainActivity extends Activity {
                 @Override
                 public void onDone(View view) {
                     Toast.makeText(getBaseContext(), "Clicked Done!", Toast.LENGTH_SHORT).show();
+                    notifyInThreeSeconds();
+                    if (showcaseView.isShown()) {
+//                        showcaseView.hide();
+                    }
                 }
             });
         }
+        
+        ShowcaseView.ConfigOptions co = new ShowcaseView.ConfigOptions();
+        co.hideOnClickOutside = true;
+        
+        showcaseView = ShowcaseView.insertShowcaseView(R.id.actionbar_done,
+                this, "Something...", "Something else...", co);
 
         String query = CalendarContract.Events.RRULE + "<> ''";
         query += " AND " + CalendarContract.Events.ALL_DAY + "=0";
@@ -223,5 +241,23 @@ public class MainActivity extends Activity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+    
+    private void notifyInThreeSeconds() {
+        Intent i = new Intent(this, NotificationReceiver.class);
+        PendingIntent alarm = PendingIntent.getBroadcast(this, 0, i, PendingIntent.FLAG_CANCEL_CURRENT);
+        ((AlarmManager) getSystemService(ALARM_SERVICE)).set(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis() + 3000, alarm);
+    }
+
+    @Override
+    public void onShowcaseViewHide(ShowcaseView showcaseView) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void onShowcaseViewShow(ShowcaseView showcaseView) {
+        // TODO Auto-generated method stub
+        
     }
 }

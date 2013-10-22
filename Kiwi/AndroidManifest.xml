@@ -25,6 +25,7 @@
             </intent-filter>
         </activity>
         <uses-library android:name="android.test.runner" />
+        <receiver android:name="NotificationReceiver"></receiver>
     </application>
 
     <instrumentation

@@ -7,4 +7,5 @@ CSCI 5115 Group 1 Android Application
 3. File -> Import -> Existing Projects into Workspace
 4. Select this repository's root directory
 5. Ensure "Kiwi" and "tests" are both checked
-6. Click "Finish"
+6. Ensure "ShowcaseView" is also checked
+7. Click "Finish"
