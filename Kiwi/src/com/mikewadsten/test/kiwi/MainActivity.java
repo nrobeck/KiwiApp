@@ -37,29 +37,29 @@ public class MainActivity extends Activity implements ShowcaseView.OnShowcaseEve
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_import_courses);
+        setContentView(R.layout.activity_main);
         
-        ActionBar b = getActionBar();
-        if (b != null) {
-            Utils.makeActionBarDoneButton(b, new DoneBar.DoneButtonHandler() {
-                @Override
-                public void onDone(View view) {
-                    Toast.makeText(getBaseContext(), "Clicked Done!", Toast.LENGTH_SHORT).show();
-                    notifyInThreeSeconds();
-                    if (showcaseView.isShown()) {
-//                        showcaseView.hide();
-                    }
-                }
-            });
-        }
+//        ActionBar b = getActionBar();
+//        if (b != null) {
+//            Utils.makeActionBarDoneButton(b, new DoneBar.DoneButtonHandler() {
+//                @Override
+//                public void onDone(View view) {
+//                    Toast.makeText(getBaseContext(), "Clicked Done!", Toast.LENGTH_SHORT).show();
+//                    notifyInThreeSeconds();
+//                    if (showcaseView.isShown()) {
+////                        showcaseView.hide();
+//                    }
+//                }
+//            });
+//        }
         
-        ShowcaseView.ConfigOptions co = new ShowcaseView.ConfigOptions();
-        co.hideOnClickOutside = true;
+//        ShowcaseView.ConfigOptions co = new ShowcaseView.ConfigOptions();
+//        co.hideOnClickOutside = true;
         
-        showcaseView = ShowcaseView.insertShowcaseView(R.id.actionbar_done,
-                this, "Something...", "Something else...", co);
+//        showcaseView = ShowcaseView.insertShowcaseView(R.id.actionbar_done,
+//                this, "Something...", "Something else...", co);
 
-        ListFragment lf = (ListFragment) getFragmentManager().findFragmentById(R.id.list_fragment);
+        ListFragment lf = (ListFragment) getFragmentManager().findFragmentById(R.id.main_list_fragment);
         ListView lv = (ListView) lf.getListView();
         
         // If left out, list will appear with loading indicator
@@ -124,14 +124,20 @@ public class MainActivity extends Activity implements ShowcaseView.OnShowcaseEve
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.cancel, menu);
+        getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+	        case R.id.add_assignment:
+	        	Utils.goToAddCourse(this);
+	        	return true;
+        	case R.id.add_course:
+        		Intent addIntent = new Intent(this, ImportCoursesActivity.class);
+        		startActivity(addIntent);
+        		return true;
             case R.id.cancel:
                 Toast.makeText(getBaseContext(), "Clicked Cancel!", Toast.LENGTH_SHORT).show();
                 return true;
