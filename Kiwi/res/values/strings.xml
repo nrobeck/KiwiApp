@@ -4,5 +4,7 @@
     <string name="app_name">Kiwi</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="import_courses_nothing_to_import">No compatible events were found. Try adding courses manually!</string>
+    <string name="import_courses_activity_label">Import courses</string>
 
 </resources>

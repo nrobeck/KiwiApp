@@ -17,7 +17,7 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,6 +26,9 @@
         </activity>
         <uses-library android:name="android.test.runner" />
         <receiver android:name="NotificationReceiver"></receiver>
+        <activity android:name="ImportCoursesActivity" android:label="@string/import_courses_activity_label" android:screenOrientation="portrait"></activity>
+       	<activity android:name="AddCourseActivity" android:label="@string/import_courses_activity_label" android:screenOrientation="portrait"></activity>
+        
     </application>
 
     <instrumentation

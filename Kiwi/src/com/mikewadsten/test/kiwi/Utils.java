@@ -1,7 +1,9 @@
 package com.mikewadsten.test.kiwi;
 
 import android.app.ActionBar;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -80,5 +82,15 @@ public class Utils {
 
             bar.setCustomView(customActionBarView);
         }
+    }
+    
+    // Exist to make getting around the app simpler, for us.
+    
+    public static Intent goToAddCourse(Context context) {
+    	return new Intent(context, AddCourseActivity.class);
+    }
+    
+    public static void goToAddCourse(Activity activity) {
+    	activity.startActivity(new Intent(activity, AddCourseActivity.class));
     }
 }

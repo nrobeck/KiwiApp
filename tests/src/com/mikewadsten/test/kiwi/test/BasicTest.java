@@ -1,18 +1,14 @@
 package com.mikewadsten.test.kiwi.test;
 
-import android.provider.OpenableColumns;
-import android.test.ActivityInstrumentationTestCase2;
-
-import com.google.android.apps.common.testing.ui.espresso.Espresso;
-import com.google.android.apps.common.testing.ui.espresso.matcher.ViewMatchers;
-import com.mikewadsten.test.kiwi.MainActivity;
-import com.mikewadsten.test.kiwi.R;
-
 import static com.google.android.apps.common.testing.ui.espresso.Espresso.onView;
 import static com.google.android.apps.common.testing.ui.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
 import static com.google.android.apps.common.testing.ui.espresso.action.ViewActions.click;
 import static com.google.android.apps.common.testing.ui.espresso.matcher.ViewMatchers.withId;
 import static com.google.android.apps.common.testing.ui.espresso.matcher.ViewMatchers.withText;
+import android.test.ActivityInstrumentationTestCase2;
+
+import com.mikewadsten.test.kiwi.MainActivity;
+import com.mikewadsten.test.kiwi.R;
 
 /**
  * Created by Mike on 10/18/13.
