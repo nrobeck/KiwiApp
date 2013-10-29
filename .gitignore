@@ -5,3 +5,5 @@ tests/bin
 tests/build
 tests/gen
 .settings
+UndoBar/example
+ShowcaseView/sample
