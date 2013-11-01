@@ -1,6 +1,8 @@
-package com.mikewadsten.test.kiwi;
+package umn.cs5115.kiwi;
 
-import com.mikewadsten.test.kiwi.CalendarUtils.EventCursorWrapper;
+import umn.cs5115.kiwi.CalendarUtils.EventCursorWrapper;
+
+import com.mikewadsten.test.kiwi.R;
 
 import android.app.Activity;
 import android.app.ListFragment;

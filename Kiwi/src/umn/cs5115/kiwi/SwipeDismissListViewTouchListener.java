@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mikewadsten.test.kiwi;
+package umn.cs5115.kiwi;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;

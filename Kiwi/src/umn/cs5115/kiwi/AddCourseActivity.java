@@ -1,8 +1,10 @@
-package com.mikewadsten.test.kiwi;
+package umn.cs5115.kiwi;
+
+import umn.cs5115.kiwi.DoneBar.DoneButtonHandler;
 
 import com.cocosw.undobar.UndoBarController;
 import com.cocosw.undobar.UndoBarController.UndoListener;
-import com.mikewadsten.test.kiwi.DoneBar.DoneButtonHandler;
+import com.mikewadsten.test.kiwi.R;
 
 import android.app.Activity;
 import android.os.Bundle;

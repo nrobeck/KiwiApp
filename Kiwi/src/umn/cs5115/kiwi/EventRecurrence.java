@@ -16,7 +16,7 @@
  * Shamelessly stolen by Mike Wadsten
  */
 
-package com.mikewadsten.test.kiwi;
+package umn.cs5115.kiwi;
 
 import android.text.TextUtils;
 import android.text.format.Time;

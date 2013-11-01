@@ -1,4 +1,4 @@
-package com.mikewadsten.test.kiwi;
+package umn.cs5115.kiwi;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -6,8 +6,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import umn.cs5115.kiwi.CalendarUtils.EventCursorWrapper;
+
 import com.espian.showcaseview.ShowcaseView;
-import com.mikewadsten.test.kiwi.CalendarUtils.EventCursorWrapper;
+import com.mikewadsten.test.kiwi.R;
 
 import android.annotation.SuppressLint;
 import android.app.ActionBar;

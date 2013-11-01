@@ -1,5 +1,6 @@
-package com.mikewadsten.test.kiwi;
+package umn.cs5115.kiwi;
 
+import umn.cs5115.kiwi.DoneBar.*;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
@@ -9,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.mikewadsten.test.kiwi.DoneBar.*;
+import com.mikewadsten.test.kiwi.R;
 
 /**
  * Created by Mike on 10/13/13.

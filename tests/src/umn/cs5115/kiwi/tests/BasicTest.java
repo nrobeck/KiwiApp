@@ -1,13 +1,13 @@
-package com.mikewadsten.test.kiwi.test;
+package umn.cs5115.kiwi.tests;
 
 import static com.google.android.apps.common.testing.ui.espresso.Espresso.onView;
 import static com.google.android.apps.common.testing.ui.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
 import static com.google.android.apps.common.testing.ui.espresso.action.ViewActions.click;
 import static com.google.android.apps.common.testing.ui.espresso.matcher.ViewMatchers.withId;
 import static com.google.android.apps.common.testing.ui.espresso.matcher.ViewMatchers.withText;
+import umn.cs5115.kiwi.MainActivity;
 import android.test.ActivityInstrumentationTestCase2;
 
-import com.mikewadsten.test.kiwi.MainActivity;
 import com.mikewadsten.test.kiwi.R;
 
 /**

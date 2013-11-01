@@ -1,4 +1,4 @@
-package com.mikewadsten.test.kiwi.widget;
+package umn.cs5115.kiwi.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;

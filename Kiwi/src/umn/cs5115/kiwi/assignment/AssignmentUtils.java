@@ -1,11 +1,11 @@
-package com.mikewadsten.test.kiwi.assignment;
+package umn.cs5115.kiwi.assignment;
 
+import umn.cs5115.kiwi.Assignment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 
 import com.android.datetimepicker.time.TimePickerDialog;
-import com.mikewadsten.test.kiwi.Assignment;
 
 public class AssignmentUtils {
 	// Implementation based on AlarmUtils.showTimeEditDialog from the AOSP DeskClock app

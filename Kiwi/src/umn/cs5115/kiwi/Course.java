@@ -1,4 +1,4 @@
-package com.mikewadsten.test.kiwi;
+package umn.cs5115.kiwi;
 
 public class Course {
 
