@@ -24,9 +24,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String COURSE = "course";
     private static final String TYPE = "type";
     private static final String DUE_DATE = "due_date";
-    private static final String DUE_TIME = "due_time";
+    private static final String DUE_HOURS = "due_hours";
+    private static final String DUE_MINUTES = "due_minutes";
     private static final String REMINDER = "reminder";
     private static final String REMINDER_TIME = "reminder_time";
+    private static final String NOTES = "notes";
     
     // Course table column names
     private static final String START_TIME = "start_time";
@@ -50,9 +52,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + COURSE + " TEXT," 
         		+ TYPE + " TEXT," 
                 + DUE_DATE + " TEXT," 
-                + DUE_TIME + " TEXT," 
+                + DUE_HOURS + " TEXT,"
+                + DUE_MINUTES + " TEXT,"
                 + REMINDER + " INTEGER," 
-                + REMINDER_TIME + " TEXT" 
+                + REMINDER_TIME + " TEXT,"
+                + NOTES + " Text"
                 + ")";
         db.execSQL(CREATE_ASSIGNMENTS_TABLE);
         
@@ -65,7 +69,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         		+ LOCATION + "TEXT," 
         		+ START_DATE + "TEXT," 
         		+ END_DATE + "TEXT," 
-        		+ RRULE + "TEXT" + ")";
+        		+ RRULE + "TEXT,"
+        		+ NOTES + " TEXT"
+        		+ ")";
         
         
         db.execSQL(CREATE_COURSES_TABLE);
@@ -95,9 +101,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     	cv.put(COURSE, a.getCourse());//assignment course
     	cv.put(TYPE, a.getType());//assignment type
     	cv.put(DUE_DATE, a.getDueDate());//assignment due date
-    	cv.put(DUE_TIME, a.getDueTime());//assignment due time
+    	cv.put(DUE_HOURS, a.getHours());//assignment due hours
+    	cv.put(DUE_MINUTES, a.getMinutes());//assignment due minutes
     	cv.put(REMINDER, a.getReminder());//assignment reminder value
     	cv.put(REMINDER_TIME, a.getReminderTime());//assignment reminder time
+    	cv.put(NOTES, a.getNotes());//assignment notes
     	
     	//insert the assignment into the assignment table
     	db.insert(TABLE_ASSIGNMENTS, null, cv);//insert the assignment
@@ -123,9 +131,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     	cv.put(COURSE, a.getCourse());//assignment course
     	cv.put(TYPE, a.getType());//assignment type
     	cv.put(DUE_DATE, a.getDueDate());//assignment due date
-    	cv.put(DUE_TIME, a.getDueTime());//assignment due time
+    	cv.put(DUE_HOURS, a.getHours());//assignment due hours
+    	cv.put(DUE_MINUTES, a.getMinutes());//assignment due minutes
     	cv.put(REMINDER, a.getReminder());//assignment reminder value
     	cv.put(REMINDER_TIME, a.getReminderTime());//assignment reminder time
+    	cv.put(NOTES, a.getNotes());//assignment notes
     	
     	//modify the assignment in the assignment table
     	db.update(TABLE_ASSIGNMENTS, cv,KEY_ID + " = ?", new String[] {String.valueOf(a.getId())} );//overwrite the assignment from the table with the same id as Assignment a
@@ -168,9 +178,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     	a.setCourse(c.getString(2));
     	a.setType(c.getString(3));
     	a.setDueDate(c.getString(4));
-    	a.setDueTime(c.getString(5));
-    	a.setReminder(c.getInt(6));
-    	a.setReminderTime(c.getString(7));
+    	a.setHours(c.getInt(5));
+    	a.setMinutes(c.getInt(6));
+    	a.setReminder(c.getInt(7));
+    	a.setReminderTime(c.getString(8));
+    	a.setNotes(c.getString(9));
     	
     	return a;
     }
@@ -189,6 +201,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     	cv.put(START_DATE, c.getStartDate());
     	cv.put(END_DATE, c.getEndDate());
     	cv.put(RRULE, c.getRRule());
+    	cv.put(NOTES, c.getNotes());
     	
     	//insert the course into the courses table
     	db.insert(TABLE_COURSES, null, cv);//insert the course
@@ -217,6 +230,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     	cv.put(START_DATE, c.getStartDate());
     	cv.put(END_DATE, c.getEndDate());
     	cv.put(RRULE, c.getRRule());
+    	cv.put(NOTES, c.getNotes());
     	
     	//modify the assignment in the assignment table
     	db.update(TABLE_COURSES, cv,KEY_ID + " = ?", new String[] {String.valueOf(c.getCourseDesignation())} );//overwrite the course from the table with the same id as course c
@@ -263,6 +277,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     	co.setStartDate(c.getString(5));
     	co.setEndDate(c.getString(6));
     	co.setRRule(c.getString(7));
+    	co.setNotes(c.getString(8));
     	
     	return co;
     }

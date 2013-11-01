@@ -7,9 +7,11 @@ public class Assignment {
 	private String course;
 	private String type;
 	private String due_date;
-	private String due_time;
+	private int hours;
+	private int minutes;
 	private int reminder;
 	private String reminder_time;
+	private String notes;
 	
 	//empty constructor
 	Assignment(){
@@ -17,15 +19,17 @@ public class Assignment {
 	
 	//constructor
 	Assignment(int id, String name, String course, String type, String due_date,
-			String due_time, int reminder, String reminder_time){
+			int h, int m, int reminder, String reminder_time, String n){
 		this.id=id;
 		this.name=name;
 		this.course=course;
 		this.type=type;
 		this.due_date=due_date;
-		this.due_time=due_time;
+		this.hours = h;
+		this.minutes = m;
 		this.reminder=reminder;
 		this.reminder_time=reminder_time;
+		this.notes = n;
 	}
 	
 	//getters for each of the Assignment elements
@@ -46,10 +50,6 @@ public class Assignment {
 		return this.due_date;
 	}
 	
-	public String getDueTime(){
-		return this.due_time;
-	}
-	
 	public int getReminder(){
 		return this.reminder;
 	}
@@ -60,6 +60,18 @@ public class Assignment {
 	
 	public int getId(){
 		return this.id;
+	}
+	
+	public String getNotes() {
+		return this.notes;
+	}
+	
+	public int getHours() {
+		return this.hours;
+	}
+	
+	public int getMinutes() {
+		return this.minutes;
 	}
 	
 	//setters for each of the Assignment elements
@@ -79,8 +91,12 @@ public class Assignment {
 		this.due_date=d;
 	}
 	
-	public void setDueTime(String t){
-		this.due_time=t;
+	public void setHours(int h){
+		this.hours=h;
+	}
+	
+	public void setMinutes(int m) {
+		
 	}
 	
 	public void setReminder(int r){ 
@@ -93,6 +109,10 @@ public class Assignment {
 	
 	public void setId(int i){
 		this.id=i;
+	}
+	
+	public void setNotes(String n) {
+		this.notes = n;
 	}
 	
 }
