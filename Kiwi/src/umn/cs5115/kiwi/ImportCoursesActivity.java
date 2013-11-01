@@ -2,7 +2,7 @@ package umn.cs5115.kiwi;
 
 import umn.cs5115.kiwi.CalendarUtils.EventCursorWrapper;
 
-import com.mikewadsten.test.kiwi.R;
+import umn.cs5115.kiwi.R;
 
 import android.app.Activity;
 import android.app.ListFragment;

@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/main_list_fragment"
-        android:name="android.app.ListFragment"
+        android:name="umn.cs5115.kiwi.fragments.OverviewFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

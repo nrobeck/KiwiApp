@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.mikewadsten.test.kiwi.R;
+import umn.cs5115.kiwi.R;
 
 /**
  * Created by Mike on 10/13/13.

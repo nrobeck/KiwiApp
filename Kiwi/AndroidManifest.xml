@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.mikewadsten.test.kiwi"
+    package="umn.cs5115.kiwi"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -36,5 +36,5 @@
 
     <instrumentation
         android:name="com.google.android.apps.common.testing.testrunner.GoogleInstrumentationTestRunner"
-        android:targetPackage="com.mikewadsten.test.kiwi"/>
+        android:targetPackage="umn.cs5115.kiwi"/>
 </manifest>

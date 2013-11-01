@@ -5,8 +5,12 @@
         AppBaseTheme from BOTH res/values/styles.xml and
         res/values-v11/styles.xml on API 14+ devices.
     -->
-    <style name="AppBaseTheme" parent="android:Theme.Holo">
+    <style name="AppBaseTheme" parent="android:Theme.Holo.Light">
         <!-- API 14 theme customizations can go here. -->
+        <item name="android:actionBarStyle">@style/ABStyle</item>
     </style>
 
+    <style name="ABStyle" parent="@android:style/Widget.Holo.Light.ActionBar">
+        <item name="android:background">#94d31b</item>
+    </style>
 </resources>

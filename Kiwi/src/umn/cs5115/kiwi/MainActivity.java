@@ -1,28 +1,21 @@
 package umn.cs5115.kiwi;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 
 import umn.cs5115.kiwi.CalendarUtils.EventCursorWrapper;
-
-import com.espian.showcaseview.ShowcaseView;
-import com.mikewadsten.test.kiwi.R;
-
-import android.annotation.SuppressLint;
-import android.app.ActionBar;
+import umn.cs5115.kiwi.fragments.FilterDialogFragment;
+import umn.cs5115.kiwi.fragments.FilterDialogFragment.FilterListener;
 import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.app.ListFragment;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.CursorWrapper;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.provider.CalendarContract;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,7 +25,9 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
-public class MainActivity extends Activity implements ShowcaseView.OnShowcaseEventListener {
+import com.espian.showcaseview.ShowcaseView;
+
+public class MainActivity extends Activity implements ShowcaseView.OnShowcaseEventListener, FilterListener {
     private Cursor mCursor = null;
     private ShowcaseView showcaseView;
     
@@ -40,6 +35,10 @@ public class MainActivity extends Activity implements ShowcaseView.OnShowcaseEve
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        
+        return;
         
 //        ActionBar b = getActionBar();
 //        if (b != null) {
@@ -60,7 +59,7 @@ public class MainActivity extends Activity implements ShowcaseView.OnShowcaseEve
         
 //        showcaseView = ShowcaseView.insertShowcaseView(R.id.actionbar_done,
 //                this, "Something...", "Something else...", co);
-
+/*
         ListFragment lf = (ListFragment) getFragmentManager().findFragmentById(R.id.main_list_fragment);
         ListView lv = (ListView) lf.getListView();
         
@@ -99,7 +98,7 @@ public class MainActivity extends Activity implements ShowcaseView.OnShowcaseEve
         });
 
         // Get calendars as well
-/*        Cursor calCursor = getContentResolver().query(
+        Cursor calCursor = getContentResolver().query(
                 CalendarContract.Calendars.CONTENT_URI, new String[]{
                 CalendarContract.Calendars._ID,
                 CalendarContract.Calendars.NAME,
@@ -129,10 +128,23 @@ public class MainActivity extends Activity implements ShowcaseView.OnShowcaseEve
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
+    
+    private void showFilterDialog() {
+    	FragmentManager fm = getFragmentManager();
+    	FragmentTransaction ft = fm.beginTransaction();
+    	Fragment prev = fm.findFragmentByTag("dialog_filter");
+    	if (prev != null) ft.remove(prev);
+    	ft.addToBackStack(null);
+    	
+    	FilterDialogFragment.newInstance(20).show(ft, "dialog_about");
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+	        case android.R.id.home:
+	        	showFilterDialog();
+	        	return true;
 	        case R.id.add_assignment:
 	        	Utils.goToAddAssignment(this);
 	        	return true;
@@ -163,4 +175,9 @@ public class MainActivity extends Activity implements ShowcaseView.OnShowcaseEve
         // TODO Auto-generated method stub
         
     }
+
+	@Override
+	public void onNewFilter(FilterDefinition newfilter) {
+		Toast.makeText(this, "Got filter!", Toast.LENGTH_SHORT).show();
+	}
 }

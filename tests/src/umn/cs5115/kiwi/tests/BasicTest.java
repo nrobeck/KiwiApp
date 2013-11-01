@@ -8,7 +8,7 @@ import static com.google.android.apps.common.testing.ui.espresso.matcher.ViewMat
 import umn.cs5115.kiwi.MainActivity;
 import android.test.ActivityInstrumentationTestCase2;
 
-import com.mikewadsten.test.kiwi.R;
+import umn.cs5115.kiwi.R;
 
 /**
  * Created by Mike on 10/18/13.
@@ -16,7 +16,7 @@ import com.mikewadsten.test.kiwi.R;
 public class BasicTest extends ActivityInstrumentationTestCase2<MainActivity> {
     @SuppressWarnings("deprecation")
     public BasicTest() {
-        super("com.mikewadsten.test.kiwi", MainActivity.class);
+        super("umn.cs5115.kiwi", MainActivity.class);
     }
 
     @Override
