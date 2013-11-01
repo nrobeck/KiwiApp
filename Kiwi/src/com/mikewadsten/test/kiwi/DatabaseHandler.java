@@ -24,7 +24,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String COURSE = "course";
     private static final String TYPE = "type";
     private static final String DUE_DATE = "due_date";
-    private static final String DUE_TIME = "due_time";
+    private static final String DUE_HOURS = "due_hours";
+    private static final String DUE_MINUTES = "due_minutes";
     private static final String REMINDER = "reminder";
     private static final String REMINDER_TIME = "reminder_time";
     private static final String NOTES = "notes";
@@ -51,7 +52,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + COURSE + " TEXT," 
         		+ TYPE + " TEXT," 
                 + DUE_DATE + " TEXT," 
-                + DUE_TIME + " TEXT," 
+                + DUE_HOURS + " TEXT,"
+                + DUE_MINUTES + " TEXT,"
                 + REMINDER + " INTEGER," 
                 + REMINDER_TIME + " TEXT,"
                 + NOTES + " Text"
@@ -99,7 +101,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     	cv.put(COURSE, a.getCourse());//assignment course
     	cv.put(TYPE, a.getType());//assignment type
     	cv.put(DUE_DATE, a.getDueDate());//assignment due date
-    	cv.put(DUE_TIME, a.getDueTime());//assignment due time
+    	cv.put(DUE_HOURS, a.getHours());//assignment due hours
+    	cv.put(DUE_MINUTES, a.getMinutes());//assignment due minutes
     	cv.put(REMINDER, a.getReminder());//assignment reminder value
     	cv.put(REMINDER_TIME, a.getReminderTime());//assignment reminder time
     	cv.put(NOTES, a.getNotes());//assignment notes
@@ -128,7 +131,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     	cv.put(COURSE, a.getCourse());//assignment course
     	cv.put(TYPE, a.getType());//assignment type
     	cv.put(DUE_DATE, a.getDueDate());//assignment due date
-    	cv.put(DUE_TIME, a.getDueTime());//assignment due time
+    	cv.put(DUE_HOURS, a.getHours());//assignment due hours
+    	cv.put(DUE_MINUTES, a.getMinutes());//assignment due minutes
     	cv.put(REMINDER, a.getReminder());//assignment reminder value
     	cv.put(REMINDER_TIME, a.getReminderTime());//assignment reminder time
     	cv.put(NOTES, a.getNotes());//assignment notes
@@ -174,10 +178,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     	a.setCourse(c.getString(2));
     	a.setType(c.getString(3));
     	a.setDueDate(c.getString(4));
-    	a.setDueTime(c.getString(5));
-    	a.setReminder(c.getInt(6));
-    	a.setReminderTime(c.getString(7));
-    	a.setNotes(c.getString(8));
+    	a.setHours(c.getInt(5));
+    	a.setMinutes(c.getInt(6));
+    	a.setReminder(c.getInt(7));
+    	a.setReminderTime(c.getString(8));
+    	a.setNotes(c.getString(9));
     	
     	return a;
     }
