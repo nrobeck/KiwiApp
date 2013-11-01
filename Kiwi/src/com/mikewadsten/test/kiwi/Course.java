@@ -11,12 +11,13 @@ public class Course {
 	private String startDate;
 	private String endDate;
 	private String rRule;
+	private String notes;
 	
 	//empty constructor
 	public Course() {}
 	
 	//constructor
-	public Course(String title, String cd, String sTime, String eTime, String cLocation, String sDate, String eDate, String cRRule) {
+	public Course(String title, String cd, String sTime, String eTime, String cLocation, String sDate, String eDate, String cRRule, String n) {
 		this.courseTitle = title;
 		this.courseDesignation = cd;
 		this.startTime = sTime;
@@ -25,6 +26,7 @@ public class Course {
 		this.startDate = sDate;
 		this.endDate = eDate;
 		this.rRule = cRRule;
+		this.notes = n;
 	}
 	
 	//getters for each of the Course elements
@@ -60,6 +62,10 @@ public class Course {
 		return this.rRule;
 	}
 	
+	public String getNotes() {
+		return this.notes;
+	}
+	
 	//setters for each of the Course elements
 	public void setCourseTitle(String t) {
 		this.courseTitle = t;
@@ -93,4 +99,7 @@ public class Course {
 		this.rRule = rr;
 	}
 	
+	public void setNotes(String n) {
+		this.notes = n;
+	}
 }

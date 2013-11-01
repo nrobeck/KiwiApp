@@ -10,6 +10,7 @@ public class Assignment {
 	private String due_time;
 	private int reminder;
 	private String reminder_time;
+	private String notes;
 	
 	//empty constructor
 	Assignment(){
@@ -17,7 +18,7 @@ public class Assignment {
 	
 	//constructor
 	Assignment(int id, String name, String course, String type, String due_date,
-			String due_time, int reminder, String reminder_time){
+			String due_time, int reminder, String reminder_time, String n){
 		this.id=id;
 		this.name=name;
 		this.course=course;
@@ -26,6 +27,7 @@ public class Assignment {
 		this.due_time=due_time;
 		this.reminder=reminder;
 		this.reminder_time=reminder_time;
+		this.notes = n;
 	}
 	
 	//getters for each of the Assignment elements
@@ -62,6 +64,10 @@ public class Assignment {
 		return this.id;
 	}
 	
+	public String getNotes() {
+		return this.notes;
+	}
+	
 	//setters for each of the Assignment elements
 	public void setName(String n){
 		this.name=n;
@@ -93,6 +99,10 @@ public class Assignment {
 	
 	public void setId(int i){
 		this.id=i;
+	}
+	
+	public void setNotes(String n) {
+		this.notes = n;
 	}
 	
 }
