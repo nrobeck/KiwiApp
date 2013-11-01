@@ -132,11 +132,10 @@ public class MainActivity extends Activity implements ShowcaseView.OnShowcaseEve
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
 	        case R.id.add_assignment:
-	        	Utils.goToAddCourse(this);
+	        	Utils.goToAddAssignment(this);
 	        	return true;
         	case R.id.add_course:
-        		Intent addIntent = new Intent(this, ImportCoursesActivity.class);
-        		startActivity(addIntent);
+        		Utils.goToAddCourse(this);
         		return true;
             case R.id.cancel:
                 Toast.makeText(getBaseContext(), "Clicked Cancel!", Toast.LENGTH_SHORT).show();

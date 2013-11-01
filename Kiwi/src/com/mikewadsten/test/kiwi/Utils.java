@@ -93,4 +93,12 @@ public class Utils {
     public static void goToAddCourse(Activity activity) {
     	activity.startActivity(new Intent(activity, AddCourseActivity.class));
     }
+    
+    public static Intent goToAddAssignment(Context context) {
+    	return new Intent(context, AddAssignmentActivity.class);
+    }
+    
+    public static void goToAddAssignment(Activity activity) {
+    	activity.startActivity(new Intent(activity, AddAssignmentActivity.class));
+    }
 }
