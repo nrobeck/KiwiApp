@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--
         Base application theme for API 14+. This theme completely replaces
@@ -8,9 +8,18 @@
     <style name="AppBaseTheme" parent="android:Theme.Holo.Light">
         <!-- API 14 theme customizations can go here. -->
         <item name="android:actionBarStyle">@style/ABStyle</item>
+        <item name="android:actionButtonStyle">@style/ActionButtonStyle</item>
+        <item name="android:actionMenuTextColor">#FF444444</item>
+        <item name="android:windowBackground">@color/window_background</item>
     </style>
 
     <style name="ABStyle" parent="@android:style/Widget.Holo.Light.ActionBar">
-        <item name="android:background">#94d31b</item>
+        <!-- <item name="android:background">#94d31b</item> -->
+        <item name="android:background">@drawable/kiwi_actionbar_background</item>
+        <item name="android:homeAsUpIndicator">@drawable/action_button_background</item>
+    </style>
+    
+    <style name="ActionButtonStyle" parent="@android:style/Widget.Holo.Light.ActionButton">
+        <item name="android:background">@drawable/action_button_background</item>
     </style>
 </resources>
