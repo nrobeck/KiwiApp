@@ -11,7 +11,7 @@
 		        android:angle="270" /> -->
 		</shape>	
 	</item>
-	<item android:bottom="1dp">
+	<item android:bottom="2dp">
 	    <shape>
             <solid android:color="#ff8fcc14" />
 	    </shape>

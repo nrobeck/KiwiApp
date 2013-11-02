@@ -11,6 +11,10 @@
         <item name="android:actionButtonStyle">@style/ActionButtonStyle</item>
         <item name="android:actionMenuTextColor">#FF444444</item>
         <item name="android:windowBackground">@color/window_background</item>
+        
+        <item name="android:editTextBackground">@drawable/edit_text_holo_light</item>
+        <item name="android:buttonStyle">@style/KiwiButton</item>
+        <item name="android:dropDownSpinnerStyle">@style/KiwiSpinner</item>
     </style>
 
     <style name="ABStyle" parent="@android:style/Widget.Holo.Light.ActionBar">
@@ -21,5 +25,14 @@
     
     <style name="ActionButtonStyle" parent="@android:style/Widget.Holo.Light.ActionButton">
         <item name="android:background">@drawable/action_button_background</item>
+    </style>
+    
+    <style name="KiwiButton" parent="android:Widget.Holo.Light.Button">
+        <item name="android:background">@drawable/btn_default_holo_light</item>
+    </style>
+    
+    <style name="KiwiSpinner" parent="android:Widget.Holo.Light.Spinner">
+        <item name="android:background">@drawable/spinner_background_holo_light</item>
+        <item name="android:dropDownSelector">@drawable/list_selector_holo_light</item>
     </style>
 </resources>

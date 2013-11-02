@@ -2,13 +2,24 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="8dp"
     android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Course Info"
+        style="?android:attr/listSeparatorTextViewStyle"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <EditText
         android:id="@+id/editText1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
         android:hint="Course name" >
 
         <requestFocus />
@@ -19,15 +30,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Course designation" />
-
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:hint="Course designation (e.g. CSCI 5115)" />
+    
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Scheduling"
+        android:layout_marginTop="16dp"
+        style="?android:attr/listSeparatorTextViewStyle"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+    
     <EditText
         android:id="@+id/editText3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
         android:hint="Location" />
-
+    
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
