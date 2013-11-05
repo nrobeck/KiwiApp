@@ -22,7 +22,7 @@ public class AddAssignmentActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		
-		setContentView(R.layout.activity_add_course);
+		setContentView(R.layout.add_assignment_layout);
 		
 		final Activity activity = this;
 		

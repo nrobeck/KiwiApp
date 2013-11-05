@@ -39,6 +39,14 @@ public class MainActivity extends Activity implements ShowcaseView.OnShowcaseEve
         getActionBar().setDisplayHomeAsUpEnabled(true);
         
         return;
+    	
+    //	super.onCreate(savedInstanceState);
+    //	setContentView(R.layout.add_assignment_layout);
+    	
+    //	getActionBar().setDisplayHomeAsUpEnabled(true);
+    	
+    //	return;
+    	
         
 //        ActionBar b = getActionBar();
 //        if (b != null) {
