@@ -12,9 +12,17 @@
         <item name="android:actionMenuTextColor">#FF444444</item>
         <item name="android:windowBackground">@color/window_background</item>
         
+        <!-- Stylize action bar buttons we don't control (app icon, overflow button) -->
+        <item name="android:selectableItemBackground">@drawable/action_button_background</item>
+        
+        <!-- Stylize the overflow menu -->
+        <item name="android:dropDownListViewStyle">@style/OverflowMenuStyle</item>
+        
         <item name="android:editTextBackground">@drawable/edit_text_holo_light</item>
         <item name="android:buttonStyle">@style/KiwiButton</item>
         <item name="android:dropDownSpinnerStyle">@style/KiwiSpinner</item>
+        <item name="android:radioButtonStyle">@style/KiwiRadioButton</item>
+        <item name="android:checkboxStyle">@style/KiwiCheckbox</item>
     </style>
 
     <style name="ABStyle" parent="@android:style/Widget.Holo.Light.ActionBar">
@@ -27,6 +35,10 @@
         <item name="android:background">@drawable/action_button_background</item>
     </style>
     
+    <style name="OverflowMenuStyle" parent="@android:style/Widget.ListView.DropDown">
+        <item name="android:listSelector">@drawable/list_selection_background</item>
+    </style>
+    
     <style name="KiwiButton" parent="android:Widget.Holo.Light.Button">
         <item name="android:background">@drawable/btn_default_holo_light</item>
     </style>
@@ -34,5 +46,14 @@
     <style name="KiwiSpinner" parent="android:Widget.Holo.Light.Spinner">
         <item name="android:background">@drawable/spinner_background_holo_light</item>
         <item name="android:dropDownSelector">@drawable/list_selector_holo_light</item>
+    </style>
+    
+    <style name="KiwiRadioButton" parent="android:Widget.Holo.Light.CompoundButton.RadioButton">
+        <item name="android:button">@drawable/btn_radio_holo_light</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+    
+    <style name="KiwiCheckbox" parent="android:Widget.Holo.Light.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/btn_check_holo_light</item>
     </style>
 </resources>

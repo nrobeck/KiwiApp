@@ -1,19 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
+        <!-- Provides the color for the bottom border of the action bar -->
 		<shape>
-		    
-            <solid android:color="#ff7eb510" />
-		    <!-- 
-		    <gradient
-		        android:startColor="#ff94d31b"
-		        android:endColor="#ff8fcc14"
-		        android:angle="270" /> -->
+            <solid android:color="@color/kiwi_ab_bottom_border" />
 		</shape>	
 	</item>
+	
 	<item android:bottom="2dp">
 	    <shape>
-            <solid android:color="#ff8fcc14" />
+            <solid android:color="@color/kiwi_ab_background" />
 	    </shape>
 	</item>
 </layer-list>

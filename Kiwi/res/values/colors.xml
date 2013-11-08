@@ -2,4 +2,11 @@
 <resources>
     <color name="window_background">#FFD9D9D9</color>
     <color name="window_background_darker">#FFC9C9C9</color>
+    
+    <color name="kiwi_dark_green">#FF85B81F</color>
+    <color name="kiwi_green">#FF8FCC14</color>
+    
+    <!-- other Kiwi colors we need -->
+    <color name="kiwi_ab_background">@color/kiwi_green</color>
+    <color name="kiwi_ab_bottom_border">#FF7EB510</color>
 </resources>

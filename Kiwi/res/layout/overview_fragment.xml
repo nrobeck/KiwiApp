@@ -2,5 +2,6 @@
 <com.example.android.expandingcells.ExpandingListView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/main_list_view"
+    android:listSelector="@drawable/list_selection_background"
     android:layout_width="match_parent"
     android:layout_height="match_parent" />
