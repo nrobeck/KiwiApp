@@ -17,6 +17,7 @@
 package com.android.datetimepicker.time;
 
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.app.ActionBar.LayoutParams;
 import android.app.DialogFragment;
 import android.content.Context;
@@ -48,6 +49,7 @@ import java.util.Locale;
 /**
  * Dialog to set a time.
  */
+@SuppressLint("ValidFragment")
 public class TimePickerDialog extends DialogFragment implements OnValueSelectedListener{
     private static final String TAG = "TimePickerDialog";
 
