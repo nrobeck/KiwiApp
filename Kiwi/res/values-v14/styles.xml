@@ -18,7 +18,7 @@
         <!-- Stylize the overflow menu -->
         <item name="android:dropDownListViewStyle">@style/OverflowMenuStyle</item>
         
-        <item name="android:editTextBackground">@drawable/edit_text_holo_light</item>
+        <item name="android:editTextStyle">@style/KiwiEditTextStyle</item>
         <item name="android:buttonStyle">@style/KiwiButton</item>
         <item name="android:dropDownSpinnerStyle">@style/KiwiSpinner</item>
         <item name="android:radioButtonStyle">@style/KiwiRadioButton</item>
@@ -43,14 +43,29 @@
         <item name="android:background">@drawable/btn_default_holo_light</item>
     </style>
     
+    <style name="KiwiEditTextStyle" parent="android:Widget.Holo.Light.EditText">
+        <item name="android:background">@drawable/edit_text_holo_light</item>
+        <item name="android:layout_height">48dp</item>
+    </style>
+    
+    <style name="KiwiSpinnerButton" parent="android:Widget.Holo.Light.Button">
+        <item name="android:background">@drawable/spinner_background_holo_light</item>
+        <item name="android:textColor">?android:attr/textColorHint</item>
+        <item name="android:gravity">left|center_vertical</item>
+    </style>
+    
     <style name="KiwiSpinner" parent="android:Widget.Holo.Light.Spinner">
         <item name="android:background">@drawable/spinner_background_holo_light</item>
         <item name="android:dropDownSelector">@drawable/list_selector_holo_light</item>
+        <item name="android:layout_height">48dp</item>
     </style>
     
     <style name="KiwiRadioButton" parent="android:Widget.Holo.Light.CompoundButton.RadioButton">
         <item name="android:button">@drawable/btn_radio_holo_light</item>
         <item name="android:textSize">18sp</item>
+        <item name="android:textColor">#FF333333</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
     </style>
     
     <style name="KiwiCheckbox" parent="android:Widget.Holo.Light.CompoundButton.CheckBox">
