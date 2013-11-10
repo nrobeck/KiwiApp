@@ -16,6 +16,11 @@
 
 package com.example.android.expandingcells;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import umn.cs5115.kiwi.R;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
@@ -25,17 +30,12 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import umn.cs5115.kiwi.R;
 
 /**
  * A custom listview which supports the preview of extra content corresponding to each cell
@@ -86,7 +86,7 @@ public class ExpandingListView extends ListView {
             }
         }
     };
-
+    
     /**
      * Calculates the top and bottom bound changes of the selected item. These values are
      * also used to move the bounds of the items around the one that is actually being
@@ -112,6 +112,9 @@ public class ExpandingListView extends ListView {
         int height = bottom - top;
 
         if (isExpanding) {
+            // These are the special cases:
+            // Case 1: Top starts out of sight --> move top in sight
+            // Case 2: Bottom starts out of sight --> move bottom in sight
             boolean isOverTop = top < 0;
             boolean isBelowBottom = (top + height + yDelta) > getHeight();
             if (isOverTop) {
@@ -123,17 +126,66 @@ public class ExpandingListView extends ListView {
                 yTranslateBottom = yDelta - yTranslateTop;
             }
         } else {
-            int offset = computeVerticalScrollOffset();
-            int range = computeVerticalScrollRange();
-            int extent = computeVerticalScrollExtent();
-            int leftoverExtent = range-offset - extent;
+            /* So here's where things get fun. By the time this function gets
+             * called, the ListView has already changed the bounds of the
+             * collapsing view and fixed up the world accordingly (such as
+             * auto-scrolling to the top of the list if it can fit entirely
+             * on-screen now, or auto-scrolling to the bottom of the list if we
+             * would otherwise be scrolled beyond the end). The arguments to
+             * this function call are as follows:
+             * 
+             *      * top: the previous top-bound of the view
+             *      * bottom: the previous bottom-bound of the view
+             *      * yDelta: the change in the view's height (always correct)
+             *      * isExpanding: (false)
+             * 
+             * The problem is that we're given the OLD bounds of the view, and
+             * absolutely no information to tell us that the ListView had to
+             * do some auxiliary adjustments (as discussed above).
+             * 
+             * The end result is that the logic defined here will work just fine
+             * only so long as collapsing the view doesn't lead the ListView to
+             * do some of its own positional adjustments (i.e. auto-scrolling to
+             * fit the list on-screen).
+             * 
+             * TODO: Extend the functionality of this function to take into
+             * account the ListView adjusting things automatically. This could
+             * be done by adding arguments for the old bounds (and using those
+             * to detect if the ListView moved things about).
+             */
+            
+            // These are the special cases:
+            // Case 1: Bottom collapses into sight
+            // -- Solution: put view at bottom of viewport
+            // ---- Emergent bug: bottom-aligning this view moves first item past top of list
+            // ------ Solution: if scrollY < topTranslation, then translate top by 0
+            // Case 2: Bottom collapses out of sight
+            // -- Solution: move view just out of sight
+            int listViewHeight = getHeight();
+            int scrollOffset = getScrollY();
+            
+            // Get bottom bound of last visible item
+            int lastVisiblePosition = getLastVisiblePosition();
+            int lastVisibleItemBottom = getChildAt(lastVisiblePosition).getBottom();
+            
+            boolean isLastItem = (lastVisibleItemBottom == bottom);
+            
+            int finalBottom = bottom - yDelta;
 
-            boolean isCollapsingBelowBottom = (yTranslateBottom > leftoverExtent);
-            boolean isCellCompletelyDisappearing = bottom - yTranslateBottom < 0;
-
-            if (isCollapsingBelowBottom) {
-                yTranslateTop = yTranslateBottom - leftoverExtent;
-                yTranslateBottom = yDelta - yTranslateTop;
+            boolean bottomEndsIntoSight = (finalBottom <= listViewHeight);
+            boolean bottomCollapsesIntoView = (bottom > listViewHeight) && bottomEndsIntoSight;
+            boolean isCellCompletelyDisappearing = yTranslateBottom > bottom;
+            if (bottomCollapsesIntoView) {
+                // Need to translate the view downwards...
+                yTranslateBottom = bottom - listViewHeight;
+                yTranslateTop = yDelta - yTranslateBottom;
+                
+                // UNLESS yTranslateTop > scrollOffset (would "scroll" past top)
+                if (yTranslateTop > scrollOffset) {
+                    int diff = yTranslateTop - scrollOffset;
+                    yTranslateTop -= diff;
+                    yTranslateBottom += diff;
+                }
             } else if (isCellCompletelyDisappearing) {
                 yTranslateBottom = bottom;
                 yTranslateTop = yDelta - yTranslateBottom;
@@ -382,6 +434,8 @@ public class ExpandingListView extends ListView {
         /* Store the original top and bottom bounds of all the cells.*/
         final int oldTop = view.getTop();
         final int oldBottom = view.getBottom();
+        
+        Log.d("collapseView", String.format("view old: %d -> %d", oldTop, oldBottom));
 
         final HashMap<View, int[]> oldCoordinates = new HashMap<View, int[]>();
 
@@ -391,10 +445,12 @@ public class ExpandingListView extends ListView {
             ViewCompat.setHasTransientState(v, true);
             oldCoordinates.put(v, new int [] {v.getTop(), v.getBottom()});
         }
+        
+        final int heightFix = 13;
 
         /* Update the layout so the extra content becomes invisible.*/
         view.setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT,
-                 viewObject.getCollapsedHeight()));
+                 viewObject.getCollapsedHeight() + heightFix));
 
          /* Add an onPreDraw listener. */
         final ViewTreeObserver observer = getViewTreeObserver();
@@ -411,12 +467,18 @@ public class ExpandingListView extends ListView {
 
                     int newTop = view.getTop();
                     int newBottom = view.getBottom();
+                    
+                    Log.d("onPreDraw", String.format("new bounds: %d -> %d", newTop, newBottom));
 
                     int newHeight = newBottom - newTop;
                     int oldHeight = oldBottom - oldTop;
                     int deltaHeight = oldHeight - newHeight;
+                    
+                    Log.d("onPreDraw", "deltaHeight: " + deltaHeight);
 
                     mTranslate = getTopAndBottomTranslations(oldTop, oldBottom, deltaHeight, false);
+                    
+                    Log.d("onPreDraw", String.format("translation: [%d, %d]", mTranslate[0], mTranslate[1]));
 
                     int currentTop = view.getTop();
                     int futureTop = oldTop + mTranslate[0];
