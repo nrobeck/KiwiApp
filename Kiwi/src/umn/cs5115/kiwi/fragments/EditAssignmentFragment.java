@@ -14,7 +14,7 @@ public class EditAssignmentFragment extends Fragment {
 			Bundle savedInstanceState) {
 		
 //		return inflater.inflate(R.layout.overview_fragment, null);
-		return inflater.inflate(R.layout.edit_assignment_fragment, null);
+		return inflater.inflate(R.layout.edit_assignment_fragment, container);
 		// TODO Auto-generated method stub
 		//return super.onCreateView(inflater, container, savedInstanceState);
 	}
