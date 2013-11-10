@@ -4,7 +4,7 @@
         android:id="@+id/add_assignment"
         android:title="Add assignment"
         android:showAsAction="ifRoom|withText"
-        android:icon="@drawable/ic_action_new" />
+        android:icon="@drawable/ic_action_new_event" />
     
     <item
         android:id="@+id/add_course"
