@@ -45,24 +45,14 @@
 
     </LinearLayout>
 
-    <com.example.android.expandingcells.ExpandingLayout
-            android:id="@+id/expanding_layout"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:visibility="gone"
-            android:background="@color/window_background">
+    <include layout="@layout/overview_item_expand_layout"/>
 
-        <TextView
-            android:id="@+id/text_view"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"
-            android:textSize="20sp"
-            android:textColor="#333"
-            android:gravity="center_horizontal"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:paddingBottom="20dp"/>
-
-    </com.example.android.expandingcells.ExpandingLayout>
-
+    <ImageView
+        android:id="@+id/expandContractIcon"
+        android:visibility="gone"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_gravity="center_horizontal"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_action_expand" />
 </LinearLayout>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.example.android.expandingcells.ExpandingLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+	            android:id="@+id/expanding_layout"
+	            android:layout_height="wrap_content"
+	            android:layout_width="match_parent"
+	            android:visibility="gone"
+	            android:background="@color/window_background">
+	
+	            <Button
+	        android:id="@+id/text_view"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center_horizontal"
+	        android:focusable="false"
+	        android:focusableInTouchMode="false"
+	        android:singleLine="true"
+	        android:ellipsize="middle"
+	        android:text="Button" />
+	            
+	                           <Button
+            android:id="@+id/text_view2"
+            android:layout_below="@id/text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:text="Button2" />
+</com.example.android.expandingcells.ExpandingLayout>
