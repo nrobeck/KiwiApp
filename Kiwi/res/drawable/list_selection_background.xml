@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:state_pressed="true">
-        <color android:color="@color/kiwi_green" />
+    <item android:state_activated="true">
+        <color android:color="#99BFFC54" />
     </item>
+    
+    <item android:state_pressed="true">
+        <color android:color="#998FCC14" />
+    </item>
+    
     <item android:drawable="@android:color/transparent" />
 </selector>
