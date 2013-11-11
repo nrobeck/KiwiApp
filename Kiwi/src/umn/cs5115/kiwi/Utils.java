@@ -26,18 +26,24 @@ public class Utils {
                 Log.d("Kiwi Test Utils", "Null custom actionbar view!");
                 return;
             }
-            customActionBarView.findViewById(R.id.actionbar_done).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    handler.onDone(view);
-                }
-            });
-            customActionBarView.findViewById(R.id.actionbar_cancel).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    handler.onCancel(view);
-                }
-            });
+            
+            customActionBarView.findViewById(R.id.actionbar_done).setClickable(true);
+            if (handler != null) {
+                customActionBarView.findViewById(R.id.actionbar_done)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        handler.onDone(view);
+                    }
+                });
+                customActionBarView.findViewById(R.id.actionbar_cancel)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        handler.onCancel(view);
+                    }
+                });
+            }
 
             bar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM,
                     ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE);
@@ -71,12 +77,17 @@ public class Utils {
                 Log.d("Kiwi Test Utils", "Null custom actionbar view!");
                 return;
             }
-            customActionBarView.findViewById(R.id.actionbar_done).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    handler.onDone(view);
-                }
-            });
+            
+            customActionBarView.findViewById(R.id.actionbar_done).setClickable(true);
+            if (handler != null) {
+                customActionBarView.findViewById(R.id.actionbar_done)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        handler.onDone(view);
+                    }
+                });
+            }
 
             bar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM,
                     ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE);

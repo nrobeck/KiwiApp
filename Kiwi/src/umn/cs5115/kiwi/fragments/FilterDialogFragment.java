@@ -10,6 +10,7 @@ import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,7 +45,7 @@ public class FilterDialogFragment extends DialogFragment {
 		
 		return new AlertDialog.Builder(getActivity())
 			.setView(rootView)
-			.setTitle("Filter/Sort")
+			.setCustomTitle(new RelativeLayout(getActivity()))
 			.setPositiveButton(android.R.string.ok, new OnClickListener() {
 				
 				@Override

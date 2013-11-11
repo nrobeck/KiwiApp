@@ -10,6 +10,12 @@
         android:id="@+id/add_course"
         android:title="Add course"
         android:showAsAction="never" />
+    
+    <item
+        android:id="@+id/filter"
+        android:title="Filter list"
+        android:showAsAction="never" />
+    
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"

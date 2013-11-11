@@ -7,36 +7,38 @@
     tools:layout_height="48dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/list_selection_background"
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:gravity="center_vertical">
-<LinearLayout
-    android:layout_height="wrap_content"
-    android:layout_width="wrap_content"
-    android:orientation="vertical"
-    android:layout_weight="4"
-    android:paddingLeft="8dp">
-    <TextView
-        android:layout_height="wrap_content"
-        android:id="@+id/title"
-        tools:text="Test!"
-        android:gravity="center_vertical"
-        android:layout_width="match_parent"
-        android:layout_weight="1"
-        android:maxLines="1"
-        android:ellipsize="end"
-        android:textSize="18sp"
-        android:textStyle="bold"/>
-    <TextView
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_width="match_parent"
-        android:maxLines="1"
-        android:ellipsize="end"
-        android:id="@+id/content"
-        tools:text="Every Monday"
-        android:textSize="12sp"/>
-</LinearLayout>
-    <CheckBox
+	<LinearLayout
+	    android:layout_height="wrap_content"
+	    android:layout_width="wrap_content"
+	    android:orientation="vertical"
+	    android:layout_weight="4"
+	    android:paddingLeft="8dp">
+	    <TextView
+	        android:layout_height="wrap_content"
+	        android:id="@+id/title"
+	        tools:text="Test!"
+	        android:gravity="center_vertical"
+	        android:layout_width="match_parent"
+	        android:layout_weight="1"
+	        android:maxLines="1"
+	        android:ellipsize="end"
+	        android:textSize="18sp"
+	        android:textStyle="bold"/>
+	    <TextView
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:layout_width="match_parent"
+	        android:maxLines="1"
+	        android:ellipsize="end"
+	        android:id="@+id/content"
+	        tools:text="Every Monday"
+	        android:textSize="12sp"/>
+	</LinearLayout>
+
+	<CheckBox
         android:id="@+id/checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

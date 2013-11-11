@@ -20,9 +20,11 @@
         
         <item name="android:editTextStyle">@style/KiwiEditTextStyle</item>
         <item name="android:buttonStyle">@style/KiwiButton</item>
+        <item name="android:imageButtonStyle">@style/KiwiButton</item>
         <item name="android:dropDownSpinnerStyle">@style/KiwiSpinner</item>
         <item name="android:radioButtonStyle">@style/KiwiRadioButton</item>
         <item name="android:checkboxStyle">@style/KiwiCheckbox</item>
+        <item name="android:listViewStyle">@style/KiwiListView</item>
     </style>
 
     <style name="ABStyle" parent="@android:style/Widget.Holo.Light.ActionBar">
@@ -36,6 +38,10 @@
     </style>
     
     <style name="OverflowMenuStyle" parent="@android:style/Widget.ListView.DropDown">
+        <item name="android:listSelector">@drawable/list_selection_background</item>
+    </style>
+    
+    <style name="KiwiListView" parent="@android:style/Widget.Holo.Light.ListView">
         <item name="android:listSelector">@drawable/list_selection_background</item>
     </style>
     
@@ -70,5 +76,19 @@
     
     <style name="KiwiCheckbox" parent="android:Widget.Holo.Light.CompoundButton.CheckBox">
         <item name="android:button">@drawable/btn_check_holo_light</item>
+    </style>
+    
+    <style name="KiwiCardFragmentStyle">
+        <item name="android:background">@drawable/card_background</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <!-- Other attributes possible here, e.g. padding, margins -->
+    </style>
+    
+    <style name="KiwiCardFragmentInnardsStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
     </style>
 </resources>

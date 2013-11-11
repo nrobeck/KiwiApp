@@ -3,20 +3,26 @@ package umn.cs5115.kiwi.fragments;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.android.expandingcells.CustomArrayAdapter;
-import com.example.android.expandingcells.ExpandableListItem;
-import com.example.android.expandingcells.ExpandingListView;
-
 import umn.cs5115.kiwi.R;
+import umn.cs5115.kiwi.Utils;
+import umn.cs5115.kiwi.adapter.OverviewListAdapter;
+import umn.cs5115.kiwi.adapter.OverviewListAdapter.ItemInteractionListener;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import com.cocosw.undobar.UndoBarController;
+import com.cocosw.undobar.UndoBarController.UndoListener;
+import com.example.android.expandingcells.ExpandableListItem;
+import com.example.android.expandingcells.ExpandingListView;
 
 public class OverviewFragment extends Fragment {
-    private final int CELL_DEFAULT_HEIGHT = 250;
-    private final int NUM_OF_CELLS = 30;
+    private final int CELL_DEFAULT_HEIGHT = 300;
+    private final int NUM_OF_CELLS = 2;
     
     private ExpandingListView mListView;
     
@@ -50,11 +56,27 @@ public class OverviewFragment extends Fragment {
                     obj.getCollapsedHeight(), obj.getText()));
         }
 
-        CustomArrayAdapter adapter = new CustomArrayAdapter(getActivity(), R.layout.list_view_item, mData);
+        OverviewListAdapter adapter = new OverviewListAdapter(
+                getActivity(), R.layout.list_view_item, mData,
+                new ItemInteractionListener() {
+                    @Override
+                    public void onEdit(ExpandableListItem object) {
+                        Utils.goToAddAssignment(getActivity());
+                    }
+                    
+                    @Override
+                    public void onDelete(ExpandableListItem object) {
+                        UndoBarController.show(getActivity(), "Deleted assignment.", new UndoListener() {
+                            @Override
+                            public void onUndo(Parcelable token) {
+                                Toast.makeText(getActivity(), "Assignment not deleted.", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                });
 
         mListView.setAdapter(adapter);
         mListView.setDivider(null);
-        mListView.setDividerHeight(8);
     }
 
 

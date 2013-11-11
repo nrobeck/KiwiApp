@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/FrameLayout1"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:paddingTop="4dp"
+    android:paddingBottom="4dp"
+    android:orientation="vertical" >
 
     <fragment
         android:id="@+id/fragment1"
         android:name="umn.cs5115.kiwi.fragments.EditCourseFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
-</FrameLayout>
+</LinearLayout>

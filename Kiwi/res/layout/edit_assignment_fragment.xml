@@ -2,15 +2,12 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/scrollView1"
-    android:background="@drawable/card_background"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    style="@style/KiwiCardFragmentStyle">
 	<LinearLayout
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
+	    style="@style/KiwiCardFragmentInnardsStyle"
 	    android:orientation="vertical"
-	    android:paddingLeft="8dp"
-	    android:paddingRight="8dp" >
+	    android:descendantFocusability="beforeDescendants"
+	    android:focusableInTouchMode="true">
 	
 	    <TextView
 	        android:id="@+id/textView1"
@@ -42,10 +39,7 @@
 	        
 	        android:maxLength="50"
             android:inputType="textCapSentences|textEmailSubject|textAutoCorrect"
-	        android:hint="Assignment/Exam name" >
-	
-	        <requestFocus />
-	    </EditText>
+	        android:hint="Assignment/Exam name" />
 	
 	    <!-- Due date/time -->
 	
@@ -85,7 +79,7 @@
 	            android:text="Other" />
 	    </RadioGroup>
 	
-	    <Spinner
+	    <Button
 	        android:id="@+id/spinner3"
 	        style="@style/KiwiSpinner"
 	        android:layout_width="match_parent" />
@@ -103,8 +97,12 @@
 	        android:id="@+id/editText2"
 	        style="@style/KiwiEditTextStyle"
 	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
 	        android:ems="10"
 	        android:hint="Type notes"
+	        android:minLines="1"
+	        android:maxLines="10"
+	        android:maxLength="1000"
 	        android:inputType="textMultiLine|textCapSentences" />
 	
     </LinearLayout>

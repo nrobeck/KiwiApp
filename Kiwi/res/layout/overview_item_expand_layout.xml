@@ -1,30 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.example.android.expandingcells.ExpandingLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-	            android:id="@+id/expanding_layout"
-	            android:layout_height="wrap_content"
-	            android:layout_width="match_parent"
-	            android:visibility="gone"
-	            android:background="@color/window_background">
-	
-	            <Button
-	        android:id="@+id/text_view"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_gravity="center_horizontal"
-	        android:focusable="false"
-	        android:focusableInTouchMode="false"
-	        android:singleLine="true"
-	        android:ellipsize="middle"
-	        android:text="Button" />
-	            
-	                           <Button
-            android:id="@+id/text_view2"
-            android:layout_below="@id/text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:text="Button2" />
+    android:id="@+id/expanding_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:descendantFocusability="blocksDescendants"
+    android:visibility="gone">
+    
+    <TextView
+        android:id="@+id/notes_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="No notes..."
+        android:layout_alignParentTop="true" />
+
+    <CheckBox
+        android:id="@+id/checkBox1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_below="@id/notes_textview"
+        android:text="Completed" />
+    
+    <Button
+        android:id="@+id/deleteButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:layout_centerVertical="true"
+        android:layout_below="@id/notes_textview"
+        android:text="Delete"/>
+    
+    <Button
+        android:id="@+id/editButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/deleteButton"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:layout_centerVertical="true"
+        android:layout_below="@id/notes_textview"
+        android:text="Edit"/>
 </com.example.android.expandingcells.ExpandingLayout>

@@ -15,7 +15,7 @@ public class EditCourseFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		Toast.makeText(getActivity(), "Edit course fragment!", Toast.LENGTH_SHORT).show();
-		return inflater.inflate(R.layout.edit_course_layout, container);
+		return inflater.inflate(R.layout.edit_course_fragment, container);
 	}
 
 }
