@@ -1,12 +1,6 @@
 package umn.cs5115.kiwi;
 
 import umn.cs5115.kiwi.DoneBar.DoneButtonHandler;
-
-import com.cocosw.undobar.UndoBarController;
-import com.cocosw.undobar.UndoBarController.UndoListener;
-import umn.cs5115.kiwi.R;
-
-import android.app.Activity;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.Menu;
@@ -14,7 +8,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-public class AddCourseActivity extends Activity {
+import com.cocosw.undobar.UndoBarController;
+import com.cocosw.undobar.UndoBarController.UndoListener;
+
+public class AddCourseActivity extends KiwiActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -23,18 +20,17 @@ public class AddCourseActivity extends Activity {
 		
 		setContentView(R.layout.activity_add_course);
 		
-		final Activity activity = this;
-		
 		Utils.makeActionBarDoneButton(getActionBar(), new DoneButtonHandler() {
             
             @Override
             public void onDone(View view) {
-                UndoBarController.show(activity, "New assignment created.", new UndoListener() {
-                    @Override
-                    public void onUndo(Parcelable token) {
-                        Toast.makeText(activity, "Undone.", Toast.LENGTH_SHORT).show();
-                    }
-                });
+//                UndoBarController.show(activity, "New assignment created.", new UndoListener() {
+//                    @Override
+//                    public void onUndo(Parcelable token) {
+//                        Toast.makeText(activity, "Undone.", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+                finish();
             }
         });
 	}

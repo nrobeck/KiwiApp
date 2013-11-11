@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="inter_activity_anim_duration">
+        @android:integer/config_mediumAnimTime
+    </integer>
+    <integer name="inter_activity_anim_duration_faster">
+        @android:integer/config_shortAnimTime
+    </integer>
+</resources>
