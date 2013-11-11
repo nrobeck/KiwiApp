@@ -121,24 +121,29 @@ public class Course {
 		this.notes = n;
 	}
 	
+	public void setTextbooks(String t) {
+		this.textbooks = t;
+	}
+	
 	
 	//add a textbook to the course
 	public void addTextbook(String textbook){
-		this.textbooks = this.textbooks.append(textbook).append(DELIMITER);//add textbook to the end of the string
+		this.textbooks = this.textbooks + textbook + DELIMITER;//add textbook to the end of the string
 	}
 	
 	//remove textbook from the course
 	public void removeTextbook(String textbook){
-		String[] tb = getTextbooks();//get the array format of textbooks for the course
+		String[] tb = getTextbooksArray();//get the array format of textbooks for the course
 		String newTextbooks = DELIMITER;//new string to set textbooks to after removal of the textbook
 	
 		//loop through and add textbooks other than textbook to be removed to the new string
-		for(int i=0, i<tb.length, i++){
+		int i;
+		for(i = 0; i < tb.length; i++){
 			if(!tb[i].equals(textbook)){
-				newTextbooks.append(tb[i]+DELIMITER);
+				newTextbooks = newTextbooks + tb[i] + DELIMITER;
 			}
 		}
 	
-		this.textbooks = newTextbook;
+		this.textbooks = newTextbooks;
 	}
 }

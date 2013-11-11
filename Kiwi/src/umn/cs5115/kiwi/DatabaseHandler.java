@@ -12,7 +12,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
 	
 	//Database States
-	private static final bool DATABASE_EMPTY = true;
+	private static boolean DATABASE_EMPTY = true;
  
     // Database Name
     private static final String DATABASE_NAME = "assignmentsManager";
@@ -304,12 +304,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public void clearDatabase(){
 	SQLiteDatabase db = this.getWritableDatabase();//get the database	
 	db.close();//close the database
-	db.delete();//delete all data in the database
+	db.delete(TABLE_ASSIGNMENTS, null, null);//delete all data in the assignments table
+	db.delete(TABLE_COURSES, null, null);//delete all data in the courses table
 	DATABASE_EMPTY = true;//set the test variable for empty database to true
 	}
 
 	//check if database is empty
-	public bool isDatabaseEmpty(){
+	public boolean isDatabaseEmpty(){
 		return DATABASE_EMPTY;
 	}
 	
