@@ -12,6 +12,8 @@ public class Course {
 	private String endDate;
 	private String rRule;
 	private String notes;
+	private String DELIMITER = "\n";
+	private String textbooks;
 
 	// empty constructor
 	public Course() {
@@ -20,7 +22,7 @@ public class Course {
 	// constructor
 	public Course(String title, String cd, String sTime, String eTime,
 			String cLocation, String sDate, String eDate, String cRRule,
-			String n) {
+			String n, String tb) {
 		this.courseTitle = title;
 		this.courseDesignation = cd;
 		this.startTime = sTime;
@@ -30,6 +32,7 @@ public class Course {
 		this.endDate = eDate;
 		this.rRule = cRRule;
 		this.notes = n;
+		this.textbooks = tb;
 	}
 
 	// getters for each of the Course elements
@@ -68,8 +71,20 @@ public class Course {
 	public String getNotes() {
 		return this.notes;
 	}
-
-	// setters for each of the Course elements
+	
+	//read textbooks from the course as a string
+	public String getTextbooksString() {
+		return this.textbooks;
+	}
+	
+	//read textbooks from the course as an array
+	public String[] getTextbooksArray(){
+		String deliminator = "[" + DELIMITER + "]+";//sets the DELIMITER character as a deliminator and treats multiple DELIMITER characters in a row as one deliminator
+		String[] textbookArray = this.textbooks.split(deliminator);//split the textbooks  string into an array of the individual books
+		return textbookArray;
+	}
+	
+	// setters for each of the Course elements	
 	public void setCourseTitle(String t) {
 		this.courseTitle = t;
 	}
@@ -104,5 +119,26 @@ public class Course {
 
 	public void setNotes(String n) {
 		this.notes = n;
+	}
+	
+	
+	//add a textbook to the course
+	public void addTextbook(String textbook){
+		this.textbooks = this.textbooks.append(textbook).append(DELIMITER);//add textbook to the end of the string
+	}
+	
+	//remove textbook from the course
+	public void removeTextbook(String textbook){
+		String[] tb = getTextbooks();//get the array format of textbooks for the course
+		String newTextbooks = DELIMITER;//new string to set textbooks to after removal of the textbook
+	
+		//loop through and add textbooks other than textbook to be removed to the new string
+		for(int i=0, i<tb.length, i++){
+			if(!tb[i].equals(textbook)){
+				newTextbooks.append(tb[i]+DELIMITER);
+			}
+		}
+	
+		this.textbooks = newTextbook;
 	}
 }

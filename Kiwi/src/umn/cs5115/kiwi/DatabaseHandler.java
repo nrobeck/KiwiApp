@@ -10,6 +10,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	 
     // Database Version
     private static final int DATABASE_VERSION = 1;
+	
+	//Database States
+	private static final bool DATABASE_EMPTY = true;
  
     // Database Name
     private static final String DATABASE_NAME = "assignmentsManager";
@@ -29,6 +32,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String REMINDER = "reminder";
     private static final String REMINDER_TIME = "reminder_time";
     private static final String NOTES = "notes";
+	private static final String DONE = "done";
     
     // Course table column names
     private static final String START_TIME = "start_time";
@@ -37,6 +41,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String START_DATE = "start_date";
     private static final String END_DATE = "end_date";
     private static final String RRULE = "recurrence_rule";
+	private static final String TEXTBOOKS = "textbooks";
  
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -56,7 +61,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + DUE_MINUTES + " TEXT,"
                 + REMINDER + " INTEGER," 
                 + REMINDER_TIME + " TEXT,"
-                + NOTES + " Text"
+                + NOTES + " TEXT,"
+				+ TEXTBOOKS + " TEXT,"
+				+ DONE + " INTEGER"
                 + ")";
         db.execSQL(CREATE_ASSIGNMENTS_TABLE);
         
@@ -70,7 +77,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         		+ START_DATE + "TEXT," 
         		+ END_DATE + "TEXT," 
         		+ RRULE + "TEXT,"
-        		+ NOTES + " TEXT"
+        		+ NOTES + " TEXT,"
+				+ TEXTBOOKS + " TEXT"
         		+ ")";
         
         
@@ -106,10 +114,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     	cv.put(REMINDER, a.getReminder());//assignment reminder value
     	cv.put(REMINDER_TIME, a.getReminderTime());//assignment reminder time
     	cv.put(NOTES, a.getNotes());//assignment notes
+		cv.put(TEXTBOOKS, a.getTextbook());//assignment textbook
+		cv.put(DONE, a.getDone());//assignment done
     	
     	//insert the assignment into the assignment table
     	db.insert(TABLE_ASSIGNMENTS, null, cv);//insert the assignment
     	db.close();//close the database
+		DATABASE_EMPTY = false;//sets the database empty variable to be true since data has been added
     }
     
     //remove assignment
@@ -136,6 +147,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     	cv.put(REMINDER, a.getReminder());//assignment reminder value
     	cv.put(REMINDER_TIME, a.getReminderTime());//assignment reminder time
     	cv.put(NOTES, a.getNotes());//assignment notes
+		cv.put(TEXTBOOKS, a.getTextbook());//assignment textbooks
+		cv.put(DONE, a.getDone());//assignment done
     	
     	//modify the assignment in the assignment table
     	db.update(TABLE_ASSIGNMENTS, cv,KEY_ID + " = ?", new String[] {String.valueOf(a.getId())} );//overwrite the assignment from the table with the same id as Assignment a
@@ -183,6 +196,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     	a.setReminder(c.getInt(7));
     	a.setReminderTime(c.getString(8));
     	a.setNotes(c.getString(9));
+		a.setTextbook(c.getString(10));
+		a.setDone(c.getInt(11));
     	
     	return a;
     }
@@ -202,6 +217,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     	cv.put(END_DATE, c.getEndDate());
     	cv.put(RRULE, c.getRRule());
     	cv.put(NOTES, c.getNotes());
+		cv.put(TEXTBOOKS, c.getTextbooksString());
     	
     	//insert the course into the courses table
     	db.insert(TABLE_COURSES, null, cv);//insert the course
@@ -231,6 +247,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     	cv.put(END_DATE, c.getEndDate());
     	cv.put(RRULE, c.getRRule());
     	cv.put(NOTES, c.getNotes());
+		cv.put(TEXTBOOKS, c.getTextbooksString());
     	
     	//modify the assignment in the assignment table
     	db.update(TABLE_COURSES, cv,KEY_ID + " = ?", new String[] {String.valueOf(c.getCourseDesignation())} );//overwrite the course from the table with the same id as course c
@@ -278,8 +295,22 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     	co.setEndDate(c.getString(6));
     	co.setRRule(c.getString(7));
     	co.setNotes(c.getString(8));
+		co.setTextbooks(c.getString(9));
     	
     	return co;
     }
 
+	//clear ALL database values
+	public void clearDatabase(){
+	SQLiteDatabase db = this.getWritableDatabase();//get the database	
+	db.close();//close the database
+	db.delete();//delete all data in the database
+	DATABASE_EMPTY = true;//set the test variable for empty database to true
+	}
+
+	//check if database is empty
+	public bool isDatabaseEmpty(){
+		return DATABASE_EMPTY;
+	}
+	
 }

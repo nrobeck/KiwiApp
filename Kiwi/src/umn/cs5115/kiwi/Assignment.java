@@ -12,6 +12,8 @@ public class Assignment {
 	private int reminder;
 	private String reminder_time;
 	private String notes;
+	private String textbook;
+	private bool done = false;
 
 	// empty constructor
 	Assignment() {
@@ -20,7 +22,7 @@ public class Assignment {
 	// constructor
 	Assignment(int id, String name, String course, String type,
 			String due_date, int h, int m, int reminder, String reminder_time,
-			String n) {
+			String n, String tb) {
 		this.id = id;
 		this.name = name;
 		this.course = course;
@@ -31,12 +33,17 @@ public class Assignment {
 		this.reminder = reminder;
 		this.reminder_time = reminder_time;
 		this.notes = n;
+		this.textbook = tb;
 	}
 
 	// getters for each of the Assignment elements
 
 	public String getName() {
 		return this.name;
+	}
+	
+	public bool getDone() {
+		return this.done;
 	}
 
 	public String getCourse() {
@@ -74,8 +81,30 @@ public class Assignment {
 	public int getMinutes() {
 		return this.minutes;
 	}
+	
+	public String getTextbook() {
+		return this.textbook;
+	}
+	
 
 	// setters for each of the Assignment elements
+	public void setTextbook(String tb) {
+		this.textbook = tb;
+	}
+	
+	public void setDone(){
+		if(this.done == false){
+			this.done = true;
+		}
+		else{
+			this.done = false;
+		}
+	}
+	
+	public void setDone(bool d) {
+		this.done = d;
+	}
+	
 	public void setName(String n) {
 		this.name = n;
 	}
