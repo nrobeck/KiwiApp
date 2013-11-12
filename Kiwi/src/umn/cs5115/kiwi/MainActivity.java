@@ -42,7 +42,9 @@ public class MainActivity extends KiwiActivity implements ShowcaseView.OnShowcas
     	if (prev != null) ft.remove(prev);
     	ft.addToBackStack(null);
     	
-    	FilterDialogFragment.newInstance(20).show(ft, "dialog_about");
+    	FilterDefinition defn = new FilterDefinition();
+    	defn.i = 10;
+    	FilterDialogFragment.newInstance(defn).show(ft, "dialog_about");
     }
 
     @Override
