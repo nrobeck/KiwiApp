@@ -38,7 +38,7 @@
 	        android:ems="10"
 	        
 	        android:maxLength="50"
-            android:inputType="textCapSentences|textEmailSubject|textAutoCorrect"
+            android:inputType="textCapSentences|textEmailAddress|textAutoCorrect"
 	        android:hint="Assignment/Exam name" />
 	
 	    <!-- Due date/time -->
