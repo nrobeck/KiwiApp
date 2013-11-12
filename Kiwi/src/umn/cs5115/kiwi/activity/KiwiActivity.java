@@ -1,5 +1,6 @@
-package umn.cs5115.kiwi;
+package umn.cs5115.kiwi.activity;
 
+import umn.cs5115.kiwi.R;
 import android.app.Activity;
 import android.content.Intent;
 

@@ -18,13 +18,14 @@
 
 package umn.cs5115.kiwi;
 
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Locale;
+
 import android.text.TextUtils;
 import android.text.format.Time;
 import android.util.Log;
 import android.util.TimeFormatException;
-
-import java.util.Calendar;
-import java.util.HashMap;
 
 /**
  * Event recurrence utility functions.
@@ -151,6 +152,7 @@ public class EventRecurrence {
      * Thrown when a recurrence string provided can not be parsed according
      * to RFC2445.
      */
+    @SuppressWarnings("serial")
     public static class InvalidFormatException extends RuntimeException {
         InvalidFormatException(String s) {
             super(s);
@@ -595,7 +597,7 @@ public class EventRecurrence {
         int parseFlags = 0;
         String[] parts;
         if (ALLOW_LOWER_CASE) {
-            parts = recur.toUpperCase().split(";");
+            parts = recur.toUpperCase(Locale.US).split(";");
         } else {
             parts = recur.split(";");
         }

@@ -20,13 +20,13 @@ public class Course {
 	}
 
 	// constructor
-	public Course(String title, String cd, String sTime, String eTime,
+	public Course(String title, String courseDesignation, String startTime, String endTime,
 			String cLocation, String sDate, String eDate, String cRRule,
 			String n, String tb) {
 		this.courseTitle = title;
-		this.courseDesignation = cd;
-		this.startTime = sTime;
-		this.endTime = eTime;
+		this.courseDesignation = courseDesignation;
+		this.startTime = startTime;
+		this.endTime = endTime;
 		this.location = cLocation;
 		this.startDate = sDate;
 		this.endDate = eDate;

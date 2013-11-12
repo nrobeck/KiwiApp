@@ -3,7 +3,6 @@ package umn.cs5115.kiwi.adapter;
 import java.util.List;
 
 import umn.cs5115.kiwi.R;
-import umn.cs5115.kiwi.Utils;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +14,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.espian.showcaseview.ShowcaseView;
 import com.example.android.expandingcells.ExpandableListItem;
 import com.example.android.expandingcells.ExpandingLayout;
 

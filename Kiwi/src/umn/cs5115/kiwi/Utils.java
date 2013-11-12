@@ -1,6 +1,6 @@
 package umn.cs5115.kiwi;
 
-import umn.cs5115.kiwi.DoneBar.*;
+import umn.cs5115.kiwi.ui.DoneBar.*;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
@@ -33,14 +33,14 @@ public class Utils {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        handler.onDone(view);
+                        handler.onDone();
                     }
                 });
                 customActionBarView.findViewById(R.id.actionbar_cancel)
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        handler.onCancel(view);
+                        handler.onCancel();
                     }
                 });
             }
@@ -84,7 +84,7 @@ public class Utils {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        handler.onDone(view);
+                        handler.onDone();
                     }
                 });
             }

@@ -1,15 +1,11 @@
 package umn.cs5115.kiwi.fragments;
 
 import umn.cs5115.kiwi.CalendarUtils;
-import umn.cs5115.kiwi.Utils;
 import umn.cs5115.kiwi.CalendarUtils.EventCursorWrapper;
 import umn.cs5115.kiwi.R;
 import android.app.ListFragment;
 import android.database.Cursor;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

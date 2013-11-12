@@ -1,64 +1,41 @@
 package umn.cs5115.kiwi;
 
-import umn.cs5115.kiwi.DoneBar.DoneButtonHandler;
-import android.os.Bundle;
-import android.os.Parcelable;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
+import umn.cs5115.kiwi.activity.KiwiDoneCancelActivity;
+import umn.cs5115.kiwi.ui.DoneBar.CancelFromMenuHandler;
+import umn.cs5115.kiwi.ui.DoneBar.DoneButtonHandler;
+import android.util.Log;
 import android.widget.Toast;
 
-import com.cocosw.undobar.UndoBarController;
-import com.cocosw.undobar.UndoBarController.UndoListener;
-
-public class AddCourseActivity extends KiwiActivity {
-
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		super.onCreate(savedInstanceState);
-		
-		setContentView(R.layout.activity_add_course);
-		
-		Utils.makeActionBarDoneButton(getActionBar(), new DoneButtonHandler() {
-            
+public class AddCourseActivity extends KiwiDoneCancelActivity {
+    @Override
+    protected CancelFromMenuHandler getCancelFromMenuHandler() {
+        return new CancelFromMenuHandler() {
             @Override
-            public void onDone(View view) {
-//                UndoBarController.show(activity, "New assignment created.", new UndoListener() {
-//                    @Override
-//                    public void onUndo(Parcelable token) {
-//                        Toast.makeText(activity, "Undone.", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
+            public void onCancel() {
+                Log.d("AddCourseActivity", "Cancelling adding a course.");
                 finish();
             }
-        });
-	}
-
-	@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-	    getMenuInflater().inflate(R.menu.cancel, menu);
-	    return true;
+        };
     }
 
     @Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			finish();
-			return true;
-		case R.id.cancel:
-		    UndoBarController.show(this, "Assignment deleted.", new UndoListener() {
-		        @Override
-		        public void onUndo(Parcelable token) {
-		            Toast.makeText(getApplication(), "Assignment not deleted.", Toast.LENGTH_SHORT).show();
-		        }
-		    });
-		}
-		// TODO Auto-generated method stub
-		return super.onOptionsItemSelected(item);
-	}
-	
-	
+    protected DoneButtonHandler getDoneButtonHandler() {
+        return new DoneButtonHandler() {
+            @Override
+            public void onDone() {
+                Toast.makeText(AddCourseActivity.this, "New course added.", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        };
+    }
 
+    @Override
+    protected boolean hasCancelButton() {
+        return false;
+    }
+
+    @Override
+    protected int getLayoutResource() {
+        return R.layout.activity_add_course;
+    }
 }

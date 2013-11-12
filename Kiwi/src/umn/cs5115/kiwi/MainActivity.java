@@ -2,6 +2,7 @@ package umn.cs5115.kiwi;
 
 import java.util.Calendar;
 
+import umn.cs5115.kiwi.activity.KiwiActivity;
 import umn.cs5115.kiwi.fragments.FilterDialogFragment;
 import umn.cs5115.kiwi.fragments.FilterDialogFragment.FilterListener;
 import android.app.AlarmManager;
@@ -10,7 +11,6 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,9 +19,6 @@ import android.widget.Toast;
 import com.espian.showcaseview.ShowcaseView;
 
 public class MainActivity extends KiwiActivity implements ShowcaseView.OnShowcaseEventListener, FilterListener {
-    private Cursor mCursor = null;
-    private ShowcaseView showcaseView;
-    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +63,7 @@ public class MainActivity extends KiwiActivity implements ShowcaseView.OnShowcas
         return super.onOptionsItemSelected(item);
     }
     
+    @SuppressWarnings("unused")
     private void notifyInThreeSeconds() {
         Intent i = new Intent(this, NotificationReceiver.class);
         PendingIntent alarm = PendingIntent.getBroadcast(this, 0, i, PendingIntent.FLAG_CANCEL_CURRENT);
