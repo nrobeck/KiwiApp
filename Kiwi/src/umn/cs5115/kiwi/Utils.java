@@ -1,6 +1,6 @@
 package umn.cs5115.kiwi;
 
-import umn.cs5115.kiwi.ui.DoneBar.*;
+import umn.cs5115.kiwi.ui.DoneBar.DoneBarListener;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
@@ -10,14 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import umn.cs5115.kiwi.R;
-
 /**
  * Created by Mike on 10/13/13.
  */
 public class Utils {
 //    https://android.googlesource.com/platform/developers/samples/android/+/master/ui/actionbar/DoneBar/src/com/example/android/donebar/DoneBarActivity.java
-    public static void makeActionBarDoneCancel(ActionBar bar, final DoneCancelBarHandler handler) {
+    public static void makeActionBarDoneCancel(ActionBar bar, final DoneBarListener listener) {
         final Context context = bar.getThemedContext();
         if (context != null) {
             final LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -28,19 +26,19 @@ public class Utils {
             }
             
             customActionBarView.findViewById(R.id.actionbar_done).setClickable(true);
-            if (handler != null) {
+            if (listener != null) {
                 customActionBarView.findViewById(R.id.actionbar_done)
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        handler.onDone();
+                        listener.onDone();
                     }
                 });
                 customActionBarView.findViewById(R.id.actionbar_cancel)
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        handler.onCancel();
+                        listener.onCancel();
                     }
                 });
             }
@@ -68,7 +66,7 @@ public class Utils {
      * @param bar ActionBar to modify
      * @param handler DoneButtonHandler to provide the onDone callback.
      */
-    public static void makeActionBarDoneButton(ActionBar bar, final DoneButtonHandler handler) {
+    public static void makeActionBarDoneButton(ActionBar bar, final DoneBarListener listener) {
         final Context context = bar.getThemedContext();
         if (context != null) {
             final LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -79,12 +77,12 @@ public class Utils {
             }
             
             customActionBarView.findViewById(R.id.actionbar_done).setClickable(true);
-            if (handler != null) {
+            if (listener != null) {
                 customActionBarView.findViewById(R.id.actionbar_done)
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        handler.onDone();
+                        listener.onDone();
                     }
                 });
             }

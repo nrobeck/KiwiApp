@@ -5,11 +5,8 @@ import java.util.List;
 
 import umn.cs5115.kiwi.R;
 import umn.cs5115.kiwi.Utils;
-import umn.cs5115.kiwi.ui.DoneBar.CancelFromMenuHandler;
 import umn.cs5115.kiwi.ui.DoneBar.DoneBarListenable;
 import umn.cs5115.kiwi.ui.DoneBar.DoneBarListener;
-import umn.cs5115.kiwi.ui.DoneBar.DoneButtonHandler;
-import umn.cs5115.kiwi.ui.DoneBar.DoneCancelBarHandler;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -28,41 +25,7 @@ import android.view.ViewGroup.LayoutParams;
  */
 public abstract class KiwiDoneCancelActivity extends KiwiActivity implements DoneBarListenable {
     private List<DoneBarListener> doneListeners;
-    private CancelFromMenuHandler cancelFromMenu;
     private boolean contentViewSet;
-    
-    /**
-     * Get the {@link DoneCancelBarHandler} that will be used when interacting
-     * with the action bar items for Done and Cancel. Returns null by default.
-     * 
-     * <p>This method need only be overridden if you are not
-     * also overriding {@link #hasCancelButton()} to return false -- that is,
-     * you only need to provide a DoneCancelBarHandler if you are using the
-     * Done-Cancel action bar functionality.</p>
-     * @return an instance of the {@link DoneCancelBarHandler} interface
-     */
-    protected DoneCancelBarHandler getDoneCancelHandler() {
-        return null;
-    }
-    
-    /**
-     * Get the {@link DoneButtonHandler} that will be used when interacting with
-     * the single Done button in the action bar. Returns null by default.
-     * 
-     * <p>This method need only be overridden if you are also overriding
-     * {@link #hasCancelButton()} to return false -- that is, you only need to
-     * provide a DoneButtonHandler if you are making this activity hide Cancel
-     * in the menu (in which case you must also provide a CancelFromMenuHandler).
-     * 
-     * @return an instance of the {@link DoneButtonHandler} interface
-     */
-    protected DoneButtonHandler getDoneButtonHandler() {
-        return null;
-    }
-    
-    protected CancelFromMenuHandler getCancelFromMenuHandler() {
-        return null;
-    }
     
     /**
      * Get the layout resource to be used in the activity. The return value
@@ -72,6 +35,20 @@ public abstract class KiwiDoneCancelActivity extends KiwiActivity implements Don
      * @return the layout resource ID to be used
      */
     protected abstract int getLayoutResource();
+    
+    /**
+     * Called when the user clicks Done in the action bar.
+     */
+    protected void onCancel() {
+    	
+    }
+    
+    /** Called when the user clicks Cancel either in the action bar
+     * or in the menu.
+     */
+    protected void onDone() {
+    	
+    }
     
     protected void onCreated(Bundle savedInstanceState) {}
     
@@ -118,10 +95,10 @@ public abstract class KiwiDoneCancelActivity extends KiwiActivity implements Don
         return !hasCancelButton();
     }
 
-    final private DoneCancelBarHandler getWrappedHandler(final DoneCancelBarHandler handler) {
-        return new DoneCancelBarHandler() {
+    final private DoneBarListener getDoneCancelHandler() {
+        return new DoneBarListener() {
             @Override
-            public void onDone() {
+            public boolean onDone() {
                 boolean allGood = true;
                 
                 for (DoneBarListener listener : doneListeners) {
@@ -130,14 +107,15 @@ public abstract class KiwiDoneCancelActivity extends KiwiActivity implements Don
                     allGood = listener.onDone() && allGood;
                 }
                 
-                if (allGood && handler != null) {
+                if (allGood) {
                     // No listener returned false - we're clear to continue
-                    handler.onDone();
+                    KiwiDoneCancelActivity.this.onDone();
                 } else {
                     // At least one listener returned false. Abort!
                     Log.d("KiwiDoneCancelActivity", "A listener returned false. Not calling handler.onDone");
-                    return;
+                    return false;
                 }
+				return true;
             }
             
             @Override
@@ -149,55 +127,7 @@ public abstract class KiwiDoneCancelActivity extends KiwiActivity implements Don
                 for (DoneBarListener listener : doneListeners) {
                     listener.onCancel();
                 }
-                handler.onCancel();
-            }
-        };
-    }
-    
-    final private DoneButtonHandler getWrappedHandler(final DoneButtonHandler handler) {
-        return new DoneButtonHandler() {
-            public void onDone() {
-                boolean thisGood, allGood = true;
-                
-                for (DoneBarListener listener : doneListeners) {
-                    // Call onDone in each listener, and keep track of the
-                    // overall return value.
-                    thisGood = listener.onDone();
-                    // TODO: Add some sort of logging? (Would have to add
-                    // a method to the interface like 'getDescription' so we
-                    // can log what listener returned false)
-                    allGood = thisGood && allGood;
-                }
-                
-                if (allGood && handler != null) {
-                    // No listener returned false - we're clear to continue
-                    handler.onDone();
-                } else {
-                    // At least one listener returned false. Abort!
-                    Log.d("KiwiDoneCancelActivity", "A listener returned false. Not calling handler.onDone");
-                    return;
-                }
-            }
-        };
-    }
-    
-    final private CancelFromMenuHandler getWrappedHandler(final CancelFromMenuHandler handler) {
-        return new CancelFromMenuHandler() {
-            @Override
-            public void onCancel() {
-                // The onCancel method has no way of communicating (and has no
-                // need to communicate) that the Cancel action needs to be
-                // aborted, so just chug through the listeners and then call
-                // handler.onCancel
-                for (DoneBarListener listener : doneListeners) {
-                    listener.onCancel();
-                }
-                
-                if (handler == null) {
-                    Log.i("KiwiDoneCancelActivity", "Clicked 'Cancel' but the handler is null");
-                } else {
-                    handler.onCancel();
-                }
+                KiwiDoneCancelActivity.this.onCancel();
             }
         };
     }
@@ -225,6 +155,7 @@ public abstract class KiwiDoneCancelActivity extends KiwiActivity implements Don
         if (listener == null) {
             throw new NullPointerException("Why would you register null as a listener?");
         }
+        Log.i("Added DoneBarListener", listener.toString());
         doneListeners.add(listener);
     }
     
@@ -240,13 +171,12 @@ public abstract class KiwiDoneCancelActivity extends KiwiActivity implements Don
         setContentView(getLayoutResource());
         
         if (hasCancelButton()) {
-            Utils.makeActionBarDoneCancel(getActionBar(), getWrappedHandler(getDoneCancelHandler()));
+            Utils.makeActionBarDoneCancel(getActionBar(), getDoneCancelHandler());
         } else {
-            Utils.makeActionBarDoneButton(getActionBar(), getWrappedHandler(getDoneButtonHandler()));
+            Utils.makeActionBarDoneButton(getActionBar(), getDoneCancelHandler());
         }
         
         doneListeners = new ArrayList<DoneBarListener>();
-        cancelFromMenu = getWrappedHandler(getCancelFromMenuHandler());
         
         this.onCreated(savedInstanceState);
     }
@@ -266,7 +196,7 @@ public abstract class KiwiDoneCancelActivity extends KiwiActivity implements Don
         
         if (usesCancelMenu() && id == R.id.cancel) {
             // User clicked the Cancel menu button. Trigger the handler.
-            cancelFromMenu.onCancel();
+            onCancel();
             return true;
         }
         return super.onOptionsItemSelected(item);

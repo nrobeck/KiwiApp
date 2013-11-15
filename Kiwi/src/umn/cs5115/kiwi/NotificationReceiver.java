@@ -18,6 +18,7 @@ public class NotificationReceiver extends BroadcastReceiver {
         notif.setSmallIcon(android.R.drawable.ic_delete)
         .setContentTitle("Huehuehue")
         .setContentText("Huehuehuehuehuehue")
+        .setTicker("Yo there")
         .setAutoCancel(true);
         manager.notify(1000, notif.build());
     }

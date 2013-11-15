@@ -5,22 +5,6 @@ package umn.cs5115.kiwi.ui;
  * Created by Mike on 10/13/13.
  */
 public class DoneBar {
-    //TODO: Might be better to just have DoneButtonHandler, CancelButtonHandler
-    // rather than three interfaces (one for unified, two for individual bits)
-    // for abstraction purposes.
-    public static interface DoneCancelBarHandler {
-        public void onDone();
-        public void onCancel();
-    }
-
-    public static interface DoneButtonHandler {
-        public void onDone();
-    }
-    
-    public static interface CancelFromMenuHandler {
-        public void onCancel();
-    }
-    
     /**
      * Interface for UI components that may wish to know when the user
      * clicks "Done" or "Cancel" in activities that use that feature,

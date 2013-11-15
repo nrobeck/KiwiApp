@@ -49,6 +49,7 @@ public class MainActivity extends KiwiActivity implements ShowcaseView.OnShowcas
         switch (item.getItemId()) {
 	        case R.id.add_assignment:
 	        	Utils.goToAddAssignment(this);
+	        	notifyInThreeSeconds();
 	        	return true;
 	        case R.id.filter:
 	            showFilterDialog();
