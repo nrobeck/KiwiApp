@@ -8,10 +8,10 @@
     android:visibility="gone">
     
     <TextView
-        android:id="@+id/notes_textview"
+        android:id="@+id/assignment_notes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="No notes..."
+        
         android:layout_alignParentTop="true" />
 
     <CheckBox
@@ -19,7 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_below="@id/notes_textview"
+        android:layout_below="@id/assignment_notes"
         android:text="Completed" />
     
     <Button
@@ -30,7 +30,7 @@
         android:focusable="false"
         android:focusableInTouchMode="false"
         android:layout_centerVertical="true"
-        android:layout_below="@id/notes_textview"
+        android:layout_below="@id/assignment_notes"
         android:text="Delete"/>
     
     <Button
@@ -41,6 +41,6 @@
         android:focusable="false"
         android:focusableInTouchMode="false"
         android:layout_centerVertical="true"
-        android:layout_below="@id/notes_textview"
+        android:layout_below="@id/assignment_notes"
         android:text="Edit"/>
 </com.example.android.expandingcells.ExpandingLayout>

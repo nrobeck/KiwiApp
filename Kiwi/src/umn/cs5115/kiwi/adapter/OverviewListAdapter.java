@@ -1,5 +1,7 @@
 package umn.cs5115.kiwi.adapter;
 
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.List;
 
 import umn.cs5115.kiwi.R;
@@ -55,9 +57,23 @@ public class OverviewListAdapter extends ArrayAdapter<ExpandableListItem> {
     //    TextView titleView = (TextView)convertView.findViewById(R.id.title_view);
     //    titleView.setText(object.getTitle());
         
-        //Setting the assignment tile information
+        //Setting the Course Name on the Assignment Tile
         TextView courseNameView = (TextView) convertView.findViewById(R.id.course_name);
         courseNameView.setText(object.getCourseName());
+        
+        //This needs to be formatted to look better
+        //Setting the Date on the Assignment Tile
+        TextView assignmentDateView = (TextView) convertView.findViewById(R.id.assignment_date);
+        DateFormat dateFormat = DateFormat.getDateTimeInstance();
+        assignmentDateView.setText(dateFormat.format(object.getAssignmentDate()));		//For some reason this causes the rest of the information to display
+        
+        //Setting the Assignment Name on the Assignment Tile
+        TextView assignmentNameView = (TextView) convertView.findViewById(R.id.assignment_name);
+        assignmentNameView.setText(object.getAssignmentName());
+        
+        //Setting the Assignment Type on the Assignment Tile
+        TextView assignmentTypeView = (TextView) convertView.findViewById(R.id.assignment_type);
+        assignmentTypeView.setText(object.getAssignmentType());
 
         convertView.setLayoutParams(
                 new ListView.LayoutParams(
@@ -68,6 +84,9 @@ public class OverviewListAdapter extends ArrayAdapter<ExpandableListItem> {
                 (ExpandingLayout) convertView.findViewById(R.id.expanding_layout);
         expandingLayout.setExpandedHeight(object.getExpandedHeight());
         expandingLayout.setSizeChangedListener(object);
+        
+        TextView assignmentNotesView = (TextView) convertView.findViewById(R.id.assignment_notes);
+        assignmentNotesView.setText(object.getAssignmentNotes());
 
         if (!object.isExpanded()) {
             expandingLayout.setVisibility(View.GONE);

@@ -16,7 +16,7 @@
 
 package com.example.android.expandingcells;
 
-import java.sql.Date;
+import java.util.Date;
 
 /**
  * This custom object is used to populate the list adapter. It contains a reference
@@ -50,7 +50,7 @@ public class ExpandableListItem implements OnSizeChangedListener {
         mExpandedHeight = -1;
     }
     
-    //CSCI 5115 Assignment Tile Constuctor
+    //CSCI 5115 Assignment Tile Constructor
     public ExpandableListItem(String course, Date date, String name, String type, String[] textbooks, String notes, int collapsedHeight) {
     	this.courseName = course;
     	this.assignmentDate = date;

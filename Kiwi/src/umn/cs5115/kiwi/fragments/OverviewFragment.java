@@ -1,7 +1,8 @@
 package umn.cs5115.kiwi.fragments;
 
-import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import umn.cs5115.kiwi.R;
@@ -50,18 +51,36 @@ public class OverviewFragment extends Fragment {
 //                        getResources().getString(R.string.long_lorem_ipsum)),
 //        };
         
-      //  long millisecondDate = 1384614279;
-        
-      //  Date myDate = new Date(1384948800000);
+        //Date Testing
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, 1988);
+        cal.set(Calendar.MONTH, 1);
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+        Date dateRepresentation = cal.getTime();
         
         //CSCI 5115 Test
         ExpandableListItem[] values = new ExpandableListItem[] {
-        		new ExpandableListItem("CSCI5115", new Date(1384948800), "Midterm 1", "Exam", 
-        				new String[] {"Designed for Use"}, "", CELL_DEFAULT_HEIGHT),
-				new ExpandableListItem("CSCI5115", new Date(1384948800), "Paper Prototype", "Assignment", 
-        				new String[] {""}, "", CELL_DEFAULT_HEIGHT),        				
-				new ExpandableListItem("CSCI5523", new Date(1384948800), "Homework 4", "Assignment", 
-        				new String[] {"Introduction to Data Mining"}, "", CELL_DEFAULT_HEIGHT),
+        		new ExpandableListItem("CSCI5115", 
+        							   cal.getTime(), 
+        							   "Midterm 1", 
+        							   "Exam", 
+        							   new String[] {"Designed for Use"}, 
+        							   "notes1 notes1 notes1 notes1 notes1 notes1 notes1 notes1 notes1 notes1 notes1 notes1 notes1", 
+        							   CELL_DEFAULT_HEIGHT),
+				new ExpandableListItem("CSCI5115", 
+									   cal.getTime(),
+									   "Paper Prototype Presentation", 
+									   "Assignment", 
+									   new String[] {"no textbook"},
+									   "notes2 notes2 notes2 notes2 notes2 notes2 notes2 notes2 notes2 notes2 notes2 notes2 notes2", 
+									   CELL_DEFAULT_HEIGHT),        				
+				new ExpandableListItem("CSCI5523",
+									   cal.getTime(),
+									   "Homework 4", 
+									   "Assignment", 
+									   new String[] {"Introduction to Data Mining"},
+									   "notes3 notes3 notes3 notes3 notes3 notes3 notes3 notes3 notes3 notes3 notes3 notes3 notes3",
+									   CELL_DEFAULT_HEIGHT),
         				
         		//Sample code		
 //                new ExpandableListItem("Chameleon", R.drawable.chameleon, CELL_DEFAULT_HEIGHT,
@@ -77,7 +96,7 @@ public class OverviewFragment extends Fragment {
         for (int i = 0; i < NUM_OF_CELLS; i++) {
             ExpandableListItem obj = values[i % values.length];
             //CSCI 5115 Code
-            mData.add(new ExpandableListItem(obj.getAssignmentName(), obj.getAssignmentDate(), 
+            mData.add(new ExpandableListItem(obj.getCourseName(), obj.getAssignmentDate(), 
             		obj.getAssignmentName(), obj.getAssignmentType(), obj.getAssignmentTextbooks(), 
             		obj.getAssignmentNotes(), obj.getCollapsedHeight()));
             //Sample Code Stuff
