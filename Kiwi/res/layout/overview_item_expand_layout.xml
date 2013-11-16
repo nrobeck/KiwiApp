@@ -7,20 +7,43 @@
     android:descendantFocusability="blocksDescendants"
     android:visibility="gone">
     
+    <TextView 
+        android:id="@+id/assignment_notes_heading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:text="Notes:"
+        android:textSize="16sp"/>
+    
     <TextView
         android:id="@+id/assignment_notes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        
-        android:layout_alignParentTop="true" />
+        android:layout_below="@id/assignment_notes_heading" />
 
+    <TextView 
+        android:id="@+id/assignment_textbooks_heading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/assignment_notes"
+    	android:text="Textbooks:"
+    	android:textSize="16sp"/>
+    
+    <TextView 
+        android:id="@+id/assignment_textbooks"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/assignment_textbooks_heading"/>
+    
+    <!-- 
     <CheckBox
         android:id="@+id/checkBox1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_below="@id/assignment_notes"
+        android:layout_below="@id/assignment_textbooks"
         android:text="Completed" />
+    -->
     
     <Button
         android:id="@+id/deleteButton"
@@ -30,7 +53,7 @@
         android:focusable="false"
         android:focusableInTouchMode="false"
         android:layout_centerVertical="true"
-        android:layout_below="@id/assignment_notes"
+        android:layout_below="@id/assignment_textbooks"
         android:text="Delete"/>
     
     <Button
@@ -41,6 +64,6 @@
         android:focusable="false"
         android:focusableInTouchMode="false"
         android:layout_centerVertical="true"
-        android:layout_below="@id/assignment_notes"
+        android:layout_below="@id/assignment_textbooks"
         android:text="Edit"/>
 </com.example.android.expandingcells.ExpandingLayout>

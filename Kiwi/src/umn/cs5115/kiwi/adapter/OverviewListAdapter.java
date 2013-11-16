@@ -80,13 +80,29 @@ public class OverviewListAdapter extends ArrayAdapter<ExpandableListItem> {
                         AbsListView.LayoutParams.MATCH_PARENT,
                         AbsListView.LayoutParams.WRAP_CONTENT));
 
+        //Expanded portion of the Assignment Tile
         ExpandingLayout expandingLayout =
                 (ExpandingLayout) convertView.findViewById(R.id.expanding_layout);
         expandingLayout.setExpandedHeight(object.getExpandedHeight());
         expandingLayout.setSizeChangedListener(object);
         
+        //Setting the Notes on the Assignment Tile
         TextView assignmentNotesView = (TextView) convertView.findViewById(R.id.assignment_notes);
         assignmentNotesView.setText(object.getAssignmentNotes());
+        
+        //Setting the Textbooks on the Assignment Tile
+        int numTextbooks = object.getAssignmentTextbooks().length;
+        String textbookString = "";
+        for(int i = 0; i < numTextbooks; i++) {
+        	if(i == (numTextbooks - 1)){
+        		textbookString += object.getAssignmentTextbooks()[i];
+        	}
+        	else {
+        		textbookString += object.getAssignmentTextbooks()[i] + "\n";
+        	}
+        }
+        TextView assignmentTextbooksView = (TextView) convertView.findViewById(R.id.assignment_textbooks);
+        assignmentTextbooksView.setText(textbookString);
 
         if (!object.isExpanded()) {
             expandingLayout.setVisibility(View.GONE);

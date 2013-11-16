@@ -24,7 +24,7 @@ import com.example.android.expandingcells.ExpandingListView;
 
 public class OverviewFragment extends Fragment {
     private final int CELL_DEFAULT_HEIGHT = 300;
-    private final int NUM_OF_CELLS = 2;
+    private final int NUM_OF_CELLS = 3;
     
     private ExpandingListView mListView;
     
@@ -64,14 +64,14 @@ public class OverviewFragment extends Fragment {
         							   cal.getTime(), 
         							   "Midterm 1", 
         							   "Exam", 
-        							   new String[] {"Designed for Use"}, 
+        							   new String[] {"Designed for Use", "Design of Everyday Things"}, 
         							   "notes1 notes1 notes1 notes1 notes1 notes1 notes1 notes1 notes1 notes1 notes1 notes1 notes1", 
         							   CELL_DEFAULT_HEIGHT),
 				new ExpandableListItem("CSCI5115", 
 									   cal.getTime(),
 									   "Paper Prototype Presentation", 
 									   "Assignment", 
-									   new String[] {"no textbook"},
+									   new String[] {""},
 									   "notes2 notes2 notes2 notes2 notes2 notes2 notes2 notes2 notes2 notes2 notes2 notes2 notes2", 
 									   CELL_DEFAULT_HEIGHT),        				
 				new ExpandableListItem("CSCI5523",
