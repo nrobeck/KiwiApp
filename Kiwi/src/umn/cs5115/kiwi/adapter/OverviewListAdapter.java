@@ -52,9 +52,12 @@ public class OverviewListAdapter extends ArrayAdapter<ExpandableListItem> {
                 (AbsListView.LayoutParams.MATCH_PARENT, object.getCollapsedHeight());
         linearLayout.setLayoutParams(linearLayoutParams);
 
-        TextView titleView = (TextView)convertView.findViewById(R.id.title_view);
-
-        titleView.setText(object.getTitle());
+    //    TextView titleView = (TextView)convertView.findViewById(R.id.title_view);
+    //    titleView.setText(object.getTitle());
+        
+        //Setting the assignment tile information
+        TextView courseNameView = (TextView) convertView.findViewById(R.id.course_name);
+        courseNameView.setText(object.getCourseName());
 
         convertView.setLayoutParams(
                 new ListView.LayoutParams(

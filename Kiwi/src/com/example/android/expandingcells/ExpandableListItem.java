@@ -16,6 +16,8 @@
 
 package com.example.android.expandingcells;
 
+import java.sql.Date;
+
 /**
  * This custom object is used to populate the list adapter. It contains a reference
  * to an image, title, and the extra text to be displayed. Furthermore, it keeps track
@@ -30,6 +32,14 @@ public class ExpandableListItem implements OnSizeChangedListener {
     private int mImgResource;
     private int mCollapsedHeight;
     private int mExpandedHeight;
+    
+    //CSCI 5115 Added
+    private String courseName;
+    private Date assignmentDate;
+    private String assignmentName;
+    private String assignmentType;
+    private String[] assignmentTextbooks;
+    private String assignmentNotes;
 
     public ExpandableListItem(String title, int imgResource, int collapsedHeight, String text) {
         mTitle = title;
@@ -38,6 +48,20 @@ public class ExpandableListItem implements OnSizeChangedListener {
         mIsExpanded = false;
         mText = text;
         mExpandedHeight = -1;
+    }
+    
+    //CSCI 5115 Assignment Tile Constuctor
+    public ExpandableListItem(String course, Date date, String name, String type, String[] textbooks, String notes, int collapsedHeight) {
+    	this.courseName = course;
+    	this.assignmentDate = date;
+    	this.assignmentName = name;
+    	this.assignmentType = type;
+    	this.assignmentTextbooks = textbooks;
+    	this.assignmentNotes = notes;
+    	
+    	this.mIsExpanded = false;
+    	this.mExpandedHeight = -1;
+    	this.mCollapsedHeight = collapsedHeight;
     }
 
     public boolean isExpanded() {
@@ -84,4 +108,52 @@ public class ExpandableListItem implements OnSizeChangedListener {
     public void onSizeChanged(int newHeight) {
         setExpandedHeight(newHeight);
     }
+
+	public String getCourseName() {
+		return courseName;
+	}
+
+	public void setCourseName(String courseName) {
+		this.courseName = courseName;
+	}
+
+	public Date getAssignmentDate() {
+		return assignmentDate;
+	}
+
+	public void setAssignmentDate(Date assignmentDate) {
+		this.assignmentDate = assignmentDate;
+	}
+
+	public String getAssignmentName() {
+		return assignmentName;
+	}
+
+	public void setAssignmentName(String assignmentName) {
+		this.assignmentName = assignmentName;
+	}
+
+	public String getAssignmentType() {
+		return assignmentType;
+	}
+
+	public void setAssignmentType(String assignmentType) {
+		this.assignmentType = assignmentType;
+	}
+
+	public String[] getAssignmentTextbooks() {
+		return assignmentTextbooks;
+	}
+
+	public void setAssignmentTextbooks(String[] assignmentTextbooks) {
+		this.assignmentTextbooks = assignmentTextbooks;
+	}
+
+	public String getAssignmentNotes() {
+		return assignmentNotes;
+	}
+
+	public void setAssignmentNotes(String assignmentNotes) {
+		this.assignmentNotes = assignmentNotes;
+	}
 }
