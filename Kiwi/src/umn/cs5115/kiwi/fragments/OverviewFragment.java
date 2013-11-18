@@ -10,6 +10,7 @@ import umn.cs5115.kiwi.Utils;
 import umn.cs5115.kiwi.adapter.OverviewListAdapter;
 import umn.cs5115.kiwi.adapter.OverviewListAdapter.ItemInteractionListener;
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.LayoutInflater;
@@ -105,7 +106,7 @@ public class OverviewFragment extends Fragment {
         }
 
         OverviewListAdapter adapter = new OverviewListAdapter(
-                getActivity(), R.layout.list_view_item, mData,
+                getActivity(), R.layout.assignment_tile, mData,
                 new ItemInteractionListener() {
                     @Override
                     public void onEdit(ExpandableListItem object) {

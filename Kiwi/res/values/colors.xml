@@ -9,4 +9,10 @@
     <!-- other Kiwi colors we need -->
     <color name="kiwi_ab_background">@color/kiwi_green</color>
     <color name="kiwi_ab_bottom_border">#FF7EB510</color>
+    <color name="orange">#FF6F00</color>
+    <color name="green">#008110</color>
+    <color name="blue">#0D58A6</color>
+    <color name="red">#A16000</color>
+    <color name="purple">#83004F</color>
+    <color name="yellow">#A69200</color>
 </resources>

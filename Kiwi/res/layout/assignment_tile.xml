@@ -101,7 +101,7 @@
 			    	android:layout_centerVertical="true"
 			    	android:text=". . ."
 			    	android:textSize="20sp"
-			    	android:textStyle="bold"/>
+			    	android:textStyle="bold" />
            		
        </RelativeLayout>
         
@@ -136,7 +136,7 @@
     </LinearLayout>
 -->
 
-    <include layout="@layout/overview_item_expand_layout"/>
+    <include layout="@layout/assignment_tile_expanded"/>
 
     <ImageView
         android:id="@+id/expandContractIcon"

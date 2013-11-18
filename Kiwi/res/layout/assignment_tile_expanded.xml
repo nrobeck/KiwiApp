@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:text="Notes:"
+        android:text="@string/notes_heading"
         android:textSize="16sp"/>
     
     <TextView
@@ -26,7 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/assignment_notes"
-    	android:text="Textbooks:"
+    	android:text="@string/textbooks_heading"
     	android:textSize="16sp"/>
     
     <TextView 
@@ -45,6 +45,33 @@
         android:text="Completed" />
     -->
     
+    <ImageButton
+	    android:id="@+id/deleteButton"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentRight="true"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:layout_centerVertical="true"
+        android:layout_below="@id/assignment_textbooks"
+	    android:src="@drawable/ic_5_content_discard"
+	    android:background="@null"
+	    android:contentDescription="@string/delete" />
+    
+    <ImageButton
+	    android:id="@+id/editButton"
+	    android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/deleteButton"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:layout_centerVertical="true"
+        android:layout_below="@id/assignment_textbooks"
+	    android:src="@drawable/ic_5_content_edit"
+	    android:background="@null"
+	    android:contentDescription="@string/edit" />
+    
+<!--  
     <Button
         android:id="@+id/deleteButton"
         android:layout_width="wrap_content"
@@ -54,8 +81,8 @@
         android:focusableInTouchMode="false"
         android:layout_centerVertical="true"
         android:layout_below="@id/assignment_textbooks"
-        android:text="Delete"/>
-    
+        android:text="@string/delete" />
+      
     <Button
         android:id="@+id/editButton"
         android:layout_width="wrap_content"
@@ -65,5 +92,6 @@
         android:focusableInTouchMode="false"
         android:layout_centerVertical="true"
         android:layout_below="@id/assignment_textbooks"
-        android:text="Edit"/>
+        android:text="@string/edit"/>
+-->
 </com.example.android.expandingcells.ExpandingLayout>
