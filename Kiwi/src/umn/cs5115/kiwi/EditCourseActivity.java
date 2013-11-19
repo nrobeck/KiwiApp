@@ -4,7 +4,7 @@ import umn.cs5115.kiwi.activity.KiwiDoneCancelActivity;
 import android.util.Log;
 import android.widget.Toast;
 
-public class AddCourseActivity extends KiwiDoneCancelActivity {
+public class EditCourseActivity extends KiwiDoneCancelActivity {
     @Override
     public void onCancel() {
         Log.d("AddCourseActivity", "Cancelling adding a course.");
@@ -13,7 +13,7 @@ public class AddCourseActivity extends KiwiDoneCancelActivity {
     
     @Override
     public void onDone() {
-        Toast.makeText(AddCourseActivity.this, "New course added.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(EditCourseActivity.this, "New course added.", Toast.LENGTH_SHORT).show();
         finish();
     }
 

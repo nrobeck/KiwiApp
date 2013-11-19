@@ -32,8 +32,11 @@ public class EditCourseFragment extends Fragment {
                 @Override
                 public boolean onDone() {
                     Log.i("EditCourseFragment", "DoneBarListener.onDone()");
-                    // Validate input...
+                    //TODO: Validate input...
                     Toast.makeText(getActivity(), "Invalid input!", Toast.LENGTH_SHORT).show();
+                    
+                    
+                    
                     return false;
                 }
                 

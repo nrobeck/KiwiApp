@@ -35,13 +35,13 @@
         </activity>
         
        	<activity
-       	    android:name="AddCourseActivity"
+       	    android:name="EditCourseActivity"
        	    android:label="@string/import_courses_activity_label">
        	    
        	</activity>
        	
        	<activity
-       	    android:name="AddAssignmentActivity"
+       	    android:name="EditAssignmentActivity"
        	    android:label="@string/import_courses_activity_label">
        	    
        	</activity>

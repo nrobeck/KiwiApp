@@ -16,11 +16,11 @@ public class Assignment {
 	private int done = 0;
 
 	// empty constructor
-	Assignment() {
+	public Assignment() {
 	}
 
 	// constructor
-	Assignment(int id, String name, String course, String type,
+	public Assignment(int id, String name, String course, String type,
 			String due_date, int h, int m, int reminder, String reminder_time,
 			String n, String tb) {
 		this.id = id;

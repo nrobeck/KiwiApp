@@ -17,14 +17,15 @@
 	        android:text="Assignment Info"
 	        android:textAppearance="?android:attr/textAppearanceSmall" />
 	
-	    <Button
+	    <Spinner
 	        android:id="@+id/spinner1"
 	        style="@style/KiwiSpinnerButton"
 	        android:layout_width="match_parent"
 	        android:layout_height="@dimen/form_spinner_button_height"
-	        android:text="(Course selector)" />
+	        android:text="(Course selector)"
+	        android:entries="@array/assignment_types" />
 	
-	    <Button
+	    <Spinner
 	        android:id="@+id/spinner2"
 	        style="@style/KiwiSpinnerButton"
 	        android:layout_width="match_parent"
@@ -40,6 +41,13 @@
 	        android:maxLength="50"
             android:inputType="textCapSentences|textEmailAddress|textAutoCorrect"
 	        android:hint="Assignment/Exam name" />
+	    
+	    <Spinner
+	        android:id="@+id/textbook_spinner"
+	        style="@style/KiwiSpinnerButton"
+	        android:layout_width="match_parent"
+	        android:layout_height="@dimen/form_spinner_button_height"
+	        android:text="(Textbook selector)" />
 	
 	    <!-- Due date/time -->
 	

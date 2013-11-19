@@ -19,7 +19,8 @@
         android:id="@+id/assignment_notes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/assignment_notes_heading" />
+        android:layout_below="@id/assignment_notes_heading"
+        android:autoLink="web" />
 
     <TextView 
         android:id="@+id/assignment_textbooks_heading"

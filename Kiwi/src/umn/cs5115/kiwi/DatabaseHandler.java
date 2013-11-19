@@ -104,7 +104,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();//create new CV object to populate with assignment
 
         //store assignment values from Assignment object a in the ContentValues object cv
-        cv.put(KEY_ID, a.getId());//assignment id
+      //  cv.put(KEY_ID, a.getId());//assignment id
         cv.put(NAME, a.getName());//assignment name
         cv.put(COURSE, a.getCourse());//assignment course
         cv.put(TYPE, a.getType());//assignment type
@@ -137,7 +137,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();//create new CV object to populate with assignment database
 
         //store assignment values from Assignment object a in the ContentValues object cv
-        cv.put(KEY_ID, a.getId());//assignment id
+      //  cv.put(KEY_ID, a.getId());//assignment id
         cv.put(NAME, a.getName());//assignment name
         cv.put(COURSE, a.getCourse());//assignment course
         cv.put(TYPE, a.getType());//assignment type

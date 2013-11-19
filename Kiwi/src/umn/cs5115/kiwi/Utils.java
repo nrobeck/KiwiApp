@@ -97,18 +97,18 @@ public class Utils {
     // Exist to make getting around the app simpler, for us.
     
     public static Intent goToAddCourse(Context context) {
-    	return new Intent(context, AddCourseActivity.class);
+    	return new Intent(context, EditCourseActivity.class);
     }
     
     public static void goToAddCourse(Activity activity) {
-    	activity.startActivity(new Intent(activity, AddCourseActivity.class));
+    	activity.startActivity(new Intent(activity, EditCourseActivity.class));
     }
     
     public static Intent goToAddAssignment(Context context) {
-    	return new Intent(context, AddAssignmentActivity.class);
+    	return new Intent(context, EditAssignmentActivity.class);
     }
     
     public static void goToAddAssignment(Activity activity) {
-    	activity.startActivity(new Intent(activity, AddAssignmentActivity.class));
+    	activity.startActivity(new Intent(activity, EditAssignmentActivity.class));
     }
 }

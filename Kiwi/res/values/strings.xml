@@ -18,4 +18,14 @@
     <string name="textbooks_heading">Textbooks:</string>
     <string name="delete">Delete</string>
     <string name="edit">Edit</string>
+    <string-array name="assignment_types">
+        <item >(Assignment Type)</item>
+        <item >Assignment</item>
+        <item >Reading</item>
+        <item >Exam</item>
+        <item >Lab</item>
+        <item >Paper</item>
+        <item >Presentation</item>
+        <item >Project</item>
+    </string-array>
 </resources>
