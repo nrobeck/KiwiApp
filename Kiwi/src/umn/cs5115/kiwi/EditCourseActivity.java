@@ -1,11 +1,44 @@
 package umn.cs5115.kiwi;
 
 import umn.cs5115.kiwi.activity.KiwiDoneCancelActivity;
+import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
 public class EditCourseActivity extends KiwiDoneCancelActivity {
+	public static final String EXTRA_IS_EDIT = "i_am_edit";
+	public static final String EXTRA_COURSE = "course";
+
+	private boolean isEdit;
+	private int courseId;
+	
     @Override
+	protected void onCreated(Bundle savedInstanceState) {
+		super.onCreated(savedInstanceState);
+		
+		Intent incomingIntent = getIntent();
+		if (incomingIntent != null) {
+			if (incomingIntent.getBooleanExtra(EXTRA_IS_EDIT, false)) {
+				Toast.makeText(this, "Editing the course", Toast.LENGTH_SHORT).show();
+				isEdit = true;
+			} else {
+				isEdit = false;
+			}
+			
+			courseId = incomingIntent.getIntExtra(EXTRA_COURSE, -1);
+		}
+	}
+
+    public boolean isEdit() {
+    	return isEdit;
+    }
+    
+    public int getCourseId() {
+    	return courseId;
+    }
+    
+	@Override
     public void onCancel() {
         Log.d("AddCourseActivity", "Cancelling adding a course.");
         finish();

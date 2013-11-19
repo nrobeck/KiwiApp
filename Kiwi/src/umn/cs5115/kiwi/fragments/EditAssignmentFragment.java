@@ -110,12 +110,11 @@ public class EditAssignmentFragment extends Fragment {
                     String assignmentName = "";
                     String textbook = "";
                     String notes = "";
+                    
                     //Store the assignment
                     DatabaseHandler dbHandler = new DatabaseHandler(activity);
-//                  The different ways to access the DatabaseHandler  
-//   			    new DatabaseHandler(this).addAssignment(a)
-//                  new DatabaseHandler(this).addAssignment(a)
                     
+                    //Pulling the information out of the activity's fields
                     Spinner courseNameSpinner = (Spinner) activity.findViewById(R.id.spinner1); //Course Name
                     if(courseNameSpinner.getSelectedItemPosition() > 0) {
                     	courseName = courseNameSpinner.getSelectedItem().toString();
@@ -151,6 +150,7 @@ public class EditAssignmentFragment extends Fragment {
                     	
                     //TODO: Due Date
                     //TODO: Reminder and number picker for this field
+                    //TODO: Field to specify how many times to repeat, etc.
                     
                     EditText notesEditText = (EditText) activity.findViewById(R.id.editText2);
                     notes = notesEditText.getText().toString();

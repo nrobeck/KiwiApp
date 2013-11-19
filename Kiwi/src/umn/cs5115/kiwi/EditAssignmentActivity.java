@@ -29,7 +29,7 @@ public class EditAssignmentActivity extends KiwiDoneCancelActivity {
 		Intent incomingIntent = getIntent();
 		if (incomingIntent != null) {
 			if (incomingIntent.getBooleanExtra(EXTRA_IS_EDIT, false)) {
-				Toast.makeText(this, "Editing the assignment woohoo", Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, "Editing the assignment", Toast.LENGTH_SHORT).show();
 				isEdit = true;
 			} else {
 				isEdit = false;
