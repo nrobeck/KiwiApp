@@ -162,7 +162,7 @@ public class EditAssignmentFragment extends Fragment {
              //       }
                     
                     int assignmentId = eActivity.getAssignmentId();
-                    Assignment assignment = new Assignment(0, assignmentName, courseName, assignmentType, "", 0, 0, 0, "", notes, textbook); //TODO: the information into the assignment object 
+                    Assignment assignment = new Assignment(0, assignmentName, 0, assignmentType, "", 0, 0, 0, "", notes, textbook); //TODO: the information into the assignment object 
                     assignment.setId(assignmentId);
                     // fill in assignment
                     

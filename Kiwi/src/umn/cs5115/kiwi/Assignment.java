@@ -4,7 +4,7 @@ public class Assignment {
 	// private variables
 	private int id;
 	private String name;
-	private String course;
+	private int course;
 	private String type;
 	private String due_date;
 	private int hours;
@@ -20,7 +20,7 @@ public class Assignment {
 	}
 
 	// constructor
-	public Assignment(int id, String name, String course, String type,
+	public Assignment(int id, String name, int course, String type,
 			String due_date, int h, int m, int reminder, String reminder_time,
 			String n, String tb) {
 		this.id = id;
@@ -46,7 +46,7 @@ public class Assignment {
 		return this.done;
 	}
 
-	public String getCourse() {
+	public int getCourse() {
 		return this.course;
 	}
 
@@ -109,7 +109,7 @@ public class Assignment {
 		this.name = n;
 	}
 
-	public void setCourse(String c) {
+	public void setCourse(int c) {
 		this.course = c;
 	}
 

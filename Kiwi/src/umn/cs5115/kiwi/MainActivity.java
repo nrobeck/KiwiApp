@@ -23,6 +23,8 @@ public class MainActivity extends KiwiActivity implements ShowcaseView.OnShowcas
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        new DatabaseHandler(this).addAssignment(new Assignment(0, "Hello world!", 0, null, null, 0, 0, 0, null, null, null));
     }
 
     @Override
@@ -39,8 +41,7 @@ public class MainActivity extends KiwiActivity implements ShowcaseView.OnShowcas
     	if (prev != null) ft.remove(prev);
     	ft.addToBackStack(null);
     	
-    	FilterDefinition defn = new FilterDefinition();
-    	defn.i = 10;
+    	FilterDefinition defn = new FilterDefinition(null);
     	FilterDialogFragment.newInstance(defn).show(ft, "dialog_about");
     }
 

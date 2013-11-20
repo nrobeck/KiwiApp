@@ -20,9 +20,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     // Assignments table name
     private static final String TABLE_ASSIGNMENTS = "assignments";
     private static final String TABLE_COURSES = "courses";
+    
+    // ID fields in both assignments and courses
+    private static final String KEY_ID = "_id";
 
     // Assignments table column names
-    private static final String KEY_ID = "id";
     private static final String NAME = "name";
     private static final String COURSE = "course";
     private static final String TYPE = "type";
@@ -35,6 +37,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String DONE = "done";
 
     // Course table column names
+    private static final String DESIGNATION = "designation";
     private static final String START_TIME = "start_time";
     private static final String END_TIME = "end_time";
     private static final String LOCATION = "location";
@@ -50,16 +53,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     // Create Assignments Table
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_ASSIGNMENTS_TABLE = "CREATE TABLE " + TABLE_ASSIGNMENTS 
+        String CREATE_ASSIGNMENTS_TABLE = "CREATE TABLE " + TABLE_ASSIGNMENTS
                 + "("
-                + KEY_ID + " INTEGER PRIMARY KEY," 
+                + KEY_ID + " INTEGER PRIMARY KEY,"
                 + NAME + " TEXT,"
-                + COURSE + " TEXT," 
-                + TYPE + " TEXT," 
-                + DUE_DATE + " TEXT," 
+                + COURSE + " INTEGER,"
+                + TYPE + " TEXT,"
+                + DUE_DATE + " TEXT,"
                 + DUE_HOURS + " TEXT,"
                 + DUE_MINUTES + " TEXT,"
-                + REMINDER + " INTEGER," 
+                + REMINDER + " INTEGER,"
                 + REMINDER_TIME + " TEXT,"
                 + NOTES + " TEXT,"
                 + TEXTBOOKS + " TEXT,"
@@ -67,15 +70,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + ")";
         db.execSQL(CREATE_ASSIGNMENTS_TABLE);
 
-        String CREATE_COURSES_TABLE = "CREATE TABLE " + TABLE_COURSES 
-                + "(" 
-                + NAME + " TEXT," 
-                + KEY_ID + " TEXT," 
-                + START_TIME + " TEXT," 
-                + END_TIME + " TEXT," 
-                + LOCATION + " TEXT," 
-                + START_DATE + " TEXT," 
-                + END_DATE + " TEXT," 
+        String CREATE_COURSES_TABLE = "CREATE TABLE " + TABLE_COURSES
+                + "("
+                + KEY_ID + " INTEGER PRIMARY KEY,"
+                + NAME + " TEXT,"
+                + DESIGNATION + " TEXT,"
+                + START_TIME + " TEXT,"
+                + END_TIME + " TEXT,"
+                + LOCATION + " TEXT,"
+                + START_DATE + " TEXT,"
+                + END_DATE + " TEXT,"
                 + RRULE + " TEXT,"
                 + NOTES + " TEXT,"
                 + TEXTBOOKS + " TEXT"
@@ -181,14 +185,25 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return a;
     }
 
+    public Cursor getRawAssignmentCursor(String filterBy) {
+        SQLiteDatabase db = this.getReadableDatabase();//get the database
+
+        //set up and run the query in SQLite
+        String select = "SELECT * FROM " + TABLE_ASSIGNMENTS;
+        if (filterBy != null) {
+        	select += " WHERE " + filterBy;
+        }
+        return db.rawQuery(select, null);
+    }
+
     //convert a cursor row into an Assignment object (used in filterAssignments method)
-    private Assignment convertToAssignment(Cursor c){
+    public static Assignment convertToAssignment(Cursor c){
         Assignment a = new Assignment();//assignment object to return
 
         //move fields from the cursor row into the assignment object
         a.setId(c.getInt(0));
         a.setName(c.getString(1));
-        a.setCourse(c.getString(2));
+        a.setCourse(c.getInt(2));
         a.setType(c.getString(3));
         a.setDueDate(c.getString(4));
         a.setHours(c.getInt(5));
@@ -254,12 +269,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();//close the database
     }
 
-    //filter and return courses in an array of course objects, pass null to get all courses
-    public Course[] filterCourses(String filterBy){
+    // return courses in an array of course objects, pass null to get all courses
+    public Course[] getCourses(){
         SQLiteDatabase db = this.getReadableDatabase();//get the database
 
         //set up and run the query in SQLite
-        Cursor cursor = db.query(TABLE_COURSES, null, filterBy, null, null, null, null);//query the database for the filtered values
+        Cursor cursor = db.query(TABLE_COURSES, null, null, null, null, null, null);//query the database for the filtered values
 
         //set up the course data structures
         Course[] courseArray = new Course[cursor.getCount()];//empty array of course objects
@@ -277,7 +292,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();//close the database
         return courseArray;
 
-    }	
+    }
 
     //convert a cursor row into a course object (used in filterCourses method)
     private Course convertToCourse(Cursor c){
@@ -300,7 +315,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     //clear ALL database values
     public void clearDatabase(){
-        SQLiteDatabase db = this.getWritableDatabase();//get the database	
+        SQLiteDatabase db = this.getWritableDatabase();//get the database
         db.close();//close the database
         db.delete(TABLE_ASSIGNMENTS, null, null);//delete all data in the assignments table
         db.delete(TABLE_COURSES, null, null);//delete all data in the courses table

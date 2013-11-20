@@ -54,7 +54,6 @@ public class FilterDialogFragment extends DialogFragment {
 		View rootView = inflater.inflate(R.layout.filter_dialog_layout, null);
 		
 		FilterDefinition defn = (FilterDefinition)getArguments().getParcelable("definition");
-		Toast.makeText(getActivity(), "" + defn.i + defn.b, Toast.LENGTH_SHORT).show();
 		
 //		TextView tv = (TextView)rootView.findViewById(R.id.textView1);
 //		tv.setText(String.format("Hello! %d", getArguments().getInt("whatever")));
@@ -64,7 +63,7 @@ public class FilterDialogFragment extends DialogFragment {
 		String[] courses = new String[] { "Course 1", "Course 2", "Course 3" };
 		String[] types = new String[] { "Reading", "Essay", "Exam", "Something else" };
 		
-		Course[] courses2 = new DatabaseHandler(ctx).filterCourses(null);
+		Course[] courses2 = new DatabaseHandler(ctx).getCourses();
 		
 		LinearLayout coursesLayout = (LinearLayout) rootView.findViewById(R.id.courses_linearlayout);
 		LinearLayout typesLayout = (LinearLayout) rootView.findViewById(R.id.assignment_types_linearlayout);

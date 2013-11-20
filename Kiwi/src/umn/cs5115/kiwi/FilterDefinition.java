@@ -10,17 +10,31 @@ import android.os.Parcelable;
  *
  */
 public class FilterDefinition implements Parcelable {
-    // TODO: Look up how to do Parcelable
-    public int i;
-    public boolean b;
+    public static enum SortBy {
+    	DUE_DATE(0), COURSE(1), TYPE(2);
+    	
+    	private final int value;
+    	private SortBy(int value) {
+    		this.value = value;
+    	}
+    	public final int toInt() {
+    		return value;
+    	}
+    	public static final SortBy fromInt(int v) {
+    		switch (v) {
+    		case 0:
+    			return DUE_DATE;
+    		case 1:
+    			return COURSE;
+    		default:
+    			return TYPE;
+    		}
+    	}
+    }
     
     public FilterDefinition(Parcel in) {
-        i = in.readInt();
-        b = (in.readByte() != 0);
-    }
-
-    public FilterDefinition() {
-        // TODO Auto-generated constructor stub
+//        i = in.readInt();
+//        b = (in.readByte() != 0);
     }
 
     @Override
@@ -31,8 +45,8 @@ public class FilterDefinition implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(i);
-        dest.writeByte((byte) (b ? 1 : 0));
+//        dest.writeInt(i);
+//        dest.writeByte((byte) (b ? 1 : 0));
     }
     // set of courses to display, etc etc
 

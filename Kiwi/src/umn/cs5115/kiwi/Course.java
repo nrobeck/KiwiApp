@@ -3,6 +3,7 @@ package umn.cs5115.kiwi;
 public class Course {
 
 	// private variables
+	private int id;
 	private String courseTitle;
 	private String courseDesignation;
 	private String startTime;
@@ -20,9 +21,10 @@ public class Course {
 	}
 
 	// constructor
-	public Course(String title, String courseDesignation, String startTime, String endTime,
+	public Course(int id, String title, String courseDesignation, String startTime, String endTime,
 			String cLocation, String sDate, String eDate, String cRRule,
 			String n, String tb) {
+		this.id = id;
 		this.courseTitle = title;
 		this.courseDesignation = courseDesignation;
 		this.startTime = startTime;
@@ -36,6 +38,10 @@ public class Course {
 	}
 
 	// getters for each of the Course elements
+	public int getId() {
+		return this.id;
+	}
+	
 	public String getCourseTitle() {
 		return this.courseTitle;
 	}
@@ -85,6 +91,10 @@ public class Course {
 	}
 	
 	// setters for each of the Course elements	
+	public void setId(int id) {
+		this.id = id;
+	}
+	
 	public void setCourseTitle(String t) {
 		this.courseTitle = t;
 	}
