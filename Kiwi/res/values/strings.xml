@@ -29,4 +29,6 @@
         <item >Project</item>
     </string-array>
     <string name="default_assignment_type">(Assignment Type)</string>
+    <string name="assignment_tile_popup_button_title">Options</string>
+    <string name="textbook">Textbook</string>
 </resources>

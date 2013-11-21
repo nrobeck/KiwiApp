@@ -94,14 +94,10 @@
        		android:layout_width="match_parent"
        		android:layout_weight="1">
 	        
-           		<TextView 
-             		android:layout_width="wrap_content"
-			    	android:layout_height="wrap_content"
-			    	android:layout_centerHorizontal="true"
-			    	android:layout_centerVertical="true"
-			    	android:text=". . ."
-			    	android:textSize="20sp"
-			    	android:textStyle="bold" />
+           		<Button android:id="@+id/assignment_tile_popup_button"
+          				android:layout_height="wrap_content"
+          				android:layout_width="wrap_content"
+         				android:text="@string/assignment_tile_popup_button_title" />
            		
        </RelativeLayout>
         
