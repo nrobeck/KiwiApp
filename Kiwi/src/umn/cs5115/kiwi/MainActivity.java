@@ -56,6 +56,31 @@ public class MainActivity extends KiwiActivity implements ShowcaseView.OnShowcas
         } else {
         	// pass.
         }
+        //DEBUGGING CODE
+        DatabaseHandler dbHandler = new DatabaseHandler(this);
+        dbHandler.addAssignment(new Assignment(0, "Hello world!", 0, null, null, 0, 0, 0, null, null, null));
+        dbHandler.addCourse(new Course(0, 
+        							   "User Interface Design", 
+        							   "CSCI 5115", 
+        							   "9:45", 
+        							   "11:00", 
+        							   "212 MechE", 
+        							   "September 1, 2013", 
+        							   "December 9, 2013", 
+        							   "", 
+        							   "LOTS OF NOTES", 
+        							   "Design of Everyday Things\nDesign for Use"));
+        dbHandler.addCourse(new Course(0, 
+									   "Data Mining", 
+									   "CSCI 5523", 
+									   "16:00", 
+									   "17:15", 
+									   "3-230 Keller", 
+									   "September 1, 2013", 
+									   "December 9, 2013", 
+									   "", 
+									   "LOTS OF NOTES", 
+									   "Introduction to Data Mining"));
     }
 
     @Override
