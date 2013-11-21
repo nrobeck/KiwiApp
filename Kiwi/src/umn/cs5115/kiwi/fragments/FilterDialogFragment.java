@@ -1,6 +1,8 @@
 package umn.cs5115.kiwi.fragments;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import umn.cs5115.kiwi.Course;
 import umn.cs5115.kiwi.DatabaseHandler;
@@ -41,22 +43,31 @@ public class FilterDialogFragment extends DialogFragment {
         return f;
 	}
 	
-	private int getSortNumber(RadioGroup radios) {
-		return (Integer) ((RadioButton)getView().findViewById(radios.getCheckedRadioButtonId())).getTag();
+	private int getSortNumber(View rootView, RadioGroup radios) {
+		return Integer.parseInt((String) ((RadioButton)rootView.findViewById(radios.getCheckedRadioButtonId())).getTag());
 	}
 	
-	private boolean getShowCompleted() {
-		return ((CheckBox)getView().findViewById(R.id.show_completed)).isChecked();
+	private boolean getShowCompleted(View rootView) {
+		return ((CheckBox)rootView.findViewById(R.id.show_completed)).isChecked();
 	}
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
-		
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		
-		View rootView = inflater.inflate(R.layout.filter_dialog_layout, null);
+		final View rootView = inflater.inflate(R.layout.filter_dialog_layout, null);
 		
 		FilterDefinition defn = (FilterDefinition)getArguments().getParcelable("definition");
+		if (defn == null) {
+			defn = new FilterDefinition(SortBy.DUE_DATE, true, null, null);
+		}
+		// Make sure these arrays are things we can iterate over.
+		if (defn.courses == null) {
+			defn.courses = new int[0];
+		}
+		if (defn.types == null) {
+			defn.types = new String[0];
+		}
 		
 //		TextView tv = (TextView)rootView.findViewById(R.id.textView1);
 //		tv.setText(String.format("Hello! %d", getArguments().getInt("whatever")));
@@ -71,38 +82,69 @@ public class FilterDialogFragment extends DialogFragment {
 		
 		final RadioGroup sortRadios = (RadioGroup)rootView.findViewById(R.id.radioGroup1);
 		
+		// Select the correct radio button.
+		RadioButton initialSortRadio;
+		initialSortRadio = (RadioButton)sortRadios.findViewWithTag(defn.sorter.toInt());
+		if (initialSortRadio == null) {
+			initialSortRadio = (RadioButton)sortRadios.findViewById(R.id.sort_by_due);
+		}
+		initialSortRadio.setChecked(true);
+		
+		// Check off the 'show completed' box if needed
+		((CheckBox)rootView.findViewById(R.id.show_completed)).setChecked(defn.showCompleted);
 		
 		final CheckBox[] courseCheckboxes = new CheckBox[courses.length];
-		final CheckBox[] typeCheckboxes = new CheckBox[types.length];
+		final CheckBox[] typeCheckboxes = new CheckBox[types.length - 1];
 		
 		if (courses.length == 0) {
 		    ((TextView)rootView.findViewById(R.id.no_courses_textview)).setVisibility(View.VISIBLE);
 		    ((TextView)rootView.findViewById(R.id.no_courses_textview)).setText("Hi Dom!");
 		} else {
 			for (int i = 0; i < courses.length; i++) {
-				Course c = courses[i];
+				Course course = courses[i];
 	            CheckBox cb = new CheckBox(ctx);
-	            cb.setText(c.getCourseDesignation());
-	            cb.setChecked(true);
+	            cb.setText(course.getCourseDesignation());
 	            // Keep track of the course id
-	            cb.setTag(c.getId());
+	            cb.setTag(course.getId());
 	            coursesLayout.addView(cb);
 	            
 	            courseCheckboxes[i] = cb;
+	            
+	            for (int id : defn.courses) {
+	            	if (id == course.getId()) {
+	            		cb.setChecked(true);
+	            		break;
+	            	}
+	            }
 			}
 		}
 		
-		for (int i = 0; i < types.length; i++) {
-			String typeName = types[i];
+		for (int i = 0, nameindex = 0; i < typeCheckboxes.length; i++, nameindex++) {
+			String typeName = types[nameindex];
+			// We need to skip the item that reads
+			// "(Assignment Type)" or something like that
+			if (typeName.equals(
+					getResources()
+					.getString(R.string.default_assignment_type))) {
+				// Keep indexing correctly.
+				i--;
+				continue;
+			}
 		    CheckBox cb = new CheckBox(ctx);
 		    cb.setText(typeName);
-	        cb.setChecked(true);
 	        // Keep track of the type name
 	        cb.setTag(typeName);
 	        
 		    typesLayout.addView(cb);
 		    
 		    typeCheckboxes[i] = cb;
+		    
+		    for (String type : defn.types) {
+		    	if (typeName.equals(type)) {
+		    		cb.setChecked(true);
+		    		break;
+		    	}
+		    }
 		}
 		
 		final FilterListener listener = (FilterListener)getActivity();
@@ -118,7 +160,7 @@ public class FilterDialogFragment extends DialogFragment {
 					
 					int courseCount = 0;
 					for (CheckBox cb : courseCheckboxes) {
-						if (cb.isChecked()) {
+						if (cb != null && cb.isChecked()) {
 							courseCount++;
 						}
 					}
@@ -131,7 +173,7 @@ public class FilterDialogFragment extends DialogFragment {
 							// But if this does happen, then break out of the loop.
 							break;
 						}
-						if (cb.isChecked()) {
+						if (cb != null && cb.isChecked()) {
 							courseIds[index] = (Integer)cb.getTag();
 							index++;
 						}
@@ -143,11 +185,14 @@ public class FilterDialogFragment extends DialogFragment {
 							selectedTypes.add((String) cb.getTag());
 						}
 					}
-					final String[] types = (String[]) selectedTypes.toArray();
+					final String[] types = new String[selectedTypes.size()];
+					for (int i = 0; i < types.length; i++) {
+						types[i] = selectedTypes.get(i);
+					}
 					
-					SortBy sorter = SortBy.fromInt(getSortNumber(sortRadios));
+					SortBy sorter = SortBy.fromInt(getSortNumber(rootView, sortRadios));
 					
-					boolean showCompleted = getShowCompleted();
+					boolean showCompleted = getShowCompleted(rootView);
 					
 					FilterDefinition defn = new FilterDefinition(sorter, showCompleted, courseIds, types);
 					

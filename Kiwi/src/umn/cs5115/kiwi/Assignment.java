@@ -14,6 +14,8 @@ public class Assignment {
 	private String notes;
 	private String textbook;
 	private boolean completed;
+	
+	private String coursename;
 
 	// empty constructor
 	public Assignment() {
@@ -86,6 +88,10 @@ public class Assignment {
 		return this.textbook;
 	}
 	
+	public String getCourseName() {
+		return this.coursename;
+	}
+	
 
 	// setters for each of the Assignment elements
 	public void setTextbook(String tb) {
@@ -134,6 +140,10 @@ public class Assignment {
 
 	public void setNotes(String n) {
 		this.notes = n;
+	}
+	
+	public void setCourseName(String cn) {
+		this.coursename = cn;
 	}
 
 }

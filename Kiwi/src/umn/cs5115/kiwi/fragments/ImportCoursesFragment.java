@@ -28,12 +28,12 @@ public class ImportCoursesFragment extends ListFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         
-//        setListShown(true);
+        setListShown(true);
 //        setEmptyText(getResources().getString(R.string.import_courses_nothing_to_import));
         
         final ListView lv = getListView();
         
-        setListShownNoAnimation(true);
+//        setListShownNoAnimation(true);
         
         // Set up the calendar cursor
         Cursor mCursor = CalendarUtils.getCourseEventCursor(getActivity());
@@ -54,7 +54,7 @@ public class ImportCoursesFragment extends ListFragment {
                     return;
                 }
                 child.toggle();
-                view.setActivated(!child.isChecked());
+//                view.setActivated(!child.isChecked());
                 
                 adapter.notifyDataSetChanged();
             }

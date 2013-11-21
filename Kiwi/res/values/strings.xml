@@ -19,7 +19,7 @@
     <string name="delete">Delete</string>
     <string name="edit">Edit</string>
     <string-array name="assignment_types">
-        <item >(Assignment Type)</item>
+        <item >@string/default_assignment_type</item>
         <item >Assignment</item>
         <item >Reading</item>
         <item >Exam</item>
@@ -28,4 +28,5 @@
         <item >Presentation</item>
         <item >Project</item>
     </string-array>
+    <string name="default_assignment_type">(Assignment Type)</string>
 </resources>

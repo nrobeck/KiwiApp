@@ -1,13 +1,12 @@
 package umn.cs5115.kiwi.fragments;
 
 import umn.cs5115.kiwi.DatabaseHandler;
-import umn.cs5115.kiwi.R;
+import umn.cs5115.kiwi.FilterDefinition;
+import umn.cs5115.kiwi.MainActivity;
 import umn.cs5115.kiwi.adapter.OverviewListCursorAdapter;
 import android.app.ListFragment;
+import android.database.Cursor;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 public class OverviewFragment extends ListFragment {
 	@Override
@@ -16,6 +15,19 @@ public class OverviewFragment extends ListFragment {
 		
 		// Don't kill this fragment when screen is rotated, etc.
 		setRetainInstance(true);
+	}
+	
+	private FilterDefinition getFilter() {
+		MainActivity activity = (MainActivity)getActivity();
+		return activity.getFilter();
+	}
+	
+	public void refreshFilter() {
+		OverviewListCursorAdapter adapter = (OverviewListCursorAdapter) getListView().getAdapter();
+		Cursor newCursor = new DatabaseHandler(getActivity()).getRawAssignmentCursor(getFilter().toQueryString());
+		adapter.changeCursor(newCursor);
+		// need this?
+		//adapter.notifyDataSetChanged();
 	}
 
 	@Override
@@ -26,6 +38,8 @@ public class OverviewFragment extends ListFragment {
 		setEmptyText("No assignments!");
 		getListView().setDivider(null);
 		
-		getListView().setAdapter(new OverviewListCursorAdapter(getActivity(), new DatabaseHandler(getActivity()).getRawAssignmentCursor(null), 0));
+		String filter = getFilter().toQueryString();
+		
+		getListView().setAdapter(new OverviewListCursorAdapter(getActivity(), new DatabaseHandler(getActivity()).getRawAssignmentCursor(filter), 0));
 	}
 }

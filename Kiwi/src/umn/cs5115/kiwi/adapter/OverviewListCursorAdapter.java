@@ -1,10 +1,5 @@
 package umn.cs5115.kiwi.adapter;
 
-import java.text.DateFormat;
-
-import com.example.android.expandingcells.ExpandableListItem;
-import com.example.android.expandingcells.ExpandingLayout;
-
 import umn.cs5115.kiwi.Assignment;
 import umn.cs5115.kiwi.DatabaseHandler;
 import umn.cs5115.kiwi.R;
@@ -13,11 +8,8 @@ import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.View.OnClickListener;
-import android.widget.AbsListView;
+import android.widget.CheckBox;
 import android.widget.CursorAdapter;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 public class OverviewListCursorAdapter extends CursorAdapter {
@@ -25,10 +17,20 @@ public class OverviewListCursorAdapter extends CursorAdapter {
 	public OverviewListCursorAdapter(Context context, Cursor c, int flags) {
 		super(context, c, flags);
 	}
-@Override
+	
+	@Override
 	public void bindView(View view, Context context, Cursor cursor) {
-		((TextView)view.findViewById(R.id.assignment_name)).setText(DatabaseHandler.convertToAssignment(cursor).getName());
+		Assignment assignment = DatabaseHandler.convertToAssignment(cursor);
+		
+		((TextView)view.findViewById(R.id.assignment_name)).setText(assignment.getName() + "--" + assignment.getCourseName());
+		
+		CheckBox completedCheckbox = (CheckBox)view.findViewById(R.id.completed_check_box);
+		completedCheckbox.setChecked(assignment.isCompleted());
+		
+		// Fade out completed assignments
+		view.setAlpha(assignment.isCompleted() ? 0.5f : 1);
 	}
+
 	/*
 	@Override
 	public void bindView(View view, Context context, Cursor cursor) {

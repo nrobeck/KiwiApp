@@ -25,26 +25,26 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_ID = "_id";
 
     // Assignments table column names
-    private static final String NAME = "name";
-    private static final String COURSE = "course";
-    private static final String TYPE = "type";
-    private static final String DUE_DATE = "due_date";
-    private static final String DUE_HOURS = "due_hours";
-    private static final String DUE_MINUTES = "due_minutes";
-    private static final String REMINDER = "reminder";
-    private static final String REMINDER_TIME = "reminder_time";
-    private static final String NOTES = "notes";
-    private static final String DONE = "done";
+    public static final String NAME = "name";
+    public static final String COURSE = "course";
+    public static final String TYPE = "type";
+    public static final String DUE_DATE = "due_date";
+    public static final String DUE_HOURS = "due_hours";
+    public static final String DUE_MINUTES = "due_minutes";
+    public static final String REMINDER = "reminder";
+    public static final String REMINDER_TIME = "reminder_time";
+    public static final String NOTES = "notes";
+    public static final String COMPLETED = "completed";
 
     // Course table column names
-    private static final String DESIGNATION = "designation";
-    private static final String START_TIME = "start_time";
-    private static final String END_TIME = "end_time";
-    private static final String LOCATION = "location";
-    private static final String START_DATE = "start_date";
-    private static final String END_DATE = "end_date";
-    private static final String RRULE = "recurrence_rule";
-    private static final String TEXTBOOKS = "textbooks";
+    public static final String DESIGNATION = "designation";
+    public static final String START_TIME = "start_time";
+    public static final String END_TIME = "end_time";
+    public static final String LOCATION = "location";
+    public static final String START_DATE = "start_date";
+    public static final String END_DATE = "end_date";
+    public static final String RRULE = "recurrence_rule";
+    public static final String TEXTBOOKS = "textbooks";
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -66,7 +66,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + REMINDER_TIME + " TEXT,"
                 + NOTES + " TEXT,"
                 + TEXTBOOKS + " TEXT,"
-                + DONE + " INTEGER"
+                + COMPLETED + " INTEGER"
                 + ")";
         db.execSQL(CREATE_ASSIGNMENTS_TABLE);
 
@@ -119,7 +119,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         cv.put(REMINDER_TIME, a.getReminderTime());//assignment reminder time
         cv.put(NOTES, a.getNotes());//assignment notes
         cv.put(TEXTBOOKS, a.getTextbook());//assignment textbook
-        cv.put(DONE, a.isCompleted());//assignment done
+        cv.put(COMPLETED, a.isCompleted());//assignment done
 
         //insert the assignment into the assignment table
         db.insert(TABLE_ASSIGNMENTS, null, cv);//insert the assignment
@@ -152,7 +152,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         cv.put(REMINDER_TIME, a.getReminderTime());//assignment reminder time
         cv.put(NOTES, a.getNotes());//assignment notes
         cv.put(TEXTBOOKS, a.getTextbook());//assignment textbooks
-        cv.put(DONE, a.isCompleted());//assignment done
+        cv.put(COMPLETED, a.isCompleted());//assignment done
 
         //modify the assignment in the assignment table
         db.update(TABLE_ASSIGNMENTS, cv,KEY_ID + " = ?", new String[] {String.valueOf(a.getId())} );//overwrite the assignment from the table with the same id as Assignment a
@@ -164,7 +164,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();//get the database
 
         //set up and run the query in SQLite
-        Cursor c = db.query(TABLE_ASSIGNMENTS, null, filterBy, null, null, null, null);//query the database for the filtered values
+/*        Cursor c;
+        String query = "SELECT assignments.*, courses.name as cname from assignments LEFT JOIN courses on assignments.course == courses._id";
+        if (filterBy != null) {
+        	query += " WHERE " + filterBy;
+        }
+        c = db.rawQuery(query, null);
+*/        Cursor c = db.query(TABLE_ASSIGNMENTS, null, filterBy, null, null, null, null);//query the database for the filtered values
 
         //set up the assignment data structures
         Assignment[] a = new Assignment[c.getCount()];//empty array of assignment objects
@@ -213,6 +219,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         a.setNotes(c.getString(9));
         a.setTextbook(c.getString(10));
         a.setCompleted(c.getInt(11) != 0);
+//        a.setCourseName(c.getString(12));
 
         return a;
     }
@@ -267,6 +274,20 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         //modify the assignment in the assignment table
         db.update(TABLE_COURSES, cv,KEY_ID + " = ?", new String[] {String.valueOf(c.getCourseDesignation())} );//overwrite the course from the table with the same id as course c
         db.close();//close the database
+    }
+    
+    public int getCourseCount() {
+    	SQLiteDatabase db = this.getReadableDatabase();
+    	
+    	Cursor c = db.rawQuery(String.format("SELECT count(*) from %s", DatabaseHandler.TABLE_COURSES), null);
+    	c.moveToFirst();
+    	
+    	int count = c.getInt(0);
+    	
+    	c.close();
+    	db.close();
+    	
+    	return count;
     }
 
     // return courses in an array of course objects, pass null to get all courses

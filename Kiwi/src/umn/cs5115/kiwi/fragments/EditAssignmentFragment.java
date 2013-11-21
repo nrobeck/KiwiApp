@@ -1,12 +1,15 @@
 package umn.cs5115.kiwi.fragments;
 
-import umn.cs5115.kiwi.EditAssignmentActivity;
+import net.fortuna.ical4j.model.Recur;
 import umn.cs5115.kiwi.Assignment;
 import umn.cs5115.kiwi.DatabaseHandler;
+import umn.cs5115.kiwi.EditAssignmentActivity;
 import umn.cs5115.kiwi.R;
 import umn.cs5115.kiwi.assignment.AssignmentUtils;
+import umn.cs5115.kiwi.ui.DateButton;
 import umn.cs5115.kiwi.ui.DoneBar.DoneBarListenable;
 import umn.cs5115.kiwi.ui.DoneBar.DoneBarListener;
+import umn.cs5115.kiwi.ui.TimeButton;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
@@ -16,8 +19,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -54,6 +55,11 @@ public class EditAssignmentFragment extends Fragment {
 		View layout = inflater.inflate(R.layout.edit_assignment_fragment, container);
 		
 		loadLocals(layout);
+		
+		DateButton db = (DateButton)layout.findViewById(R.id.date_button);
+		db.setDate(2013, 10, 21);
+		TimeButton tb = (TimeButton)layout.findViewById(R.id.time_button);
+		tb.setTime(9, 45);
 		
 		//TODO: Need to put in a textbook spinner in the edit assignment fragment
 		//TODO: Need to change the textbook spinner values to the current selected course's textbooks
@@ -183,7 +189,7 @@ public class EditAssignmentFragment extends Fragment {
             });
         }
         
-        findView(R.id.spinner3).setOnClickListener(new OnClickListener() {
+        findView(R.id.date_button).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 AssignmentUtils.showTimeEditDialog(getFragmentManager(), null, null);

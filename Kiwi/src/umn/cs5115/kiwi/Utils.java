@@ -24,7 +24,7 @@ public class Utils {
                 Log.d("Kiwi Test Utils", "Null custom actionbar view!");
                 return;
             }
-            
+
             customActionBarView.findViewById(R.id.actionbar_done).setClickable(true);
             if (listener != null) {
                 customActionBarView.findViewById(R.id.actionbar_done)
@@ -75,7 +75,7 @@ public class Utils {
                 Log.d("Kiwi Test Utils", "Null custom actionbar view!");
                 return;
             }
-            
+
             customActionBarView.findViewById(R.id.actionbar_done).setClickable(true);
             if (listener != null) {
                 customActionBarView.findViewById(R.id.actionbar_done)
@@ -93,22 +93,22 @@ public class Utils {
             bar.setCustomView(customActionBarView);
         }
     }
-    
+
     // Exist to make getting around the app simpler, for us.
-    
+
     public static Intent goToAddCourse(Context context) {
-    	return new Intent(context, EditCourseActivity.class);
+        return new Intent(context, ImportCoursesActivity.class);
     }
-    
+
     public static void goToAddCourse(Activity activity) {
-    	activity.startActivity(new Intent(activity, EditCourseActivity.class));
+        activity.startActivity(new Intent(activity, ImportCoursesActivity.class));
     }
-    
+
     public static Intent goToAddAssignment(Context context) {
-    	return new Intent(context, EditAssignmentActivity.class);
+        return new Intent(context, EditAssignmentActivity.class);
     }
-    
+
     public static void goToAddAssignment(Activity activity) {
-    	activity.startActivity(new Intent(activity, EditAssignmentActivity.class));
+        activity.startActivity(new Intent(activity, EditAssignmentActivity.class));
     }
 }

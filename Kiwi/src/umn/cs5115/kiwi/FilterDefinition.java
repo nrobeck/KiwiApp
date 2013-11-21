@@ -3,19 +3,21 @@ package umn.cs5115.kiwi;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.graphics.Paint.Join;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 
 /**
  * Represents the state of the filtering/sorting displayed in a fragment.
- * 
+ *
  * @author mike
  *
  */
 public class FilterDefinition implements Parcelable {
     public static enum SortBy {
     	DUE_DATE(0), COURSE(1), TYPE(2);
-    	
+
     	private final int value;
     	private SortBy(int value) {
     		this.value = value;
@@ -34,24 +36,67 @@ public class FilterDefinition implements Parcelable {
     		}
     	}
     }
-    
+
     public int[] courses;
     public String[] types;
     public SortBy sorter;
     public boolean showCompleted;
-    
+
     private FilterDefinition(Parcel in) {
     	courses = in.createIntArray();
     	types = in.createStringArray();
     	sorter = SortBy.fromInt(in.readInt());
     	showCompleted = (in.readByte() != 0);
     }
-    
+
     public FilterDefinition(SortBy sorter, boolean showCompleted, int[] courses, String[] types) {
     	this.sorter = sorter;
     	this.showCompleted = showCompleted;
     	this.courses = courses;
     	this.types = types;
+    }
+    
+    public String toQueryString() {
+    	// Filter on completion status
+    	String completed = String.format("(%s %s 0)", DatabaseHandler.COMPLETED, (showCompleted ? ">=" : "=="));
+    	
+    	// Make a piece of the query string to filter on courses
+    	ArrayList<String> coursechecks = new ArrayList<String>();
+    	if (courses != null) {
+	    	for (int course : courses) {
+	    		coursechecks.add(String.format("%s == %d", DatabaseHandler.COURSE, course));
+	    	}
+    	}
+    	String course = null;
+    	if (!coursechecks.isEmpty()) {
+    		course = "(" + TextUtils.join(" OR ", coursechecks) + ")";
+    	}
+    	
+    	// Make a piece of the query string to filter on types
+    	ArrayList<String> typechecks = new ArrayList<String>();
+    	if (types != null) {
+        	for (String type : types) {
+        		typechecks.add(String.format("%s == ''", DatabaseHandler.TYPE, type));
+        	}
+    	}
+    	String type = null;
+    	if (!typechecks.isEmpty()) {
+    		type = "(" + TextUtils.join(" OR ", typechecks) + ")";
+    	}
+    	
+    	// Construct the query string.
+    	ArrayList<String> pieces = new ArrayList<String>();
+    	pieces.add(completed);
+    	if (type != null) {
+    		pieces.add(type);
+    	}
+    	if (course != null) {
+    		pieces.add(course);
+    	}
+    	
+    	String query = TextUtils.join(" AND ", pieces);
+    	
+    	return query;
     }
 
     @Override
