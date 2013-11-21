@@ -119,7 +119,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         cv.put(REMINDER_TIME, a.getReminderTime());//assignment reminder time
         cv.put(NOTES, a.getNotes());//assignment notes
         cv.put(TEXTBOOKS, a.getTextbook());//assignment textbook
-        cv.put(DONE, a.getDone());//assignment done
+        cv.put(DONE, a.isCompleted());//assignment done
 
         //insert the assignment into the assignment table
         db.insert(TABLE_ASSIGNMENTS, null, cv);//insert the assignment
@@ -152,7 +152,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         cv.put(REMINDER_TIME, a.getReminderTime());//assignment reminder time
         cv.put(NOTES, a.getNotes());//assignment notes
         cv.put(TEXTBOOKS, a.getTextbook());//assignment textbooks
-        cv.put(DONE, a.getDone());//assignment done
+        cv.put(DONE, a.isCompleted());//assignment done
 
         //modify the assignment in the assignment table
         db.update(TABLE_ASSIGNMENTS, cv,KEY_ID + " = ?", new String[] {String.valueOf(a.getId())} );//overwrite the assignment from the table with the same id as Assignment a
@@ -212,7 +212,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         a.setReminderTime(c.getString(8));
         a.setNotes(c.getString(9));
         a.setTextbook(c.getString(10));
-        a.setDone(c.getInt(11));
+        a.setCompleted(c.getInt(11) != 0);
 
         return a;
     }

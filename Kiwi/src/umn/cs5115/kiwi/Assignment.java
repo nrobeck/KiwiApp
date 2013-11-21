@@ -13,7 +13,7 @@ public class Assignment {
 	private String reminder_time;
 	private String notes;
 	private String textbook;
-	private int done = 0;
+	private boolean completed;
 
 	// empty constructor
 	public Assignment() {
@@ -42,8 +42,8 @@ public class Assignment {
 		return this.name;
 	}
 	
-	public int getDone() {
-		return this.done;
+	public boolean isCompleted() {
+		return this.completed;
 	}
 
 	public int getCourse() {
@@ -92,17 +92,8 @@ public class Assignment {
 		this.textbook = tb;
 	}
 	
-	public void setDone(){
-		if(this.done == 0){
-			this.done = 1;
-		}
-		else{
-			this.done = 1;
-		}
-	}
-	
-	public void setDone(int d) {
-		this.done = d;
+	public void setCompleted(boolean completed) {
+		this.completed = completed;
 	}
 	
 	public void setName(String n) {
