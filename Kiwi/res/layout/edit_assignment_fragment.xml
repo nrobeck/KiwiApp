@@ -22,15 +22,15 @@
 	        style="@style/KiwiSpinnerButton"
 	        android:layout_width="match_parent"
 	        android:layout_height="@dimen/form_spinner_button_height"
-	        android:text="(Course selector)"
-	        android:entries="@array/assignment_types" />
+	        android:text="(Course selector)" />
 	
 	    <Spinner
 	        android:id="@+id/spinner2"
 	        style="@style/KiwiSpinnerButton"
 	        android:layout_width="match_parent"
 	        android:layout_height="@dimen/form_spinner_button_height"
-	        android:text="(Type selector)" />
+	        android:text="(Type selector)"
+	        android:entries="@array/assignment_types" />
 	
 	    <EditText
 	        android:id="@+id/editText1"

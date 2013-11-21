@@ -1,5 +1,9 @@
 package umn.cs5115.kiwi.fragments;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import umn.cs5115.kiwi.Course;
 import umn.cs5115.kiwi.EditAssignmentActivity;
 import umn.cs5115.kiwi.Assignment;
 import umn.cs5115.kiwi.DatabaseHandler;
@@ -18,6 +22,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -96,6 +101,18 @@ public class EditAssignmentFragment extends Fragment {
         //TODO: Remove all course name from Course Name Spinner
         
         //TODO: Pull all the course names from the Database to fill the Course Name Spinner
+        DatabaseHandler dbHandler = new DatabaseHandler(getActivity());
+        List<String> courseSpinnerArray =  new ArrayList<String>();
+        courseSpinnerArray.add("(Course)");
+        Course[] coursesArray = dbHandler.getCourses(); //TODO: This is NOT returning any courses when there have been courses add?
+        for	(int i = 0; i < coursesArray.length; i++) {
+        	courseSpinnerArray.add(coursesArray[i].getCourseDesignation()); //This will require the course designation though?
+        }
+        
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, courseSpinnerArray);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        Spinner Items = (Spinner) getActivity().findViewById(R.id.spinner1);
+        Items.setAdapter(adapter);
         
         if (activity instanceof DoneBarListenable) {
             final DoneBarListenable listenable = (DoneBarListenable) getActivity();
