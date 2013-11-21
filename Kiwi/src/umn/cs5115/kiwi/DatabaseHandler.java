@@ -231,7 +231,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         //store course values into cv
         cv.put(NAME, c.getCourseTitle());
-        cv.put(KEY_ID, c.getCourseDesignation());
+        cv.put(DESIGNATION, c.getCourseDesignation());
         cv.put(START_TIME, c.getStartTime());
         cv.put(END_TIME, c.getEndTime());
         cv.put(LOCATION, c.getLocation());
@@ -250,7 +250,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void removeCourse(Course c){
         SQLiteDatabase db = this.getWritableDatabase();//get the database
 
-        db.delete(TABLE_COURSES, KEY_ID + " = ?", new String[] {String.valueOf(c.getCourseDesignation())} );//remove the course from the table with the same id as course c
+        db.delete(TABLE_COURSES, KEY_ID + " = ?", new String[] {String.valueOf(c.getId())} );//remove the course from the table with the same id as course c
         db.close();//close the database
     }
 
@@ -261,7 +261,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         //store course values into cv
         cv.put(NAME, c.getCourseTitle());
-        cv.put(KEY_ID, c.getCourseDesignation());
+        cv.put(DESIGNATION, c.getCourseDesignation());
         cv.put(START_TIME, c.getStartTime());
         cv.put(END_TIME, c.getEndTime());
         cv.put(LOCATION, c.getLocation());
@@ -272,7 +272,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         cv.put(TEXTBOOKS, c.getTextbooksString());
 
         //modify the assignment in the assignment table
-        db.update(TABLE_COURSES, cv,KEY_ID + " = ?", new String[] {String.valueOf(c.getCourseDesignation())} );//overwrite the course from the table with the same id as course c
+        db.update(TABLE_COURSES, cv,KEY_ID + " = ?", new String[] {String.valueOf(c.getId())} );//overwrite the course from the table with the same id as course c
         db.close();//close the database
     }
     

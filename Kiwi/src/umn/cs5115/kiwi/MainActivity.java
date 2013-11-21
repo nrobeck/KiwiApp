@@ -82,8 +82,20 @@ public class MainActivity extends KiwiActivity implements ShowcaseView.OnShowcas
 									   "LOTS OF NOTES", 
 									   "Introduction to Data Mining"));
     }
+    
+    private void refreshOverviewFragment() {
+		OverviewFragment overview = (OverviewFragment)getFragmentManager().findFragmentById(R.id.main_list_fragment);
+		overview.refreshFilter();
+    }
 
     @Override
+	protected void onResume() {
+    	Log.d("MainActivity", "onResume");
+		super.onResume();
+		refreshOverviewFragment();
+	}
+
+	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		if (filter != null) {
@@ -151,8 +163,6 @@ public class MainActivity extends KiwiActivity implements ShowcaseView.OnShowcas
 	public void onNewFilter(FilterDefinition newfilter) {
 //		Toast.makeText(this, "Got filter!", Toast.LENGTH_SHORT).show();
 		this.filter = newfilter;
-		// TODO: Send the new filter down to the OverviewFragment
-		OverviewFragment overview = (OverviewFragment)getFragmentManager().findFragmentById(R.id.main_list_fragment);
-		overview.refreshFilter();
+		refreshOverviewFragment();
 	}
 }

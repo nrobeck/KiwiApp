@@ -97,6 +97,8 @@
            		<Button android:id="@+id/assignment_tile_popup_button"
           				android:layout_height="wrap_content"
           				android:layout_width="wrap_content"
+          				android:focusable="false"
+          				android:focusableInTouchMode="false"
          				android:text="@string/assignment_tile_popup_button_title" />
            		
        </RelativeLayout>
