@@ -78,6 +78,30 @@
 		        android:focusableInTouchMode="false"
 		        android:textSize="18sp" />
            
+           <ImageView 
+               	android:id="@+id/assignment_tile_notes_identifier"
+               	android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_centerVertical="true" 
+		        android:contentDescription="@string/notes"
+		        android:src="@drawable/ic_4_collections_view_as_list"
+		        android:layout_toRightOf="@+id/completed_check_box"
+		        android:maxWidth="5dp"  
+  				android:maxHeight="5dp"
+  				android:scaleType="fitXY"/>
+           
+           <ImageView 
+               	android:id="@+id/assignment_tile_textbook_identifier"
+               	android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_centerVertical="true"
+		        android:contentDescription="@string/textbook" 
+		        android:src="@drawable/textbook_icon"
+		        android:layout_toRightOf="@+id/assignment_tile_notes_identifier"
+		        android:maxWidth="5dp"  
+  				android:maxHeight="5dp"
+  				android:scaleType="fitXY"/>
+           
 	        <TextView
 	            android:id="@+id/assignment_type"
 		    	android:layout_width="wrap_content"

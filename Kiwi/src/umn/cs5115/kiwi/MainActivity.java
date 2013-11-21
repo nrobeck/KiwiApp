@@ -81,6 +81,7 @@ public class MainActivity extends KiwiActivity implements ShowcaseView.OnShowcas
 									   "", 
 									   "LOTS OF NOTES", 
 									   "Introduction to Data Mining"));
+        
     }
     
     private void refreshOverviewFragment() {

@@ -19,6 +19,7 @@ import android.webkit.WebView.FindListener;
 import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.CursorAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupMenu;
@@ -44,9 +45,25 @@ public class OverviewListCursorAdapter extends CursorAdapter {
 		view.setAlpha(assignment.isCompleted() ? 0.5f : 1);
 
 		((TextView)view.findViewById(R.id.assignment_name)).setText(assignment.getName());
-		((TextView)view.findViewById(R.id.assignment_date)).setText(assignment.getDueDate());
-		//TODO:		((TextView)view.findViewById(R.id.course_name)).setText(assignment.getCourse()); //Need to get the course name
+		((TextView)view.findViewById(R.id.assignment_date)).setText(assignment.getDueDate()); //
+		((TextView)view.findViewById(R.id.course_name)).setText(assignment.getCourseName()); //Need to get the course name
 		((TextView)view.findViewById(R.id.assignment_type)).setText(assignment.getType());
+		
+		//Setting if the assignment tiles need to have the notes and textbook identifier turned on
+		ImageView notesIdentifier = (ImageView) view.findViewById(R.id.assignment_tile_notes_identifier);
+		if (assignment.getNotes() == null || assignment.getNotes().isEmpty()) {
+			notesIdentifier.setVisibility(view.INVISIBLE);
+		}
+		else {
+			notesIdentifier.setVisibility(view.VISIBLE);
+		}
+		ImageView textbookIdentifier = (ImageView) view.findViewById(R.id.assignment_tile_textbook_identifier);
+		if (assignment.getTextbook() == null || assignment.getTextbook().isEmpty()) {
+			textbookIdentifier.setVisibility(view.INVISIBLE);
+		}
+		else {
+			textbookIdentifier.setVisibility(view.VISIBLE);
+		}
 
 		final Button popupButton = (Button) view.findViewById(R.id.assignment_tile_popup_button);
 
