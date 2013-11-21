@@ -71,6 +71,17 @@ public class EditCourseFragment extends Fragment {
                         return false;
                     }
                     
+                    //TODO Start Time
+                    
+                    //TODO End Time
+                    
+                    //TODO Start Date
+                    
+                    //TODO End Date
+                    
+                    //TODO rRule
+                    //Right now there are 7 check boxes for the days of the week
+                    
                     EditText courseLocationEditText = (EditText) activity.findViewById(R.id.editText3); //Location
                     location = courseLocationEditText.getText().toString();
                     if (location == null) {
@@ -81,6 +92,12 @@ public class EditCourseFragment extends Fragment {
                     textbooks = textbookEditText.getText().toString();
                     if (textbooks == null) {
                     	textbooks = "";
+                    }
+                    
+                    EditText notesEditText = (EditText) activity.findViewById(R.id.notes); //Notes
+                    notes = notesEditText.getText().toString();
+                    if (notes == null) {
+                    	notes = "";
                     }
                     
                 	//TODO: Checking to make sure the data if valid

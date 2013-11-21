@@ -22,6 +22,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -69,9 +71,9 @@ public class EditAssignmentFragment extends Fragment {
 		//TODO: Need to change the textbook spinner values to the current selected course's textbooks
 		//http://stackoverflow.com/questions/1337424/android-spinner-get-the-selected-item-change-event
 		
-/*		Spinner textbookSpinner = (Spinner) getActivity().findViewById(R.id.textbook_spinner);	
+/*		final Spinner textbookSpinner = (Spinner) getActivity().findViewById(R.id.textbook_spinner);	
 		Spinner courseNameSpinner = (Spinner) getActivity().findViewById(R.id.spinner2); //Course Name Spinner
-		courseNameSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+		courseNameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
 			@Override
 			public void onItemSelected(AdapterView<?> parentView, View selectedItemView,
@@ -80,7 +82,13 @@ public class EditAssignmentFragment extends Fragment {
 				Log.i("EditAssignmentFragment", "Course Name Changed");
 				
 				//TODO: Put the dummy first item in the spinner to (Textbook Name) even if there are no textbooks
-				//textbookSpinner.add
+				List<String> textbookSpinnerArray =  new ArrayList<String>();
+				textbookSpinnerArray.add("ALL THE TEXTBOOKS");
+				
+				ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, textbookSpinnerArray);
+			    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			    Spinner Items = (Spinner) getActivity().findViewById(R.id.textbook_spinner);
+			    Items.setAdapter(adapter);
 			}
 
 			@Override

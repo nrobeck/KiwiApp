@@ -88,6 +88,48 @@
 	        android:text="Repetition"
 	        android:textAppearance="?android:attr/textAppearanceLarge" />
 	    
+	    <CheckBox
+	        android:id="@+id/check_box_sunday"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="Sunday" />
+	 
+	    <CheckBox
+	        android:id="@+id/check_box_monday"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="Monday" />
+	 
+	    <CheckBox
+	        android:id="@+id/check_box_tuesday"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="Tuesday" />
+	    
+	    <CheckBox
+	        android:id="@+id/check_box_wednesday"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="Wednesday" />
+	 
+	    <CheckBox
+	        android:id="@+id/check_box_thursday"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="Thursday" />
+	 
+	    <CheckBox
+	        android:id="@+id/check_box_friday"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="Friday" />
+	    
+	    <CheckBox
+	        android:id="@+id/check_box_saturday"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="Saturday" />
+	    
 	    <EditText
 	        android:id="@+id/textbooks"
 	        android:layout_width="match_parent"
@@ -95,7 +137,16 @@
 	        android:ems="10"
 	        android:layout_marginTop="4dp"
 	        android:layout_marginBottom="4dp"
-	        android:hint="Textbooks" />
+	        android:hint="Textbooks (Optional)" />
+	    
+	    <EditText
+	        android:id="@+id/notes"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:ems="10"
+	        android:layout_marginTop="4dp"
+	        android:layout_marginBottom="4dp"
+	        android:hint="Notes (Optional)" />
 	
 	</LinearLayout>
 </ScrollView>
