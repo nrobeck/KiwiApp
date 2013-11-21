@@ -7,17 +7,15 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.CursorAdapter;
 import android.view.View.OnClickListener;
-import android.webkit.WebView.FindListener;
-import android.widget.AbsListView;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -27,28 +25,74 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class OverviewListCursorAdapter extends CursorAdapter {
+	public static interface TileInteractionListener {
+		/**
+		 * Callback when the user has selected to change whether an assignment is
+		 * completed or not, from the assignment tile.
+		 * @param assignment the assignment in question
+		 * @param isCompleted whether they want the assignment to be marked as completed
+		 */
+		public void onChangeCompletion(Assignment assignment, boolean isCompleted);
+
+		/**
+		 * Callback when the user intends to view an assignment (i.e. clicked on tile, or in menu)
+		 * @param assignment the assignment to view
+		 */
+		public void viewAssignment(Assignment assignment);
+
+		/**
+		 * Callback when the user intends to edit an assignment.
+		 * @param assignment the assignment to edit
+		 */
+		public void editAssignment(Assignment assignment);
+
+		/**
+		 * Callback when the user intends to delete an assignment.
+		 * @param assignment the assignment to delete
+		 */
+		public void deleteAssignment(Assignment assignment);
+	}
+
+	private final TileInteractionListener mListener;
+
+	private static final float COMPLETED_ALPHA = 0.5f;
+
 	/** Constructor. */
-	public OverviewListCursorAdapter(Context context, Cursor c, int flags) {
-		super(context, c, flags);
+	public OverviewListCursorAdapter(Context context, Cursor c, TileInteractionListener listener) {
+		super(context, c, 0);
+		mListener = listener;
+	}
+
+	private void showAsCompleted(View itemView, boolean isCompleted) {
+		itemView.setAlpha(isCompleted ? COMPLETED_ALPHA : 1);
 	}
 
 	@Override
 	public void bindView(final View view, final Context context, Cursor cursor) {
-		Assignment assignment = DatabaseHandler.convertToAssignment(cursor);
+		final Assignment assignment = DatabaseHandler.convertToAssignment(cursor);
 
-		((TextView)view.findViewById(R.id.assignment_name)).setText(assignment.getName() + "--" + assignment.getCourseName());
+		view.setTag(assignment);
+
+		((TextView)view.findViewById(R.id.assignment_name)).setText(assignment.getName() + "--" + assignment.getCourseDesignation());
 
 		CheckBox completedCheckbox = (CheckBox)view.findViewById(R.id.completed_check_box);
 		completedCheckbox.setChecked(assignment.isCompleted());
+		completedCheckbox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				mListener.onChangeCompletion(assignment, isChecked);
+				showAsCompleted(view, isChecked);
+			}
+		});
 
 		// Fade out completed assignments
-		view.setAlpha(assignment.isCompleted() ? 0.5f : 1);
+		showAsCompleted(view, assignment.isCompleted());
 
 		((TextView)view.findViewById(R.id.assignment_name)).setText(assignment.getName());
-		((TextView)view.findViewById(R.id.assignment_date)).setText(assignment.getDueDate()); //
-		((TextView)view.findViewById(R.id.course_name)).setText(assignment.getCourseName()); //Need to get the course name
+		((TextView)view.findViewById(R.id.assignment_date)).setText(assignment.getDueDate());
+		((TextView)view.findViewById(R.id.course_name)).setText(assignment.getCourseDesignation());
 		((TextView)view.findViewById(R.id.assignment_type)).setText(assignment.getType());
-		
+
 		//Setting if the assignment tiles need to have the notes and textbook identifier turned on
 		ImageView notesIdentifier = (ImageView) view.findViewById(R.id.assignment_tile_notes_identifier);
 		if (assignment.getNotes() == null || assignment.getNotes().isEmpty()) {
@@ -76,43 +120,16 @@ public class OverviewListCursorAdapter extends CursorAdapter {
 
 				popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
 					public boolean onMenuItemClick(final MenuItem item) {
-						//Notes
-						if (item.getTitle().equals(context.getString(R.string.notes))) {
-							Toast.makeText(context,
-									"You Clicked : " + item.getTitle(),
-									Toast.LENGTH_SHORT).show();
-						}
-						//Textbooks
-						if (item.getTitle().equals(context.getString(R.string.textbook))) {
-							Toast.makeText(context,
-									"You Clicked : " + item.getTitle(),
-									Toast.LENGTH_SHORT).show();
-						}
-						//Edit
-						if (item.getTitle().equals(context.getString(R.string.edit))) {
-							Toast.makeText(context,
-									"You Clicked : " + item.getTitle(),
-									Toast.LENGTH_SHORT).show();
-						}
-						//Delete
-						if (item.getTitle().equals(context.getString(R.string.delete))) {
-							new AlertDialog.Builder(context)
-							.setTitle("Delete assignment")
-							.setMessage("Are you sure you want to delete this assignment?")
-							.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog, int which) { 
-									// continue with delete
-									Toast.makeText(context,
-											"You Clicked : " + item.getTitle(),
-											Toast.LENGTH_SHORT).show();
-								}
-							})
-							.setNegativeButton("No", new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog, int which) { 
-									// do nothing
-								}
-							})
-							.show();
+						switch (item.getItemId()) {
+						case R.id.assignment_tile_popup_edit:
+							mListener.editAssignment(assignment);
+							break;
+						case R.id.assignment_tile_popup_delete:
+							mListener.deleteAssignment(assignment);
+							break;
+						case R.id.assignment_tile_popup_view:
+							mListener.viewAssignment(assignment);
+							break;
 						}
 						return true;
 					}

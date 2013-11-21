@@ -27,7 +27,6 @@ public class ImportCoursesFragment extends ListFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        
         setListShown(true);
 //        setEmptyText(getResources().getString(R.string.import_courses_nothing_to_import));
         

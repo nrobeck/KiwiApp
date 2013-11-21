@@ -15,7 +15,7 @@ public class Assignment {
 	private String textbook;
 	private boolean completed;
 	
-	private String coursename;
+	private String courseDesignation;
 
 	// empty constructor
 	public Assignment() {
@@ -88,8 +88,8 @@ public class Assignment {
 		return this.textbook;
 	}
 	
-	public String getCourseName() {
-		return this.coursename;
+	public String getCourseDesignation() {
+		return this.courseDesignation;
 	}
 	
 
@@ -142,8 +142,14 @@ public class Assignment {
 		this.notes = n;
 	}
 	
-	public void setCourseName(String cn) {
-		this.coursename = cn;
+	public void setCourseDesignation(String cd) {
+		this.courseDesignation = cd;
 	}
 
+	@Override
+	public String toString() {
+		String obj = super.toString();
+		obj += " " + name;
+		return obj;
+	}
 }

@@ -84,7 +84,7 @@ public class FilterDialogFragment extends DialogFragment {
 		
 		// Select the correct radio button.
 		RadioButton initialSortRadio;
-		initialSortRadio = (RadioButton)sortRadios.findViewWithTag(defn.sorter.toInt());
+		initialSortRadio = (RadioButton)sortRadios.findViewWithTag(Integer.toString(defn.sorter.toInt()));
 		if (initialSortRadio == null) {
 			initialSortRadio = (RadioButton)sortRadios.findViewById(R.id.sort_by_due);
 		}

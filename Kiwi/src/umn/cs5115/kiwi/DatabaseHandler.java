@@ -45,6 +45,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public static final String END_DATE = "end_date";
     public static final String RRULE = "recurrence_rule";
     public static final String TEXTBOOKS = "textbooks";
+    
+    public static final String ASSIGNMENTS_QUERY;
+    static {
+    	ASSIGNMENTS_QUERY = String.format("SELECT a.*, c.%s as cname from %s AS a JOIN %s AS c ON a.%s = c.%s",
+    										DESIGNATION, TABLE_ASSIGNMENTS, TABLE_COURSES, COURSE, KEY_ID);
+    }
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -161,16 +167,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     //filter and return assignments as an array of assignment objects, pass null to get all assignments
     public Assignment[] filterAssignments(String filterBy){
-        SQLiteDatabase db = this.getReadableDatabase();//get the database
-
-        //set up and run the query in SQLite
-/*        Cursor c;
-        String query = "SELECT assignments.*, courses.name as cname from assignments LEFT JOIN courses on assignments.course == courses._id";
-        if (filterBy != null) {
-        	query += " WHERE " + filterBy;
-        }
-        c = db.rawQuery(query, null);
-*/        Cursor c = db.query(TABLE_ASSIGNMENTS, null, filterBy, null, null, null, null);//query the database for the filtered values
+        Cursor c = getRawAssignmentCursor(filterBy);
 
         //set up the assignment data structures
         Assignment[] a = new Assignment[c.getCount()];//empty array of assignment objects
@@ -187,7 +184,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
 
         c.close();//close the cursor
-        db.close();//close the database
         return a;
     }
 
@@ -195,7 +191,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();//get the database
 
         //set up and run the query in SQLite
-        String select = "SELECT * FROM " + TABLE_ASSIGNMENTS;
+        String select = ASSIGNMENTS_QUERY;
         if (filterBy != null) {
         	select += " WHERE " + filterBy;
         }
@@ -219,7 +215,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         a.setNotes(c.getString(9));
         a.setTextbook(c.getString(10));
         a.setCompleted(c.getInt(11) != 0);
-//        a.setCourseName(c.getString(12));
+        a.setCourseDesignation(c.getString(12));
 
         return a;
     }
@@ -320,16 +316,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Course co = new Course();//course object to return
 
         //move fields from the cursor row into the course object
-        co.setCourseTitle(c.getString(0));
-        co.setCourseDesignation(c.getString(1));
-        co.setStartTime(c.getString(2));
-        co.setEndTime(c.getString(3));
-        co.setLocation(c.getString(4));
-        co.setStartDate(c.getString(5));
-        co.setEndDate(c.getString(6));
-        co.setRRule(c.getString(7));
-        co.setNotes(c.getString(8));
-        co.setTextbooks(c.getString(9));
+        co.setId(c.getInt(0));
+        co.setCourseTitle(c.getString(1));
+        co.setCourseDesignation(c.getString(2));
+        co.setStartTime(c.getString(3));
+        co.setEndTime(c.getString(4));
+        co.setLocation(c.getString(5));
+        co.setStartDate(c.getString(6));
+        co.setEndDate(c.getString(7));
+        co.setRRule(c.getString(8));
+        co.setNotes(c.getString(9));
+        co.setTextbooks(c.getString(10));
 
         return co;
     }

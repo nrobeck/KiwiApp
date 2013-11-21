@@ -16,32 +16,29 @@
 	        android:layout_height="wrap_content"
 	        android:text="Assignment Info"
 	        android:textAppearance="?android:attr/textAppearanceSmall" />
-	
-	    <Spinner
-	        android:id="@+id/spinner1"
-	        style="@style/KiwiSpinnerButton"
-	        android:layout_width="match_parent"
-	        android:layout_height="@dimen/form_spinner_button_height"
-	        android:text="(Course selector)" />
-	
-	    <Spinner
-	        android:id="@+id/spinner2"
-	        style="@style/KiwiSpinnerButton"
-	        android:layout_width="match_parent"
-	        android:layout_height="@dimen/form_spinner_button_height"
-	        android:text="(Type selector)"
-	        android:entries="@array/assignment_types" />
-	
+		
 	    <EditText
 	        android:id="@+id/editText1"
 	        style="@style/KiwiEditTextStyle"
 	        android:layout_width="match_parent"
 	        android:ems="10"
-	        
+	        android:singleLine="true"
 	        android:maxLength="50"
-            android:inputType="textCapSentences|textEmailAddress|textAutoCorrect"
+            android:inputType="textCapSentences|textAutoCorrect"
 	        android:hint="Assignment/Exam name" />
-	    
+
+	    <Spinner
+	        android:id="@+id/assignment_types_spinner"
+	        style="@style/KiwiSpinnerButton"
+	        android:layout_width="match_parent"
+	        android:layout_height="@dimen/form_spinner_button_height" />
+	    	
+	    <Spinner
+	        android:id="@+id/courses_spinner"
+	        style="@style/KiwiSpinnerButton"
+	        android:layout_width="match_parent"
+	        android:layout_height="@dimen/form_spinner_button_height" />
+
 	    <Spinner
 	        android:id="@+id/textbook_spinner"
 	        style="@style/KiwiSpinnerButton"

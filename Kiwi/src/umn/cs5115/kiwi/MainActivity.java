@@ -4,14 +4,17 @@ import java.util.Calendar;
 
 import umn.cs5115.kiwi.FilterDefinition.SortBy;
 import umn.cs5115.kiwi.activity.KiwiActivity;
+import umn.cs5115.kiwi.adapter.OverviewListCursorAdapter.TileInteractionListener;
 import umn.cs5115.kiwi.fragments.FilterDialogFragment;
 import umn.cs5115.kiwi.fragments.FilterDialogFragment.FilterListener;
 import umn.cs5115.kiwi.fragments.OverviewFragment;
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.PendingIntent;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,33 +24,76 @@ import android.widget.Toast;
 
 import com.espian.showcaseview.ShowcaseView;
 
-public class MainActivity extends KiwiActivity implements ShowcaseView.OnShowcaseEventListener, FilterListener {
+public class MainActivity extends KiwiActivity implements ShowcaseView.OnShowcaseEventListener, FilterListener, TileInteractionListener {
 	private FilterDefinition filter;
+	private DatabaseHandler database;
 	
 	public FilterDefinition getFilter() {
 		return this.filter;
 	}
 
+	// Assignment tile interaction callbacks
     @Override
+	public void onChangeCompletion(Assignment assignment, boolean isCompleted) {
+    	assignment.setCompleted(isCompleted);
+    	database.editAssignment(assignment);
+	}
+
+	@Override
+	public void viewAssignment(Assignment assignment) {
+		// TODO: Switch view to show ViewAssignmentFragment.
+		Log.d("MainActivity", "Viewing assignment " + assignment);
+	}
+
+	@Override
+	public void editAssignment(Assignment assignment) {
+		// TODO: Launch EditAssignmentActivity with this assignment...
+		Log.d("MainActivity", "Editing assignment " + assignment);
+		Utils.goToAddAssignment(this);
+	}
+
+	@Override
+	public void deleteAssignment(final Assignment assignment) {
+		new AlertDialog.Builder(this)
+		.setTitle("Delete assignment")
+		.setMessage(String.format("Are you sure you want to delete '%s'?", assignment.getName()))
+		.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				Log.d("MainActivity", "Deleting assignment " + assignment);
+				database.removeAssignment(assignment);
+				Toast.makeText(MainActivity.this, "Deleted assignment.", Toast.LENGTH_SHORT).show();
+				refreshOverviewFragment();
+			}
+		})
+		.setNegativeButton("No", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				Toast.makeText(MainActivity.this, "Did not delete assignment.", Toast.LENGTH_SHORT).show();
+			}
+		})
+		.show();
+	}
+
+	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
         DatabaseHandler dbh = new DatabaseHandler(this);
+        this.database = dbh;
 
         if (savedInstanceState != null) {
         	filter = (FilterDefinition) savedInstanceState.getParcelable("filter");
         	Log.d("MainActivity", "Found filter: " + filter.toQueryString());
         } else {
         	// New activity; add assignment because of reasons.
-            Assignment a = new Assignment(-1, "New completed!!!", 0, null, null, 0, 0, 0, null, null, null);
+            Assignment a = new Assignment(-1, "New completed!!!", 2, null, null, 0, 0, 0, null, null, null);
             a.setCompleted(true);
             dbh.addAssignment(a);
         }
         
         if (filter == null) {
         	Log.d("MainActivity", "Filter is null! Making fresh filter.");
-        	filter = new FilterDefinition(SortBy.DUE_DATE, false, null, null);
+        	filter = new FilterDefinition(SortBy.DUE_DATE, true, null, null);
         	Log.d("MainActivity", "New filter: " + filter.toQueryString());
         }
         
@@ -57,9 +103,8 @@ public class MainActivity extends KiwiActivity implements ShowcaseView.OnShowcas
         	// pass.
         }
         //DEBUGGING CODE
-        DatabaseHandler dbHandler = new DatabaseHandler(this);
-        dbHandler.addAssignment(new Assignment(0, "Hello world!", 0, null, null, 0, 0, 0, null, null, null));
-        dbHandler.addCourse(new Course(0, 
+        dbh.addAssignment(new Assignment(1, "Hello world!", 0, null, null, 0, 0, 0, null, null, null));
+        dbh.addCourse(new Course(0, 
         							   "User Interface Design", 
         							   "CSCI 5115", 
         							   "9:45", 
@@ -70,7 +115,7 @@ public class MainActivity extends KiwiActivity implements ShowcaseView.OnShowcas
         							   "", 
         							   "LOTS OF NOTES", 
         							   "Design of Everyday Things\nDesign for Use"));
-        dbHandler.addCourse(new Course(0, 
+        dbh.addCourse(new Course(0, 
 									   "Data Mining", 
 									   "CSCI 5523", 
 									   "16:00", 

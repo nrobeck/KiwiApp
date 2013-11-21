@@ -58,13 +58,13 @@ public class FilterDefinition implements Parcelable {
     
     public String toQueryString() {
     	// Filter on completion status
-    	String completed = String.format("(%s %s 0)", DatabaseHandler.COMPLETED, (showCompleted ? ">=" : "=="));
+    	String completed = String.format("(%s %s 0)", DatabaseHandler.COMPLETED, (showCompleted ? ">=" : "="));
     	
     	// Make a piece of the query string to filter on courses
     	ArrayList<String> coursechecks = new ArrayList<String>();
     	if (courses != null) {
 	    	for (int course : courses) {
-	    		coursechecks.add(String.format("%s == %d", DatabaseHandler.COURSE, course));
+	    		coursechecks.add(String.format("%s = %d", DatabaseHandler.COURSE, course));
 	    	}
     	}
     	String course = null;
@@ -76,7 +76,7 @@ public class FilterDefinition implements Parcelable {
     	ArrayList<String> typechecks = new ArrayList<String>();
     	if (types != null) {
         	for (String type : types) {
-        		typechecks.add(String.format("%s == ''", DatabaseHandler.TYPE, type));
+        		typechecks.add(String.format("%s == '%s'", DatabaseHandler.TYPE, type));
         	}
     	}
     	String type = null;

@@ -27,17 +27,7 @@ public class AssignmentUtils {
 	
 	// Implementation based on AlarmUtils.showTimeEditDialog from the AOSP DeskClock app
 	public static void showTimeEditDialog(FragmentManager manager,
-			final Assignment assignment, TimePickerDialog.OnTimeSetListener listener) {
-		int hour, minutes;
-		
-		if (assignment == null) {
-			hour = 0;
-			minutes = 0;
-		} else {
-			hour = assignment.getId();
-			minutes = assignment.getId();
-		}
-		
+			int hour, int minutes, TimePickerDialog.OnTimeSetListener listener) {
 		TimePickerDialog dialog = TimePickerDialog.newInstance(listener, hour, minutes, false);
 		dialog.setThemeDark(false);
 		
