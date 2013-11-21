@@ -101,7 +101,7 @@ public class Utils {
     }
 
     public static void goToAddCourse(Activity activity) {
-        activity.startActivity(new Intent(activity, ImportCoursesActivity.class));
+        activity.startActivity(new Intent(activity, EditCourseActivity.class));
     }
 
     public static Intent goToAddAssignment(Context context) {
