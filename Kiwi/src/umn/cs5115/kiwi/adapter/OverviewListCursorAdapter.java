@@ -10,15 +10,20 @@ import umn.cs5115.kiwi.DatabaseHandler;
 import umn.cs5115.kiwi.R;
 import android.content.Context;
 import android.database.Cursor;
+import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.AbsListView;
+import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class OverviewListCursorAdapter extends CursorAdapter {
 	/** Constructor. */
@@ -26,9 +31,34 @@ public class OverviewListCursorAdapter extends CursorAdapter {
 		super(context, c, flags);
 	}
 @Override
-	public void bindView(View view, Context context, Cursor cursor) {
+	public void bindView(View view, final Context context, Cursor cursor) {
 		((TextView)view.findViewById(R.id.assignment_name)).setText(DatabaseHandler.convertToAssignment(cursor).getName());
-	}
+		((TextView)view.findViewById(R.id.assignment_date)).setText(DatabaseHandler.convertToAssignment(cursor).getDueDate());
+//TODO:		((TextView)view.findViewById(R.id.course_name)).setText(DatabaseHandler.convertToAssignment(cursor).getCourse()); //Need to get the course name
+		((TextView)view.findViewById(R.id.assignment_type)).setText(DatabaseHandler.convertToAssignment(cursor).getType());
+		
+			final Button popupButton = (Button) view.findViewById(R.id.assignment_tile_popup_button);
+			
+			popupButton.setOnClickListener(new OnClickListener() {
+				 
+				   @Override
+				   public void onClick(View v) {
+				    PopupMenu popup = new PopupMenu(context, popupButton);
+				    popup.getMenuInflater().inflate(R.menu.assignment_tile_popup, popup.getMenu());
+				 
+				    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+				     public boolean onMenuItemClick(MenuItem item) {
+				      Toast.makeText(context,
+				        "You Clicked : " + item.getTitle(),
+				        Toast.LENGTH_SHORT).show();
+				      return true;
+				     }
+				    });
+				 
+				    popup.show();
+				   }
+				  });
+		}
 	/*
 	@Override
 	public void bindView(View view, Context context, Cursor cursor) {
@@ -119,5 +149,5 @@ public class OverviewListCursorAdapter extends CursorAdapter {
 	public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
 		return LayoutInflater.from(context).inflate(R.layout.assignment_tile, null);
 	}
-
+	
 }

@@ -28,4 +28,6 @@
         <item >Presentation</item>
         <item >Project</item>
     </string-array>
+    <string name="assignment_tile_popup_button_title">Options</string>
+    <string name="textbook">Textbook</string>
 </resources>

@@ -124,9 +124,9 @@ public class EditAssignmentFragment extends Fragment {
                     }
                     
                     Spinner assignmentTypeSpinner = (Spinner) activity.findViewById(R.id.spinner2); //Assignment Type
-                    if(assignmentTypeSpinner.getSelectedItemPosition() > 0) {
+                    if(assignmentTypeSpinner.getSelectedItemPosition() >= 0) {
                     	assignmentType = assignmentTypeSpinner.getSelectedItem().toString();
-                    	Log.e("ERROR: EditAssignmentFragment", ""+assignmentType);
+                    	//Log.e("ERROR: EditAssignmentFragment", ""+assignmentType);
                     }
                     else {
                     	assignmentType = "";
