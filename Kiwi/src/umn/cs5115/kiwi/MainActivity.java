@@ -19,15 +19,29 @@ import android.widget.Toast;
 import com.espian.showcaseview.ShowcaseView;
 
 public class MainActivity extends KiwiActivity implements ShowcaseView.OnShowcaseEventListener, FilterListener {
+	private FilterDefinition filter;
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
+        if (savedInstanceState != null) {
+        	filter = (FilterDefinition) savedInstanceState.getParcelable("filter");
+        }
+        
         new DatabaseHandler(this).addAssignment(new Assignment(0, "Hello world!", 0, null, null, 0, 0, 0, null, null, null));
     }
 
     @Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		if (filter != null) {
+			outState.putParcelable("filter", filter);
+		}
+	}
+
+	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
 
@@ -41,8 +55,7 @@ public class MainActivity extends KiwiActivity implements ShowcaseView.OnShowcas
     	if (prev != null) ft.remove(prev);
     	ft.addToBackStack(null);
     	
-    	FilterDefinition defn = new FilterDefinition(null);
-    	FilterDialogFragment.newInstance(defn).show(ft, "dialog_about");
+    	FilterDialogFragment.newInstance(this.filter).show(ft, "dialog_about");
     }
 
     @Override
@@ -86,6 +99,8 @@ public class MainActivity extends KiwiActivity implements ShowcaseView.OnShowcas
 
 	@Override
 	public void onNewFilter(FilterDefinition newfilter) {
-		Toast.makeText(this, "Got filter!", Toast.LENGTH_SHORT).show();
+//		Toast.makeText(this, "Got filter!", Toast.LENGTH_SHORT).show();
+		this.filter = newfilter;
+		// TODO: Send the new filter down to the OverviewFragment
 	}
 }

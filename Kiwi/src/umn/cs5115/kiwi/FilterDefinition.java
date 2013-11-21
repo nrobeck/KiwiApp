@@ -1,5 +1,8 @@
 package umn.cs5115.kiwi;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -32,9 +35,23 @@ public class FilterDefinition implements Parcelable {
     	}
     }
     
-    public FilterDefinition(Parcel in) {
-//        i = in.readInt();
-//        b = (in.readByte() != 0);
+    public int[] courses;
+    public String[] types;
+    public SortBy sorter;
+    public boolean showCompleted;
+    
+    private FilterDefinition(Parcel in) {
+    	courses = in.createIntArray();
+    	types = in.createStringArray();
+    	sorter = SortBy.fromInt(in.readInt());
+    	showCompleted = (in.readByte() != 0);
+    }
+    
+    public FilterDefinition(SortBy sorter, boolean showCompleted, int[] courses, String[] types) {
+    	this.sorter = sorter;
+    	this.showCompleted = showCompleted;
+    	this.courses = courses;
+    	this.types = types;
     }
 
     @Override
@@ -45,8 +62,10 @@ public class FilterDefinition implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-//        dest.writeInt(i);
-//        dest.writeByte((byte) (b ? 1 : 0));
+    	dest.writeStringArray(types);
+    	dest.writeIntArray(courses);
+    	dest.writeInt(sorter.toInt());
+    	dest.writeByte((byte) (showCompleted ? 1: 0));
     }
     // set of courses to display, etc etc
 

@@ -11,6 +11,14 @@ import android.view.ViewGroup;
 
 public class OverviewFragment extends ListFragment {
 	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		
+		// Don't kill this fragment when screen is rotated, etc.
+		setRetainInstance(true);
+	}
+
+	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
