@@ -50,18 +50,24 @@ public class OverviewListCursorAdapter extends CursorAdapter {
 			    popup.getMenuInflater().inflate(R.menu.assignment_tile_popup, popup.getMenu());
 			 
 			    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-			    	public boolean onMenuItemClick(MenuItem item) {
+			    	public boolean onMenuItemClick(final MenuItem item) {
 			    		//Notes
 			    		if (item.getTitle().equals(context.getString(R.string.notes))) {
-			    			
+			    			Toast.makeText(context,
+				    				"You Clicked : " + item.getTitle(),
+				    				Toast.LENGTH_SHORT).show();
 			    		}
 			    		//Textbooks
 			    		if (item.getTitle().equals(context.getString(R.string.textbook))) {
-			    			
+			    			Toast.makeText(context,
+				    				"You Clicked : " + item.getTitle(),
+				    				Toast.LENGTH_SHORT).show();
 			    		}
 			    		//Edit
 			    		if (item.getTitle().equals(context.getString(R.string.edit))) {
-			    			
+			    			Toast.makeText(context,
+				    				"You Clicked : " + item.getTitle(),
+				    				Toast.LENGTH_SHORT).show();
 			    		}
 			    		//Delete
 			    		if (item.getTitle().equals(context.getString(R.string.delete))) {
@@ -71,6 +77,9 @@ public class OverviewListCursorAdapter extends CursorAdapter {
 			    		    	.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 			    		    		public void onClick(DialogInterface dialog, int which) { 
 			    		    			// continue with delete
+			    		    			Toast.makeText(context,
+			    			    				"You Clicked : " + item.getTitle(),
+			    			    				Toast.LENGTH_SHORT).show();
 			    		    		}
 			    		    	})
 			    		    	.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -80,10 +89,6 @@ public class OverviewListCursorAdapter extends CursorAdapter {
 			    		    	})
 			    		    	.show();
 			    		}
-			    		
-			    		Toast.makeText(context,
-			    				"You Clicked : " + item.getTitle(),
-			    				Toast.LENGTH_SHORT).show();
 			    		return true;
 			     	}
 			    });
