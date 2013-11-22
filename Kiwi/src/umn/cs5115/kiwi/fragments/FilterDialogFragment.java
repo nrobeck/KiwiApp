@@ -21,7 +21,6 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class FilterDialogFragment extends DialogFragment {
 	public static interface FilterListener {
@@ -154,8 +153,6 @@ public class FilterDialogFragment extends DialogFragment {
 				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					Toast.makeText(getActivity(), "Filtered!", Toast.LENGTH_LONG).show();
-					
 					int courseCount = 0;
 					for (CheckBox cb : courseCheckboxes) {
 						if (cb != null && cb.isChecked()) {
@@ -198,10 +195,8 @@ public class FilterDialogFragment extends DialogFragment {
 				}
 			})
 			.setNegativeButton(android.R.string.cancel, new OnClickListener() {
-				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					Toast.makeText(getActivity(), "Not filtered...", Toast.LENGTH_SHORT).show();
 				}
 			}).create();
 	}
