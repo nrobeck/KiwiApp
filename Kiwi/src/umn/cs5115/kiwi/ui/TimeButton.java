@@ -25,9 +25,9 @@ public class TimeButton extends Button {
 	
 	private void refreshView() {
 		Calendar cal = Calendar.getInstance();
-		cal.set(Calendar.HOUR, hour);
+		cal.set(Calendar.HOUR_OF_DAY, hour);
 		cal.set(Calendar.MINUTE, minute);
-		setText(new SimpleDateFormat("h:mm aa", Locale.US).format(cal.getTime()));
+		setText(new SimpleDateFormat("h:mm aaa", Locale.US).format(cal.getTime()));
 	}
 	
 	public void setTime(int hour, int minute) {
