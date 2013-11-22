@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.TextView;
 
 public class OverviewFragment extends ListFragment {
@@ -82,6 +83,19 @@ public class OverviewFragment extends ListFragment {
 				} else {
 					Log.e("OverviewFragment", "clicked view no assignment tag?" + tag + clickedView);
 				}
+			}
+		});
+		getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> adapter, View longClickedView, int position, long id) {
+				Object tag = longClickedView.getTag();
+				if (tag instanceof Assignment) {
+					Assignment a = (Assignment)tag;
+					boolean destCompletion = !a.isCompleted();
+					mListenerActivity.onChangeCompletion(a, destCompletion);
+				}
+				return false;
 			}
 		});
 	}
