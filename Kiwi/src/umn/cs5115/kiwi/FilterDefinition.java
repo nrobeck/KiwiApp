@@ -1,9 +1,7 @@
 package umn.cs5115.kiwi;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import android.graphics.Paint.Join;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
@@ -54,6 +52,17 @@ public class FilterDefinition implements Parcelable {
     	this.showCompleted = showCompleted;
     	this.courses = courses;
     	this.types = types;
+    }
+    
+    public String getOrderString() {
+    	switch (sorter) {
+    	case COURSE:
+    		return "cname ASC";
+    	case DUE_DATE:
+    		return DatabaseHandler.DUE_DATE + " ASC";
+    	default:
+    		return DatabaseHandler.TYPE + " ASC";
+    	}
     }
     
     public String toQueryString() {

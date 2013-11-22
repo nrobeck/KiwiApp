@@ -3,9 +3,7 @@ package umn.cs5115.kiwi.adapter;
 import umn.cs5115.kiwi.Assignment;
 import umn.cs5115.kiwi.DatabaseHandler;
 import umn.cs5115.kiwi.R;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -18,11 +16,8 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.CursorAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class OverviewListCursorAdapter extends CursorAdapter {
 	public static interface TileInteractionListener {
@@ -50,7 +45,7 @@ public class OverviewListCursorAdapter extends CursorAdapter {
 		 * Callback when the user intends to delete an assignment.
 		 * @param assignment the assignment to delete
 		 */
-		public void deleteAssignment(Assignment assignment);
+		public void deleteAssignment(View removingView, Assignment assignment);
 	}
 
 	private final TileInteractionListener mListener;
@@ -70,47 +65,70 @@ public class OverviewListCursorAdapter extends CursorAdapter {
 	@Override
 	public void bindView(final View view, final Context context, Cursor cursor) {
 		final Assignment assignment = DatabaseHandler.convertToAssignment(cursor);
-
-		view.setTag(assignment);
-
-		((TextView)view.findViewById(R.id.assignment_name)).setText(assignment.getName() + "--" + assignment.getCourseDesignation());
-
-		CheckBox completedCheckbox = (CheckBox)view.findViewById(R.id.completed_check_box);
-		completedCheckbox.setChecked(assignment.isCompleted());
-		completedCheckbox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-			@Override
-			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				mListener.onChangeCompletion(assignment, isChecked);
-				showAsCompleted(view, isChecked);
-			}
-		});
-
+		
 		// Fade out completed assignments
 		showAsCompleted(view, assignment.isCompleted());
 
-		((TextView)view.findViewById(R.id.assignment_name)).setText(assignment.getName());
-		((TextView)view.findViewById(R.id.assignment_date)).setText(assignment.getDueDate());
-		((TextView)view.findViewById(R.id.course_name)).setText(assignment.getCourseDesignation());
-		((TextView)view.findViewById(R.id.assignment_type)).setText(assignment.getType());
+		view.setTag(assignment);
+		
+		// Populate text and state of the tile.
 
+		TextView aName, aDate, aCourse, aType;
+		CheckBox completedCheckbox;
+		
+		// Get TextViews
+		aName 	= (TextView) view.findViewById(R.id.assignment_name);
+		aDate 	= (TextView) view.findViewById(R.id.assignment_date);
+		aCourse = (TextView) view.findViewById(R.id.course_name);
+		aType 	= (TextView) view.findViewById(R.id.assignment_type);
+		
+		// Set their text values
+		aName.setText(assignment.getName());
+		aDate.setText(assignment.getDueDate());
+		aCourse.setText(assignment.getCourseDesignation());
+		aType.setText(assignment.getType());
+
+		// Get the CheckBox
+		completedCheckbox = (CheckBox)view.findViewById(R.id.completed_check_box);
+		
+		/*
+		 * Remove any pre-existing listeners that might be on this view.
+		 * If we don't do this, then when this view is recycled (e.g. re-bound)
+		 * then any toggling of the checkbox's state will trigger that click
+		 * handler, which we don't want to have happen.
+		 */
+		completedCheckbox.setOnCheckedChangeListener(null);
+		completedCheckbox.setChecked(assignment.isCompleted());
+		/*
+		 * Bake up a new listener for the checkbox, and add it.
+		 */
+		OnCheckedChangeListener listener = new OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				mListener.onChangeCompletion(assignment, isChecked);
+			}
+		};
+		completedCheckbox.setOnCheckedChangeListener(listener);
+
+		
 		//Setting if the assignment tiles need to have the notes and textbook identifier turned on
 		ImageView notesIdentifier = (ImageView) view.findViewById(R.id.assignment_tile_notes_identifier);
 		if (assignment.getNotes() == null || assignment.getNotes().isEmpty()) {
-			notesIdentifier.setVisibility(view.INVISIBLE);
+			notesIdentifier.setVisibility(View.INVISIBLE);
 		}
 		else {
-			notesIdentifier.setVisibility(view.VISIBLE);
+			notesIdentifier.setVisibility(View.VISIBLE);
 		}
+
 		ImageView textbookIdentifier = (ImageView) view.findViewById(R.id.assignment_tile_textbook_identifier);
 		if (assignment.getTextbook() == null || assignment.getTextbook().isEmpty()) {
-			textbookIdentifier.setVisibility(view.INVISIBLE);
+			textbookIdentifier.setVisibility(View.INVISIBLE);
 		}
 		else {
-			textbookIdentifier.setVisibility(view.VISIBLE);
+			textbookIdentifier.setVisibility(View.VISIBLE);
 		}
 
 		final Button popupButton = (Button) view.findViewById(R.id.assignment_tile_popup_button);
-
 		popupButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -125,7 +143,7 @@ public class OverviewListCursorAdapter extends CursorAdapter {
 							mListener.editAssignment(assignment);
 							break;
 						case R.id.assignment_tile_popup_delete:
-							mListener.deleteAssignment(assignment);
+							mListener.deleteAssignment(view, assignment);
 							break;
 						case R.id.assignment_tile_popup_view:
 							mListener.viewAssignment(assignment);

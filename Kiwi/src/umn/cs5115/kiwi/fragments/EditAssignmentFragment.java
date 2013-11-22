@@ -218,6 +218,7 @@ public class EditAssignmentFragment extends Fragment {
 
 			@Override
 			public String getViewText(int position, Course course, boolean isDummy) {
+				Log.d("EditAssignmentFragment", String.format("Courses getViewText: %d %s %s", position, course.getCourseTitle(), isDummy));
 				if (isDummy) {
 					return getResources().getString(R.string.default_course);
 				} else if (TextUtils.isEmpty(course.getCourseDesignation())) {
