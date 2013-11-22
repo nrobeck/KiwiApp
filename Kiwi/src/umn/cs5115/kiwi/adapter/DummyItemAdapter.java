@@ -19,6 +19,11 @@ public abstract class DummyItemAdapter<T> extends ArrayAdapter<T> {
 	}
 
 	@Override
+	public int getCount() {
+		return objects.size() + 1;
+	}
+
+	@Override
 	public final T getItem(int position) {
 		if (position == 0) {
 			return dummy;
