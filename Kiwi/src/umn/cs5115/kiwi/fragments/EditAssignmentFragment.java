@@ -366,7 +366,7 @@ public class EditAssignmentFragment extends Fragment {
 						 */
 						Toast.makeText(eActivity, "Cannot save assignment until errors are fixed.", Toast.LENGTH_SHORT).show();
 					}
-					return onActionBarDone(eActivity);
+					return returnValue;
 				}
 
 				@Override
