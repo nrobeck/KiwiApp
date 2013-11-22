@@ -1,22 +1,16 @@
 package umn.cs5115.kiwi;
 
-import java.util.Calendar;
-
 import umn.cs5115.kiwi.FilterDefinition.SortBy;
 import umn.cs5115.kiwi.activity.KiwiActivity;
 import umn.cs5115.kiwi.adapter.OverviewListCursorAdapter.TileInteractionListener;
 import umn.cs5115.kiwi.fragments.FilterDialogFragment;
 import umn.cs5115.kiwi.fragments.FilterDialogFragment.FilterListener;
 import umn.cs5115.kiwi.fragments.OverviewFragment;
-import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.os.Vibrator;
@@ -203,7 +197,7 @@ public class MainActivity extends KiwiActivity implements ShowcaseView.OnShowcas
         switch (item.getItemId()) {
 	        case R.id.add_assignment:
 	        	Utils.goToAddAssignment(this);
-	        	notifyInThreeSeconds();
+//	        	notifyInThreeSeconds();
 	        	return true;
 	        case R.id.filter:
 	            showFilterDialog();
@@ -218,11 +212,11 @@ public class MainActivity extends KiwiActivity implements ShowcaseView.OnShowcas
         return super.onOptionsItemSelected(item);
     }
 
-    private void notifyInThreeSeconds() {
-        Intent i = new Intent(this, NotificationReceiver.class);
-        PendingIntent alarm = PendingIntent.getBroadcast(this, 0, i, PendingIntent.FLAG_CANCEL_CURRENT);
-        ((AlarmManager) getSystemService(ALARM_SERVICE)).set(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis() + 3000, alarm);
-    }
+//    private void notifyInThreeSeconds() {
+//        Intent i = new Intent(this, NotificationReceiver.class);
+//        PendingIntent alarm = PendingIntent.getBroadcast(this, 0, i, PendingIntent.FLAG_CANCEL_CURRENT);
+//        ((AlarmManager) getSystemService(ALARM_SERVICE)).set(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis() + 3000, alarm);
+//    }
 
     @Override
     public void onShowcaseViewHide(ShowcaseView showcaseView) {
