@@ -18,7 +18,6 @@ import umn.cs5115.kiwi.ui.DoneBar.DoneBarListener;
 import umn.cs5115.kiwi.ui.TimeButton;
 import android.app.Activity;
 import android.app.Fragment;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -26,12 +25,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.datetimepicker.date.DatePickerDialog;
@@ -218,7 +213,6 @@ public class EditAssignmentFragment extends Fragment {
 
 			@Override
 			public String getViewText(int position, Course course, boolean isDummy) {
-				Log.d("EditAssignmentFragment", String.format("Courses getViewText: %d %s %s", position, course.getCourseTitle(), isDummy));
 				if (isDummy) {
 					return getResources().getString(R.string.default_course);
 				} else if (TextUtils.isEmpty(course.getCourseDesignation())) {
