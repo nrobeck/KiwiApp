@@ -33,4 +33,5 @@
     <string name="overview_no_assignments">Nothing to see here.\n(Change the filter settings, or add a new assignment!)</string>
     <string name="default_course">Course (optional)</string>
     <string name="assignment_tile_popup_view">View</string>
+    <string name="assignment_title_empty_error">You must enter a name</string>
 </resources>

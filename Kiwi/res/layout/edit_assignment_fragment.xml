@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/scrollView1"
+    android:id="@+id/assignment_fragment_scrollview"
     style="@style/KiwiCardFragmentStyle">
 	<LinearLayout
 	    style="@style/KiwiCardFragmentInnardsStyle"
@@ -24,7 +24,7 @@
 	        android:ems="10"
 	        android:singleLine="true"
 	        android:maxLength="50"
-            android:inputType="textCapSentences|textAutoCorrect"
+            android:inputType="textCapSentences|textEmailSubject|textAutoCorrect"
 	        android:hint="Assignment/Exam name" />
 
 	    <Spinner
@@ -116,7 +116,7 @@
 	        android:textAppearance="?android:attr/textAppearanceSmall" />
 	
 	    <EditText
-	        android:id="@+id/editText2"
+	        android:id="@+id/assignment_notes_field"
 	        style="@style/KiwiEditTextStyle"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
@@ -125,7 +125,8 @@
 	        android:minLines="1"
 	        android:maxLines="10"
 	        android:maxLength="1000"
-	        android:inputType="textMultiLine|textCapSentences" />
+	        android:inputType="textMultiLine|textCapSentences"
+	        android:imeOptions="actionDone" />
 	
     </LinearLayout>
 </ScrollView>
