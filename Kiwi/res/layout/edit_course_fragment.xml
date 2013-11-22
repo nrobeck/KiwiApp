@@ -54,6 +54,7 @@
 	        android:hint="Location" />
 	    
 	    <LinearLayout
+	        android:visibility="gone"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content" >
 	
@@ -72,14 +73,74 @@
 	    </LinearLayout>
 	
 	    <Spinner
+	        android:visibility="gone"
 	        android:id="@+id/spinner3"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content" />
 	
 	    <Spinner
+	        android:visibility="gone"
 	        android:id="@+id/spinner4"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content" />
+	    
+	    <TextView
+	        android:id="@+id/start_and_end_date_text_view"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:text="Course Start and End Date"
+	        style="?android:attr/listSeparatorTextViewStyle"
+	        android:textAppearance="?android:attr/textAppearanceSmall" />
+	    
+	    <LinearLayout
+	        android:orientation="horizontal"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content" >
+
+	        <umn.cs5115.kiwi.ui.DateButton
+	            android:id="@+id/start_date_button"
+	            style="@style/KiwiSpinner"
+	            android:gravity="center"
+	            android:layout_width="match_parent"
+	            android:layout_weight="1" />
+	        
+	        <umn.cs5115.kiwi.ui.DateButton
+	            android:id="@+id/end_date_button"
+	            style="@style/KiwiSpinner"
+	            android:gravity="center"
+	            android:layout_width="match_parent"
+	            android:layout_weight="1" />
+
+	    </LinearLayout>
+
+	    <TextView
+	        android:id="@+id/start_and_end_time_text_view"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:text="Course Start and End Time"
+	        style="?android:attr/listSeparatorTextViewStyle"
+	        android:textAppearance="?android:attr/textAppearanceSmall" />
+	    
+	    <LinearLayout
+	        android:orientation="horizontal"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content" >
+
+	        <umn.cs5115.kiwi.ui.TimeButton
+	            android:id="@+id/start_time_button"
+	            style="@style/KiwiSpinner"
+	            android:gravity="center"
+	            android:layout_width="match_parent"
+	            android:layout_weight="1" />
+
+	        <umn.cs5115.kiwi.ui.TimeButton
+	            android:id="@+id/end_time_button"
+	            style="@style/KiwiSpinner"
+	            android:gravity="center"
+	            android:layout_width="match_parent"
+	            android:layout_weight="1" />
+	        
+	    </LinearLayout>
 	
 	    <TextView
 	        android:id="@+id/textView1"
