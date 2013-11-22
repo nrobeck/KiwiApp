@@ -100,7 +100,7 @@ public class MainActivity extends KiwiActivity implements ShowcaseView.OnShowcas
 				overview.getListView().setEnabled(false);
 				overview.getListView().setClickable(false);
 				database.removeAssignment(assignment);
-				Toast.makeText(MainActivity.this, "Deleted assignment.", Toast.LENGTH_SHORT).show();
+				Toast.makeText(MainActivity.this, "Deleted assignment " + assignment.getName(), Toast.LENGTH_SHORT).show();
 				ViewCompat.setHasTransientState(deletingView, true);
 				Animation anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.assignment_tile_remove);
 				anim.setAnimationListener(new AnimationListener() {
