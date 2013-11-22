@@ -7,6 +7,19 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
+	public static final class DbAndCursor {
+		public final SQLiteDatabase db;
+		public final Cursor cursor;
+		
+		public DbAndCursor(SQLiteDatabase db, Cursor cursor) {
+			this.db = db;
+			this.cursor = cursor;
+		}
+		
+		public void close() {
+			db.close();
+		}
+	}
 
     // Database Version
     private static final int DATABASE_VERSION = 1;
@@ -167,7 +180,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     //filter and return assignments as an array of assignment objects, pass null to get all assignments
     public Assignment[] filterAssignments(String filterBy){
-        Cursor c = getRawAssignmentCursor(filterBy);
+        DbAndCursor dbc = getRawAssignmentCursor(filterBy);
+        Cursor c = dbc.cursor;
 
         //set up the assignment data structures
         Assignment[] a = new Assignment[c.getCount()];//empty array of assignment objects
@@ -186,8 +200,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         c.close();//close the cursor
         return a;
     }
+    
+    public DbAndCursor getRawAssignmentCursor(String filterBy) {
+    	return getRawAssignmentCursor(filterBy, null);
+    }
 
-    public Cursor getRawAssignmentCursor(String filterBy) {
+    public DbAndCursor getRawAssignmentCursor(String filterBy, String orderBy) {
         SQLiteDatabase db = this.getReadableDatabase();//get the database
 
         //set up and run the query in SQLite
@@ -195,7 +213,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if (filterBy != null) {
         	select += " WHERE " + filterBy;
         }
-        return db.rawQuery(select, null);
+        if (orderBy != null) {
+        	select += " ORDER BY " + orderBy;
+        }
+        Cursor c = db.rawQuery(select, null);
+        
+        return new DbAndCursor(db, c);
     }
 
     //convert a cursor row into an Assignment object (used in filterAssignments method)
@@ -300,7 +323,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         int index = 0;
         cursor.moveToFirst();//make sure cursor is set to beginning of results
         while(!cursor.isAfterLast()){//loop while end of results has not been reached
-            courseArray[index++] = convertToCourse(cursor);
+        	Course course = convertToCourse(cursor);
+            courseArray[index++] = course;
 
             cursor.moveToNext();//increment to the next row of cursor result
         }

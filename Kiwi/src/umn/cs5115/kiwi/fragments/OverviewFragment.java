@@ -2,6 +2,7 @@ package umn.cs5115.kiwi.fragments;
 
 import umn.cs5115.kiwi.Assignment;
 import umn.cs5115.kiwi.DatabaseHandler;
+import umn.cs5115.kiwi.DatabaseHandler.DbAndCursor;
 import umn.cs5115.kiwi.FilterDefinition;
 import umn.cs5115.kiwi.MainActivity;
 import umn.cs5115.kiwi.R;
@@ -9,7 +10,6 @@ import umn.cs5115.kiwi.adapter.OverviewListCursorAdapter;
 import umn.cs5115.kiwi.adapter.OverviewListCursorAdapter.TileInteractionListener;
 import android.app.Activity;
 import android.app.ListFragment;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 public class OverviewFragment extends ListFragment {
 	private TileInteractionListener mListenerActivity;
+	private DbAndCursor assignments;
 	
 	@Override
 	public void onAttach(Activity activity) {
@@ -28,6 +29,16 @@ public class OverviewFragment extends ListFragment {
 			super.onAttach(activity);
 		} else {
 			throw new ClassCastException("OverviewFragment can only be attached to Activities implementing TileInteractionListener!");
+		}
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		// Make sure to close the database, otherwise we're just leaking the connection.
+		if (assignments != null) {
+			assignments.db.close();
+			assignments = null;
 		}
 	}
 
@@ -46,8 +57,9 @@ public class OverviewFragment extends ListFragment {
 	
 	public void refreshFilter() {
 		OverviewListCursorAdapter adapter = (OverviewListCursorAdapter) getListView().getAdapter();
-		Cursor newCursor = new DatabaseHandler(getActivity()).getRawAssignmentCursor(getFilter().toQueryString());
-		adapter.changeCursor(newCursor);
+		FilterDefinition defn = getFilter();
+		assignments = new DatabaseHandler(getActivity()).getRawAssignmentCursor(defn.toQueryString(), defn.getOrderString());
+		adapter.changeCursor(assignments.cursor);
 		// need this?
 		//adapter.notifyDataSetChanged();
 	}
@@ -69,10 +81,13 @@ public class OverviewFragment extends ListFragment {
 		
 		final DatabaseHandler database = new DatabaseHandler(getActivity());
 		
-		Cursor assignmentsCursor = database.getRawAssignmentCursor(filter);
-		final OverviewListCursorAdapter adapter = new OverviewListCursorAdapter(getActivity(), assignmentsCursor, mListenerActivity);
+		OverviewListCursorAdapter adapter = (OverviewListCursorAdapter) getListAdapter();
+		if (assignments == null && getListView().getAdapter() == null) {
+			assignments = database.getRawAssignmentCursor(filter);
+			adapter = new OverviewListCursorAdapter(getActivity(), assignments.cursor, mListenerActivity);
+		}
 		
-		getListView().setAdapter(adapter);
+		setListAdapter(adapter);
 		
 		getListView().setOnItemClickListener(new OnItemClickListener() {
 			@Override
