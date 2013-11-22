@@ -11,6 +11,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.os.Vibrator;
@@ -205,9 +206,9 @@ public class MainActivity extends KiwiActivity implements ShowcaseView.OnShowcas
         	case R.id.add_course:
         		Utils.goToAddCourse(this);
         		return true;
-            case R.id.cancel:
-                Toast.makeText(getBaseContext(), "Clicked Cancel!", Toast.LENGTH_SHORT).show();
-                return true;
+        	case R.id.action_settings:
+        		startActivity(new Intent(this, AdvancedOptionsActivity.class));
+        		return true;
         }
         return super.onOptionsItemSelected(item);
     }

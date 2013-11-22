@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        
+        android:id="@+id/delete_courses_linearlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/select_all_courses"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Select all" />
+
+        <LinearLayout
+            android:id="@+id/delete_courses_cb_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/delete_courses"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Delete selected courses" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -270,6 +270,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();//get the database
 
         db.delete(TABLE_COURSES, KEY_ID + " = ?", new String[] {String.valueOf(c.getId())} );//remove the course from the table with the same id as course c
+        
+        /*
+         * Also go and delete all the assignments for this course!
+         */
+        db.delete(TABLE_ASSIGNMENTS, COURSE + " = ?", new String[] {String.valueOf(c.getId()) });
         db.close();//close the database
     }
 
