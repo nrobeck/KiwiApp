@@ -61,7 +61,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     
     public static final String ASSIGNMENTS_QUERY;
     static {
-    	ASSIGNMENTS_QUERY = String.format("SELECT a.*, c.%s as cname from %s AS a JOIN %s AS c ON a.%s = c.%s",
+    	ASSIGNMENTS_QUERY = String.format("SELECT a.*, c.%s as cname from %s AS a LEFT OUTER JOIN %s AS c ON a.%s = c.%s",
     										DESIGNATION, TABLE_ASSIGNMENTS, TABLE_COURSES, COURSE, KEY_ID);
     }
 
