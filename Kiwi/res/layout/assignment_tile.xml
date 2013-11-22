@@ -1,4 +1,5 @@
-<!-- Copyright (C) 2013 The Android Open Source Project
+<!--
+ Copyright (C) 2013 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -17,120 +18,124 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/card_background"
-    android:orientation="vertical">
-    
-    <LinearLayout 
-        android:id="@+id/item_linear_layout"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:orientation="vertical">
-        
-       <RelativeLayout 
-            android:orientation="horizontal"
-            android:layout_height="wrap_content"
-        	android:layout_width="match_parent"
-        	android:layout_weight="4" >
-            
-            <TextView
-	            android:id="@+id/course_name"
-		    	android:layout_width="wrap_content"
-		    	android:layout_height="wrap_content"
-		    	android:layout_alignParentLeft="true"
-		    	android:textSize="18sp" />
-	        
-	        <TextView
-	            android:id="@+id/assignment_date"
-		    	android:layout_width="wrap_content"
-		    	android:layout_height="wrap_content"
-		    	android:layout_alignParentRight="true"
-		    	android:textSize="18sp" />
-	   </RelativeLayout>
-	   
-       <RelativeLayout
-            android:orientation="horizontal"
-	        android:layout_height="wrap_content"
-       		android:layout_width="match_parent"
-       		android:layout_weight="12" >
-	        
-           	<TextView
-	            android:id="@+id/assignment_name"
-		    	android:layout_width="wrap_content"
-		    	android:layout_height="wrap_content"
-		    	android:layout_centerInParent="true"
-		    	android:textSize="30sp" />
-           	
-       </RelativeLayout>
-       
-       <RelativeLayout 
-	        android:orientation="horizontal"
-	        android:layout_height="wrap_content"
-       		android:layout_width="match_parent"
-       		android:layout_weight="4" >
-           
-           <!-- placeholder -->
-           <CheckBox
-		        android:id="@+id/completed_check_box"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_centerVertical="true"
-		        android:text="Completed"
-		        android:focusable="false"
-		        android:focusableInTouchMode="false"
-		        android:textSize="18sp" />
-           
-           <ImageView 
-               	android:id="@+id/assignment_tile_notes_identifier"
-               	android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_centerVertical="true" 
-		        android:contentDescription="@string/notes"
-		        android:src="@drawable/ic_4_collections_view_as_list"
-		        android:layout_toRightOf="@+id/completed_check_box"
-		        android:maxWidth="5dp"  
-  				android:maxHeight="5dp"
-  				android:scaleType="fitXY"/>
-           
-           <ImageView 
-               	android:id="@+id/assignment_tile_textbook_identifier"
-               	android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_centerVertical="true"
-		        android:contentDescription="@string/textbook" 
-		        android:src="@drawable/textbook_icon"
-		        android:layout_toRightOf="@+id/assignment_tile_notes_identifier"
-		        android:maxWidth="5dp"  
-  				android:maxHeight="5dp"
-  				android:scaleType="fitXY"/>
-           
-	        <TextView
-	            android:id="@+id/assignment_type"
-		    	android:layout_width="wrap_content"
-		    	android:layout_height="wrap_content"
-		    	android:layout_alignParentRight="true"
-		    	android:layout_centerVertical="true"
-		    	android:textSize="18sp" />
-           
-       </RelativeLayout>
-       
-       <RelativeLayout 
-           	android:orientation="horizontal"
-	       	android:layout_height="wrap_content"
-       		android:layout_width="match_parent"
-       		android:layout_weight="1">
-	        
-           		<Button android:id="@+id/assignment_tile_popup_button"
-          				android:layout_height="wrap_content"
-          				android:layout_width="wrap_content"
-          				android:focusable="false"
-          				android:focusableInTouchMode="false"
-         				android:text="@string/assignment_tile_popup_button_title" />
-           		
-       </RelativeLayout>
-        
-	</LinearLayout>
-        
+    android:orientation="vertical" >
 
-<!--
+    <LinearLayout
+        android:id="@+id/item_linear_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/course_name"
+                style="@style/AssignmentTileCorners"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true" />
+
+            <TextView
+                android:id="@+id/assignment_date"
+                style="@style/AssignmentTileCorners"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="12"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/assignment_name"
+                style="@style/AssignmentTileName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center_horizontal" />
+        </RelativeLayout>
+
+       	<RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:orientation="horizontal" >
+
+            <!-- placeholder -->
+
+            <TextView
+                android:id="@+id/assignment_type"
+                style="@style/AssignmentTileCorners"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:descendantFocusability="blocksDescendants"
+            android:orientation="horizontal" >
+
+            <CheckBox
+                android:id="@+id/completed_check_box"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:gravity="center_vertical"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:text="Completed"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/assignment_tile_textbook_identifier"
+                android:layout_width="48dp"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/textbook"
+                android:gravity="center_vertical"
+                android:padding="12dp"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:scaleType="center"
+                android:src="@drawable/textbook_icon" />
+
+            <ImageView
+                android:id="@+id/assignment_tile_notes_identifier"
+                android:layout_width="48dp"
+                android:layout_height="match_parent"
+                android:padding="12dp"
+                android:gravity="center_vertical"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:contentDescription="@string/notes"
+                android:scaleType="center"
+                android:src="@drawable/ic_4_collections_view_as_list" />
+
+            <ImageButton
+                android:id="@+id/assignment_tile_popup_button"
+                android:layout_width="48dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical|right"
+                android:padding="12dp"
+                android:background="@drawable/list_selection_background"
+                android:focusable="false"
+                android:scaleType="center"
+                android:focusableInTouchMode="false"
+                android:src="@drawable/ic_action_overflow"
+                android:text="@string/assignment_tile_popup_button_title" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!--
     <LinearLayout
         android:id="@+id/top"
         android:layout_height="wrap_content"
@@ -156,16 +161,17 @@
             android:textColor="#333"/>
 
     </LinearLayout>
--->
+    -->
 
-    <include layout="@layout/assignment_tile_expanded"/>
+    <include layout="@layout/assignment_tile_expanded" />
 
     <ImageView
         android:id="@+id/expandContractIcon"
-        android:visibility="gone"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_gravity="center_horizontal"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_action_expand" />
+        android:src="@drawable/ic_action_expand"
+        android:visibility="gone" />
+
 </LinearLayout>

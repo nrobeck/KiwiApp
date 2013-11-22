@@ -30,12 +30,23 @@
     <style name="ABStyle" parent="@android:style/Widget.Holo.Light.ActionBar">
         <!-- <item name="android:background">#94d31b</item> -->
         <item name="android:background">@drawable/kiwi_actionbar_background</item>
-        <item name="android:homeAsUpIndicator">@drawable/action_button_background</item>
     </style>
     
     <style name="ActionButtonStyle" parent="@android:style/Widget.Holo.Light.ActionButton">
         <item name="android:background">@drawable/action_button_background</item>
     </style>
+    
+    <style name="AssignmentTileCornersBase">
+        <item name="android:textSize">16sp</item>
+        <item name="android:padding">8dp</item>
+    </style>
+    <style name="AssignmentTileCorners" parent="@style/AssignmentTileCornersBase" />
+    
+    <style name="AssignmentTileNameBase">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="AssignmentTileName" parent="@style/AssignmentTileNameBase" />
     
     <style name="OverflowMenuStyle" parent="@android:style/Widget.ListView.DropDown">
         <item name="android:listSelector">@drawable/list_selection_background</item>

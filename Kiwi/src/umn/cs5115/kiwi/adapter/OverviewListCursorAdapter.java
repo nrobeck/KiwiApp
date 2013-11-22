@@ -10,11 +10,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.CursorAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -128,7 +128,7 @@ public class OverviewListCursorAdapter extends CursorAdapter {
 			textbookIdentifier.setVisibility(View.VISIBLE);
 		}
 
-		final Button popupButton = (Button) view.findViewById(R.id.assignment_tile_popup_button);
+		final ImageButton popupButton = (ImageButton) view.findViewById(R.id.assignment_tile_popup_button);
 		popupButton.setOnClickListener(new OnClickListener() {
 
 			@Override
