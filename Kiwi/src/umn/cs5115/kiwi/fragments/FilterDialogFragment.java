@@ -1,14 +1,12 @@
 package umn.cs5115.kiwi.fragments;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import umn.cs5115.kiwi.Course;
 import umn.cs5115.kiwi.DatabaseHandler;
 import umn.cs5115.kiwi.FilterDefinition;
-import umn.cs5115.kiwi.R;
 import umn.cs5115.kiwi.FilterDefinition.SortBy;
+import umn.cs5115.kiwi.R;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -94,7 +92,7 @@ public class FilterDialogFragment extends DialogFragment {
 		((CheckBox)rootView.findViewById(R.id.show_completed)).setChecked(defn.showCompleted);
 		
 		final CheckBox[] courseCheckboxes = new CheckBox[courses.length];
-		final CheckBox[] typeCheckboxes = new CheckBox[types.length - 1];
+		final CheckBox[] typeCheckboxes = new CheckBox[types.length];
 		
 		if (courses.length == 0) {
 		    ((TextView)rootView.findViewById(R.id.no_courses_textview)).setVisibility(View.VISIBLE);
