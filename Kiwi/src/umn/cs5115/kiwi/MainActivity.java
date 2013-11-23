@@ -1,11 +1,12 @@
 package umn.cs5115.kiwi;
 
 import umn.cs5115.kiwi.FilterDefinition.SortBy;
-import umn.cs5115.kiwi.activity.KiwiActivity;
 import umn.cs5115.kiwi.adapter.OverviewListCursorAdapter.TileInteractionListener;
+import umn.cs5115.kiwi.app.KiwiActivity;
 import umn.cs5115.kiwi.fragments.FilterDialogFragment;
 import umn.cs5115.kiwi.fragments.FilterDialogFragment.FilterListener;
 import umn.cs5115.kiwi.fragments.OverviewFragment;
+import umn.cs5115.kiwi.ui.OverviewEmptyView.CustomEmptyViewButtonListener;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -17,19 +18,22 @@ import android.os.Parcelable;
 import android.os.Vibrator;
 import android.support.v4.view.ViewCompat;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.cocosw.undobar.UndoBarController;
 import com.cocosw.undobar.UndoBarController.UndoListener;
 import com.espian.showcaseview.ShowcaseView;
 
-public class MainActivity extends KiwiActivity implements ShowcaseView.OnShowcaseEventListener, FilterListener, TileInteractionListener {
+public class MainActivity extends KiwiActivity
+            implements ShowcaseView.OnShowcaseEventListener,
+                        FilterListener, TileInteractionListener,
+                        CustomEmptyViewButtonListener {
 	private FilterDefinition filter;
 	private DatabaseHandler database;
 	
@@ -86,7 +90,11 @@ public class MainActivity extends KiwiActivity implements ShowcaseView.OnShowcas
 	public void editAssignment(Assignment assignment) {
 		// TODO: Launch EditAssignmentActivity with this assignment...
 		Log.d("MainActivity", "Editing assignment " + assignment);
-		Utils.goToAddAssignment(this);
+		Intent editIntent = Utils.goToAddAssignment(getBaseContext());
+		editIntent
+		    .putExtra(EditAssignmentActivity.EXTRA_IS_EDIT, true)
+		    .putExtra(EditAssignmentActivity.EXTRA_ASSIGNMENT, assignment.getId());
+		startActivity(editIntent);
 	}
 
 	@Override
@@ -176,13 +184,6 @@ public class MainActivity extends KiwiActivity implements ShowcaseView.OnShowcas
 		}
 	}
 
-	@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-
-        return true;
-    }
-
     private void showFilterDialog() {
     	FragmentManager fm = getFragmentManager();
     	FragmentTransaction ft = fm.beginTransaction();
@@ -193,15 +194,28 @@ public class MainActivity extends KiwiActivity implements ShowcaseView.OnShowcas
     	FilterDialogFragment.newInstance(this.filter).show(ft, "dialog_about");
     }
 
+    /**
+     * Handle clicking options menu items. These items will be created
+     * in any fragments living inside this activity.
+     * 
+     * @param item The MenuItem that was selected.
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
 	        case R.id.add_assignment:
-	        	Utils.goToAddAssignment(this);
-//	        	notifyInThreeSeconds();
+	            /*
+	             * We may as well reuse the interface method for the empty
+	             * view button click!
+	             */
+	            onClickAddAssignment();
 	        	return true;
 	        case R.id.filter:
-	            showFilterDialog();
+	            /*
+	             * We may as well reuse the interface method for requesting the
+	             * filtering dialog.
+	             */
+	            onClickFilter();
 	            return true;
         	case R.id.add_course:
         		Utils.goToAddCourse(this);
@@ -237,4 +251,35 @@ public class MainActivity extends KiwiActivity implements ShowcaseView.OnShowcas
 		this.filter = newfilter;
 		refreshOverviewFragment();
 	}
+
+    @Override
+    public void onClickAddCourses(View buttonView) {
+        PopupMenu popup = new PopupMenu(this, buttonView);
+        popup.getMenuInflater().inflate(R.menu.overview_add_course_popup_menu, popup.getMenu());
+
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            public boolean onMenuItemClick(final MenuItem item) {
+                switch (item.getItemId()) {
+                case R.id.add_course_menu_add:
+                    Utils.goToAddCourse(MainActivity.this);
+                    return true;
+                case R.id.add_menu_course_import:
+                    startActivity(new Intent(MainActivity.this, ImportCoursesActivity.class));
+                    return true;
+                }
+                return true;
+            }
+        });
+        popup.show();
+    }
+
+    @Override
+    public void onClickAddAssignment() {
+        Utils.goToAddAssignment(this);
+    }
+
+    @Override
+    public void onClickFilter() {
+        showFilterDialog();
+    }
 }

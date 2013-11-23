@@ -1,6 +1,6 @@
 package umn.cs5115.kiwi;
 
-import umn.cs5115.kiwi.activity.KiwiDoneCancelActivity;
+import umn.cs5115.kiwi.app.KiwiDoneCancelActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -41,6 +41,8 @@ public class EditCourseActivity extends KiwiDoneCancelActivity {
 	@Override
     public void onCancel() {
         Log.d("AddCourseActivity", "Cancelling adding a course.");
+        String msg = isEdit ? "Course not saved." : "Course not created.";
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
         finish();
     }
     

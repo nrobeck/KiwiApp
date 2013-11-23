@@ -23,16 +23,13 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.datetimepicker.date.DatePickerDialog;
@@ -69,15 +66,11 @@ public class EditAssignmentFragment extends Fragment {
 	}
 
 	private boolean onActionBarDone(final EditAssignmentActivity activity) {
-		boolean isValidInput = false;
 		int selectedCourse = 0;
 		String assignmentType = "";
 		String assignmentName = "";
 		String textbook = "";
 		String notes = "";
-
-		//Store the assignment
-		DatabaseHandler dbHandler = new DatabaseHandler(activity);
 
 		//Pulling the information out of the activity's fields
 		Spinner courseNameSpinner = (Spinner) activity.findViewById(R.id.courses_spinner); //Course Name
@@ -146,10 +139,13 @@ public class EditAssignmentFragment extends Fragment {
 		//       }
 
 		int assignmentId = activity.getAssignmentId();
-		Assignment assignment = new Assignment(0, assignmentName, selectedCourse, assignmentType, "", 0, 0, 0, "", notes, textbook); //TODO: the information into the assignment object 
-		assignment.setId(assignmentId);
-		// fill in assignment
+		//TODO: the information into the assignment object 
+		Assignment assignment = new Assignment(
+		        assignmentId, assignmentName, selectedCourse, assignmentType,
+		        "", 0, 0, 0, "", notes, textbook);
 
+        //Store the assignment
+        DatabaseHandler dbHandler = new DatabaseHandler(activity);
 		if (activity.isEdit()) {
 			//TODO: Need to pass in the assignment ID
 			dbHandler.editAssignment(assignment);
@@ -163,6 +159,8 @@ public class EditAssignmentFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+        setRetainInstance(true);
+
 		View layout = inflater.inflate(R.layout.edit_assignment_fragment, container);
 
 		loadLocals(layout);
@@ -288,25 +286,8 @@ public class EditAssignmentFragment extends Fragment {
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-
-		setRetainInstance(true);
-
 		final Activity activity = getActivity();
 		final EditAssignmentActivity eActivity = (EditAssignmentActivity) activity;
-
-		final boolean isEdit = eActivity.isEdit();
-
-		if (isEdit) {
-			// Pick the assignment type in the spinner.
-			int selectedTypeIndex = 0;
-			for (int i = 0; i < typesArray.length; i++) {
-				if (typesArray[i].equals("Selected Type In Assignment!")) {
-					selectedTypeIndex = i;
-				}
-			}
-			typesSpinner.setSelection(selectedTypeIndex, false);
-		}
 
 		//TODO: Pull all the course names from the Database to fill the Course Name Spinner
 		DatabaseHandler dbHandler = new DatabaseHandler(getActivity());
@@ -374,6 +355,33 @@ public class EditAssignmentFragment extends Fragment {
 					Log.i("EditAssignmentFragment", "DoneBarListener.onCancel()");
 				}
 			});
+		}
+
+        /*
+         * Fragments will by default save quite a bit of state (like entry in
+         * EditTexts, checkbox state, etc.) so leverage that here.
+         */
+        super.onActivityCreated(savedInstanceState);
+        
+        
+		final boolean isEdit = eActivity.isEdit();
+		if (isEdit) {
+		    int id = eActivity.getAssignmentId();
+		    Assignment as = dbHandler.getAssignment(id);
+		    if (as == null) {
+		        /*
+		         * Something weird is probably happening with the database, if
+		         * we're editing an assignment whose ID does not belong to any
+		         * assignment in the database.
+		         */
+		        Log.e("EditAssignmentFragment", "No assignment by that id: " + id);
+		        Toast.makeText(eActivity, "Assignment not found.", Toast.LENGTH_SHORT).show();
+		        
+		        /*
+		         * Guess we'll have to forcibly finish out...
+		         */
+		        eActivity.finish();
+		    }
 		}
 	}
 }

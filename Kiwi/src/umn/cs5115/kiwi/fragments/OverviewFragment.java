@@ -8,28 +8,53 @@ import umn.cs5115.kiwi.MainActivity;
 import umn.cs5115.kiwi.R;
 import umn.cs5115.kiwi.adapter.OverviewListCursorAdapter;
 import umn.cs5115.kiwi.adapter.OverviewListCursorAdapter.TileInteractionListener;
+import umn.cs5115.kiwi.app.CustomOverviewListFragment;
+import umn.cs5115.kiwi.ui.OverviewEmptyView.CustomEmptyViewButtonListener;
 import android.app.Activity;
-import android.app.ListFragment;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.TextView;
 
-public class OverviewFragment extends ListFragment {
+public class OverviewFragment extends CustomOverviewListFragment {
 	private TileInteractionListener mListenerActivity;
+	private CustomEmptyViewButtonListener mEmptyViewListenerActivity;
 	private DbAndCursor assignments;
+	private boolean showFilterButton;
+	
+	/**
+	 * Generate a String to use as an exception message, specifying that this
+	 * fragment can only be added to activities implementing the given interface
+	 * class. We don't use hardcoded strings for these class names because if we
+	 * did, refactoring would be painful (maybe).
+	 * 
+	 * @param intfclass the interface needed to be implemented
+	 * @return a string
+	 */
+	private final String makeInterfaceErrorString(Class<?> intfclass) {
+	    String fmt = "%s can only be attached to activities implementing %s";
+	    return String.format(fmt, getClass().getCanonicalName(), intfclass.getCanonicalName());
+	}
 	
 	@Override
 	public void onAttach(Activity activity) {
 		if (activity instanceof TileInteractionListener) {
 			mListenerActivity = (TileInteractionListener) activity;
-			super.onAttach(activity);
 		} else {
-			throw new ClassCastException("OverviewFragment can only be attached to Activities implementing TileInteractionListener!");
+			throw new ClassCastException(makeInterfaceErrorString(TileInteractionListener.class));
 		}
+		
+		if (activity instanceof CustomEmptyViewButtonListener) {
+		    mEmptyViewListenerActivity = (CustomEmptyViewButtonListener) activity;
+		} else {
+		    throw new ClassCastException(makeInterfaceErrorString(CustomEmptyViewButtonListener.class));
+		}
+
+        super.onAttach(activity);
 	}
 
 	@Override
@@ -43,11 +68,30 @@ public class OverviewFragment extends ListFragment {
 	}
 
 	@Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.overview_fragment_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        /*
+         * Hide or show the filter button, depending on the state of the
+         * showFilterButton variable.
+         */
+        menu.findItem(R.id.filter).setVisible(showFilterButton);
+        
+        super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
 		// Don't kill this fragment when screen is rotated, etc.
 		setRetainInstance(true);
+		
+		setHasOptionsMenu(true);
 	}
 	
 	private FilterDefinition getFilter() {
@@ -58,10 +102,24 @@ public class OverviewFragment extends ListFragment {
 	public void refreshFilter() {
 		OverviewListCursorAdapter adapter = (OverviewListCursorAdapter) getListView().getAdapter();
 		FilterDefinition defn = getFilter();
-		assignments = new DatabaseHandler(getActivity()).getRawAssignmentCursor(defn.toQueryString(), defn.getOrderString());
+		DatabaseHandler dbh = new DatabaseHandler(getActivity());
+		assignments = dbh.getRawAssignmentCursor(defn.toQueryString(), defn.getOrderString());
 		adapter.changeCursor(assignments.cursor);
-		// need this?
-		//adapter.notifyDataSetChanged();
+		
+		/*
+		 * Only show the Filter button if there are not zero assignments
+		 * in the database altogether.
+		 */
+		boolean thereAreAssignments = dbh.getAssignmentCount() > 0;
+		showFilterButton = thereAreAssignments;
+		getEmptyView().setFilterButtonShown(showFilterButton);
+		
+		/*
+		 * Cause the options menu to be re-upped, therefore allowing us to
+		 * change the visibility of the filter button as necessary. See
+		 * onPrepareOptionsMenu above.
+		 */
+		getActivity().invalidateOptionsMenu();
 	}
 
 	@Override
@@ -69,11 +127,6 @@ public class OverviewFragment extends ListFragment {
 		super.onActivityCreated(savedInstanceState);
 		
 		setListShown(true);
-		setEmptyText(null);
-
-		TextView emptyView = (TextView)getListView().getEmptyView();
-		emptyView.setText(getResources().getString(R.string.overview_no_assignments));
-		emptyView.setTextSize(18f);
 		
 		getListView().setDivider(null);
 		
@@ -101,7 +154,6 @@ public class OverviewFragment extends ListFragment {
 			}
 		});
 		getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
-
 			@Override
 			public boolean onItemLongClick(AdapterView<?> adapter, View longClickedView, int position, long id) {
 				Object tag = longClickedView.getTag();
@@ -113,5 +165,7 @@ public class OverviewFragment extends ListFragment {
 				return false;
 			}
 		});
+		
+		setEmptyViewButtonClickListener(mEmptyViewListenerActivity);
 	}
 }

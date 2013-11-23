@@ -30,6 +30,7 @@
     <string name="default_assignment_type">Assignment type (optional)</string>
     <string name="assignment_tile_popup_button_title">Options</string>
     <string name="textbook">Textbook</string>
+    <string name="overview_empty_icon_description">No assignments are visible.</string>
     <string name="overview_no_assignments">Nothing to see here.\n(Change the filter settings, or add a new assignment!)</string>
     <string name="default_course">Course (optional)</string>
     <string name="assignment_tile_popup_view">View</string>

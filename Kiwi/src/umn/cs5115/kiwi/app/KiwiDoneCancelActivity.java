@@ -1,4 +1,4 @@
-package umn.cs5115.kiwi.activity;
+package umn.cs5115.kiwi.app;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +7,7 @@ import umn.cs5115.kiwi.R;
 import umn.cs5115.kiwi.Utils;
 import umn.cs5115.kiwi.ui.DoneBar.DoneBarListenable;
 import umn.cs5115.kiwi.ui.DoneBar.DoneBarListener;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -23,9 +24,12 @@ import android.view.ViewGroup.LayoutParams;
  * @author Mike Wadsten
  *
  */
+@SuppressLint("DefaultLocale")
 public abstract class KiwiDoneCancelActivity extends KiwiActivity implements DoneBarListenable {
     private List<DoneBarListener> doneListeners;
     private boolean contentViewSet;
+    
+    private final DoneBarListener mDoneCancelHandler = getDoneCancelHandler();
     
     /**
      * Get the layout resource to be used in the activity. The return value
@@ -95,7 +99,12 @@ public abstract class KiwiDoneCancelActivity extends KiwiActivity implements Don
         return !hasCancelButton();
     }
 
+    private int getHandlerCallCount = 0;
     final private DoneBarListener getDoneCancelHandler() {
+        if (++getHandlerCallCount > 1) {
+            String msg = String.format("getDoneCancelHandler has been called %d times. This is unnecessary.", getHandlerCallCount);
+            Log.w("KiwiDoneCancelActivity", msg, new Throwable(msg));
+        }
         return new DoneBarListener() {
             @Override
             public boolean onDone() {
@@ -171,9 +180,9 @@ public abstract class KiwiDoneCancelActivity extends KiwiActivity implements Don
         setContentView(getLayoutResource());
         
         if (hasCancelButton()) {
-            Utils.makeActionBarDoneCancel(getActionBar(), getDoneCancelHandler());
+            Utils.makeActionBarDoneCancel(getActionBar(), mDoneCancelHandler);
         } else {
-            Utils.makeActionBarDoneButton(getActionBar(), getDoneCancelHandler());
+            Utils.makeActionBarDoneButton(getActionBar(), mDoneCancelHandler);
         }
         
         doneListeners = new ArrayList<DoneBarListener>();
@@ -196,9 +205,18 @@ public abstract class KiwiDoneCancelActivity extends KiwiActivity implements Don
         
         if (usesCancelMenu() && id == R.id.cancel) {
             // User clicked the Cancel menu button. Trigger the handler.
-            onCancel();
+            mDoneCancelHandler.onCancel();
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        /*
+         * Pressing the Back button equates to pressing Cancel.
+         */
+        mDoneCancelHandler.onCancel();
+        super.onBackPressed();
     }
 }

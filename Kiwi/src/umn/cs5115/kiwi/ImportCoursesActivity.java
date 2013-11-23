@@ -1,6 +1,6 @@
 package umn.cs5115.kiwi;
 
-import umn.cs5115.kiwi.activity.KiwiDoneCancelActivity;
+import umn.cs5115.kiwi.app.KiwiDoneCancelActivity;
 import android.widget.Toast;
 
 public class ImportCoursesActivity extends KiwiDoneCancelActivity {

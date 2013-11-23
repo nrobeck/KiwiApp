@@ -16,6 +16,7 @@
         android:drawableLeft="@drawable/ic_action_done"
         android:drawablePadding="8dp"
         android:gravity="center_vertical"
+        android:textSize="18sp"
         android:text="Done" />
 
 </FrameLayout>

@@ -1,4 +1,4 @@
-package umn.cs5115.kiwi.activity;
+package umn.cs5115.kiwi.app;
 
 import umn.cs5115.kiwi.R;
 import android.app.Activity;

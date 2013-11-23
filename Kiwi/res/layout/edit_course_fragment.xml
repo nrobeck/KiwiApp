@@ -24,6 +24,8 @@
 	        android:ems="10"
 	        android:layout_marginTop="4dp"
 	        android:layout_marginBottom="4dp"
+	        android:maxLength="60"
+	        android:inputType="textCapWords|textEmailSubject|textAutoCorrect"
 	        android:hint="Course name" />
 	
 	    <EditText
@@ -33,6 +35,8 @@
 	        android:ems="10"
 	        android:layout_marginTop="4dp"
 	        android:layout_marginBottom="4dp"
+	        android:maxLength="15"
+	        android:inputType="textCapCharacters|textNoSuggestions|textEmailSubject"
 	        android:hint="Course designation (e.g. CSCI 5115)" />
 	    
 	    <TextView

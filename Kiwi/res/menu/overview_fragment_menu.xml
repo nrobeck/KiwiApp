@@ -1,20 +1,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item
+        android:id="@+id/filter"
+        android:title="Filter list"
+        android:showAsAction="always|withText"
+        android:icon="@drawable/ic_action_filter" />
     
     <item
         android:id="@+id/add_assignment"
         android:title="Add assignment"
-        android:showAsAction="ifRoom|withText"
-        android:icon="@drawable/ic_action_new_event" />
+        android:showAsAction="always|withText"
+        android:icon="@drawable/ic_action_new_assignment" />
     
     <item
         android:id="@+id/add_course"
         android:title="Add course"
-        android:showAsAction="never" />
-    
-    <item
-        android:id="@+id/filter"
-        android:title="Filter list"
-        android:showAsAction="never" />
+        android:icon="@drawable/ic_action_new_course"
+        android:showAsAction="ifRoom|withText" />
     
     <item
         android:id="@+id/action_settings"

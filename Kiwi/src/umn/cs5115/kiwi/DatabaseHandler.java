@@ -3,6 +3,7 @@ package umn.cs5115.kiwi;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -17,6 +18,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		}
 		
 		public void close() {
+		    cursor.close();
 			db.close();
 		}
 	}
@@ -61,8 +63,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     
     public static final String ASSIGNMENTS_QUERY;
     static {
-    	ASSIGNMENTS_QUERY = String.format("SELECT a.*, c.%s as cname from %s AS a LEFT OUTER JOIN %s AS c ON a.%s = c.%s",
-    										DESIGNATION, TABLE_ASSIGNMENTS, TABLE_COURSES, COURSE, KEY_ID);
+    	ASSIGNMENTS_QUERY = String.format(
+    	    // assignments.*, courses.designation as cname from assignments .. courses ON assignments.course = courses._id
+    	    "SELECT %1$s.*, %2$s.%3$s as cname from %1$s LEFT OUTER JOIN %2$s ON %1$s.%4$s = %2$s.%5$s",
+    	    TABLE_ASSIGNMENTS, TABLE_COURSES, DESIGNATION, COURSE, KEY_ID);
     }
 
     public DatabaseHandler(Context context) {
@@ -120,6 +124,29 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     //database operations
+    public int getAssignmentCount() {
+        SQLiteDatabase db = this.getReadableDatabase();//get the database
+        int count = (int) DatabaseUtils.queryNumEntries(db, TABLE_ASSIGNMENTS);
+        db.close();
+        return count;
+    }
+    
+    public Assignment getAssignment(int assignmentId) {
+        String filterString = String.format("%s.%s = %d", TABLE_ASSIGNMENTS, KEY_ID, assignmentId);
+        DbAndCursor dbc = getRawAssignmentCursor(filterString);
+        Cursor cursor = dbc.cursor;
+        if (!cursor.moveToFirst()) {
+            /*
+             * if moveToFirst returns null, the cursor is empty, and there must
+             * be no assignment with that ID in the database.
+             */
+            return null;
+        } else {
+            Assignment as = convertToAssignment(cursor);
+            dbc.close();
+            return as;
+        }
+    }
 
     //add new assignment to the database
     public void addAssignment(Assignment a) {
@@ -301,17 +328,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
     
     public int getCourseCount() {
-    	SQLiteDatabase db = this.getReadableDatabase();
-    	
-    	Cursor c = db.rawQuery(String.format("SELECT count(*) from %s", DatabaseHandler.TABLE_COURSES), null);
-    	c.moveToFirst();
-    	
-    	int count = c.getInt(0);
-    	
-    	c.close();
-    	db.close();
-    	
-    	return count;
+        SQLiteDatabase db = this.getReadableDatabase();//get the database
+        int count = (int) DatabaseUtils.queryNumEntries(db, TABLE_COURSES);
+        db.close();
+        return count;
     }
 
     // return courses in an array of course objects, pass null to get all courses
