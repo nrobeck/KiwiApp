@@ -71,11 +71,25 @@ public class FilterDefinition implements Parcelable {
     	
     	// Make a piece of the query string to filter on courses
     	ArrayList<String> coursechecks = new ArrayList<String>();
-    	if (courses != null) {
+    	if (courses == null) {
+    	    /*
+    	     * No course filtering specified? No course filtering will be done!
+    	     */
+    	} else if (courses.length == 0) {
+    	    /*
+    	     * The user seems to have deliberately chosen to hide every course.
+    	     * We know that (without crazy external intervention) course IDs
+    	     * will all be 1+. We also have a 'None' option in the course
+    	     * checkboxes, so that must be unchecked. Guess the user wants to
+    	     * see absolutely no assignments!
+    	     */
+    	    coursechecks.add(String.format("%s = -10389", DatabaseHandler.COURSE));
+    	} else {
 	    	for (int course : courses) {
 	    		coursechecks.add(String.format("%s = %d", DatabaseHandler.COURSE, course));
 	    	}
     	}
+    	
     	String course = null;
     	if (!coursechecks.isEmpty()) {
     		course = "(" + TextUtils.join(" OR ", coursechecks) + ")";
@@ -83,14 +97,41 @@ public class FilterDefinition implements Parcelable {
     	
     	// Make a piece of the query string to filter on types
     	ArrayList<String> typechecks = new ArrayList<String>();
-    	if (types != null) {
+    	if (types == null) {
+    	    /*
+    	     * No type filtering given? No type filtering will be done!
+    	     */
+    	}
+    	else if (types.length == 0) {
+    	    /*
+    	     * The user seems to have deliberately chosen to hide every type.
+    	     * This includes the 'no type selected' option.
+    	     */
+    	    typechecks.add(String.format("%s = '_NotAType!!_'", DatabaseHandler.COURSE));
+    	} else {
         	for (String type : types) {
-        		typechecks.add(String.format("%s == '%s'", DatabaseHandler.TYPE, type));
+        	    /*
+        	     * If assignment type is inserted as null, we need to check
+        	     * for it against `null`, not ''.
+        	     */
+        	    if (type == null) {
+        	        typechecks.add(String.format("%s is null", DatabaseHandler.TYPE));
+        	    } else {
+                    typechecks.add(String.format("%s = '%s'", DatabaseHandler.TYPE, type));
+        	    }
         	}
     	}
-    	String type = null;
-    	if (!typechecks.isEmpty()) {
-    		type = "(" + TextUtils.join(" OR ", typechecks) + ")";
+    	
+    	/*
+    	 * If typechecks is empty, we do no filtering on assignment type.
+    	 * (Remember, if the types array is EMPTY but not null, this means
+    	 * they want to hide every type...)
+    	 */
+    	String type;
+    	if (typechecks.isEmpty()) {
+    	    type = null;
+    	} else {
+    	    type = "(" + TextUtils.join(" OR ", typechecks) + ")";
     	}
     	
     	// Construct the query string.

@@ -55,6 +55,8 @@
 	        android:ems="10"
 	        android:layout_marginTop="4dp"
 	        android:layout_marginBottom="4dp"
+	        android:maxLength="100"
+            android:inputType="textCapWords|textEmailSubject|textAutoCorrect"
 	        android:hint="Location" />
 	    
 	    <LinearLayout
@@ -146,54 +148,61 @@
 	        
 	    </LinearLayout>
 	
-	    <TextView
-	        android:id="@+id/textView1"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="Repetition"
-	        android:textAppearance="?android:attr/textAppearanceLarge" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Course days"
+            style="?android:attr/listSeparatorTextViewStyle"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 	    
 	    <CheckBox
 	        android:id="@+id/check_box_sunday"
-	        android:layout_width="wrap_content"
+	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:text="Sunday" />
 	 
 	    <CheckBox
 	        android:id="@+id/check_box_monday"
-	        android:layout_width="wrap_content"
+	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:text="Monday" />
 	 
 	    <CheckBox
 	        android:id="@+id/check_box_tuesday"
-	        android:layout_width="wrap_content"
+	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:text="Tuesday" />
 	    
 	    <CheckBox
 	        android:id="@+id/check_box_wednesday"
-	        android:layout_width="wrap_content"
+	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:text="Wednesday" />
 	 
 	    <CheckBox
 	        android:id="@+id/check_box_thursday"
-	        android:layout_width="wrap_content"
+	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:text="Thursday" />
 	 
 	    <CheckBox
 	        android:id="@+id/check_box_friday"
-	        android:layout_width="wrap_content"
+	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:text="Friday" />
 	    
 	    <CheckBox
 	        android:id="@+id/check_box_saturday"
-	        android:layout_width="wrap_content"
+	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:text="Saturday" />
+	    
+	    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Other course information"
+            style="?android:attr/listSeparatorTextViewStyle"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 	    
 	    <EditText
 	        android:id="@+id/textbooks"
@@ -202,6 +211,7 @@
 	        android:ems="10"
 	        android:layout_marginTop="4dp"
 	        android:layout_marginBottom="4dp"
+            android:inputType="textCapWords|textAutoCorrect"
 	        android:hint="Textbooks (Optional)" />
 	    
 	    <EditText
@@ -211,6 +221,7 @@
 	        android:ems="10"
 	        android:layout_marginTop="4dp"
 	        android:layout_marginBottom="4dp"
+	        android:inputType="textCapSentences"
 	        android:hint="Notes (Optional)" />
 	
 	</LinearLayout>

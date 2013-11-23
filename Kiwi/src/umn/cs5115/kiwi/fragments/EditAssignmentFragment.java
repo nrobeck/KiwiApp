@@ -30,6 +30,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.datetimepicker.date.DatePickerDialog;
@@ -382,6 +383,8 @@ public class EditAssignmentFragment extends Fragment {
 		         */
 		        eActivity.finish();
 		    }
+		    
+		    ((EditText)findView(R.id.editText1)).setText(as.getName());
 		}
 	}
 }
