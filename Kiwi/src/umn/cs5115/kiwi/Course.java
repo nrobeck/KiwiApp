@@ -15,6 +15,7 @@ public class Course {
 	private String notes;
 	private String DELIMITER = "\n";
 	private String textbooks;
+	private String color;
 
 	// empty constructor
 	public Course() {
@@ -23,7 +24,7 @@ public class Course {
 	// constructor
 	public Course(int id, String title, String courseDesignation, String startTime, String endTime,
 			String cLocation, String sDate, String eDate, String cRRule,
-			String n, String tb) {
+			String n, String tb, String color) {
 		this.id = id;
 		this.courseTitle = title;
 		this.courseDesignation = courseDesignation;
@@ -35,6 +36,7 @@ public class Course {
 		this.rRule = cRRule;
 		this.notes = n;
 		this.textbooks = tb;
+		this.setColor(color);
 	}
 
 	// getters for each of the Course elements
@@ -155,5 +157,13 @@ public class Course {
 		}
 	
 		this.textbooks = newTextbooks;
+	}
+
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
 	}
 }

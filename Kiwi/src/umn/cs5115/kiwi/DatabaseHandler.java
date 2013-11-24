@@ -50,6 +50,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public static final String REMINDER_TIME = "reminder_time";
     public static final String NOTES = "notes";
     public static final String COMPLETED = "completed";
+    //public static final String COLOR = "color"; //Do not know if this is the way to do this
 
     // Course table column names
     public static final String DESIGNATION = "designation";
@@ -60,13 +61,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public static final String END_DATE = "end_date";
     public static final String RRULE = "recurrence_rule";
     public static final String TEXTBOOKS = "textbooks";
+    public static final String COURSE_COLOR = "course_color";
     
     public static final String ASSIGNMENTS_QUERY;
     static {
     	ASSIGNMENTS_QUERY = String.format(
     	    // assignments.*, courses.designation as cname from assignments .. courses ON assignments.course = courses._id
-    	    "SELECT %1$s.*, %2$s.%3$s as cname from %1$s LEFT OUTER JOIN %2$s ON %1$s.%4$s = %2$s.%5$s",
-    	    TABLE_ASSIGNMENTS, TABLE_COURSES, DESIGNATION, COURSE, KEY_ID);
+    	    "SELECT %1$s.*, %2$s.%3$s, %2$s.%6$s as cname from %1$s LEFT OUTER JOIN %2$s ON %1$s.%4$s = %2$s.%5$s",
+    	    TABLE_ASSIGNMENTS, TABLE_COURSES, DESIGNATION, COURSE, KEY_ID, COURSE_COLOR);
     }
 
     public DatabaseHandler(Context context) {
@@ -90,6 +92,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + NOTES + " TEXT,"
                 + TEXTBOOKS + " TEXT,"
                 + COMPLETED + " INTEGER"
+               // + COLOR + " TEXT"
                 + ")";
         db.execSQL(CREATE_ASSIGNMENTS_TABLE);
 
@@ -105,7 +108,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + END_DATE + " TEXT,"
                 + RRULE + " TEXT,"
                 + NOTES + " TEXT,"
-                + TEXTBOOKS + " TEXT"
+                + TEXTBOOKS + " TEXT,"
+                + COURSE_COLOR + " TEXT"
                 + ")";
 
 
@@ -166,6 +170,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         cv.put(NOTES, a.getNotes());//assignment notes
         cv.put(TEXTBOOKS, a.getTextbook());//assignment textbook
         cv.put(COMPLETED, a.isCompleted());//assignment done
+    //    cv.put(COLOR, a.getColor());
 
         //insert the assignment into the assignment table
         db.insert(TABLE_ASSIGNMENTS, null, cv);//insert the assignment
@@ -199,6 +204,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         cv.put(NOTES, a.getNotes());//assignment notes
         cv.put(TEXTBOOKS, a.getTextbook());//assignment textbooks
         cv.put(COMPLETED, a.isCompleted());//assignment done
+     //   cv.put(COLOR, a.getColor());
 
         //modify the assignment in the assignment table
         db.update(TABLE_ASSIGNMENTS, cv,KEY_ID + " = ?", new String[] {String.valueOf(a.getId())} );//overwrite the assignment from the table with the same id as Assignment a
@@ -251,22 +257,23 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     //convert a cursor row into an Assignment object (used in filterAssignments method)
     public static Assignment convertToAssignment(Cursor c){
         Assignment a = new Assignment();//assignment object to return
-
+        
         //move fields from the cursor row into the assignment object
-        a.setId(c.getInt(0));
-        a.setName(c.getString(1));
-        a.setCourse(c.getInt(2));
-        a.setType(c.getString(3));
-        a.setDueDate(c.getString(4));
-        a.setHours(c.getInt(5));
-        a.setMinutes(c.getInt(6));
-        a.setReminder(c.getInt(7));
-        a.setReminderTime(c.getString(8));
-        a.setNotes(c.getString(9));
-        a.setTextbook(c.getString(10));
-        a.setCompleted(c.getInt(11) != 0);
-        a.setCourseDesignation(c.getString(12));
-
+        a.setId(c.getInt(0)); //0
+        a.setName(c.getString(c.getColumnIndex(NAME))); //1
+        a.setCourse(c.getInt(c.getColumnIndex(COURSE))); //2 
+        a.setType(c.getString(c.getColumnIndex(TYPE))); //3
+        a.setDueDate(c.getString(c.getColumnIndex(DUE_DATE))); //4
+        a.setHours(c.getInt(c.getColumnIndex(DUE_HOURS))); //5
+        a.setMinutes(c.getInt(c.getColumnIndex(DUE_MINUTES))); //6
+        a.setReminder(c.getInt(c.getColumnIndex(REMINDER))); //7
+        a.setReminderTime(c.getString(c.getColumnIndex(REMINDER_TIME))); //8
+        a.setNotes(c.getString(c.getColumnIndex(NOTES))); //9
+        a.setTextbook(c.getString(c.getColumnIndex(TEXTBOOKS))); //10
+        a.setCompleted(c.getInt(c.getColumnIndex(COMPLETED)) != 0); //11
+        a.setCourseDesignation(c.getString(12)); //12
+        a.setColor(c.getString(13));
+        
         return a;
     }
 
@@ -286,6 +293,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         cv.put(RRULE, c.getRRule());
         cv.put(NOTES, c.getNotes());
         cv.put(TEXTBOOKS, c.getTextbooksString());
+        cv.put(COURSE_COLOR, c.getColor());
 
         //insert the course into the courses table
         db.insert(TABLE_COURSES, null, cv);//insert the course
@@ -321,6 +329,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         cv.put(RRULE, c.getRRule());
         cv.put(NOTES, c.getNotes());
         cv.put(TEXTBOOKS, c.getTextbooksString());
+        cv.put(COURSE_COLOR, c.getColor());
 
         //modify the assignment in the assignment table
         db.update(TABLE_COURSES, cv,KEY_ID + " = ?", new String[] {String.valueOf(c.getId())} );//overwrite the course from the table with the same id as course c
@@ -376,6 +385,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         co.setRRule(c.getString(8));
         co.setNotes(c.getString(9));
         co.setTextbooks(c.getString(10));
+        co.setColor(c.getString(11));
 
         return co;
     }

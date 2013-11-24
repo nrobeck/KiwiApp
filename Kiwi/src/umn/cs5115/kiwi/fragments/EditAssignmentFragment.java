@@ -140,13 +140,27 @@ public class EditAssignmentFragment extends Fragment {
 		//       }
 
 		int assignmentId = activity.getAssignmentId();
+		
+		DatabaseHandler dbHandler = new DatabaseHandler(activity);
+		Course[] coursesArray = dbHandler.getCourses();
+	//	for(int i = 0; i < coursesArray.length; i++) {
+	//		if(coursesArray[i].getCourseTitle().equals()) { //TODO: This might have to change
+	//			
+	//		}
+	//	}
+		String courseColor = "black";
+		if(selectedCourse >= 1) {
+			courseColor = coursesArray[selectedCourse - 1].getColor();
+			//String courseColor = "green";
+		}
+		
 		//TODO: the information into the assignment object 
 		Assignment assignment = new Assignment(
 		        assignmentId, assignmentName, selectedCourse, assignmentType,
-		        "", 0, 0, 0, "", notes, textbook);
+		        "", 0, 0, 0, "", notes, textbook, courseColor);
 
         //Store the assignment
-        DatabaseHandler dbHandler = new DatabaseHandler(activity);
+        
 		if (activity.isEdit()) {
 			//TODO: Need to pass in the assignment ID
 			dbHandler.editAssignment(assignment);

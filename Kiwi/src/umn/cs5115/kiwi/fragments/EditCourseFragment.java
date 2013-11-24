@@ -197,9 +197,25 @@ public class EditCourseFragment extends Fragment {
                     
                 	//TODO: Checking to make sure the data if valid
                 	
+                    DatabaseHandler dbHandler = new DatabaseHandler(activity);
+                    //Getting the course color
+                    //modulus
+                    String[] colorsForCourses = getResources().getStringArray(R.array.course_color_strings);
+                    String courseColor = colorsForCourses[dbHandler.getCourseCount() % colorsForCourses.length];
+                    
                 	//TODO: Put the information into a Course object and store it
-                    Course course = new Course(0, courseName, courseDesignation, startTime, endTime, location, startDate, endDate, rRule, notes, textbooks);
-                	DatabaseHandler dbHandler = new DatabaseHandler(activity);
+                    Course course = new Course(0, 
+                    						   courseName, 
+                    						   courseDesignation, 
+                    						   startTime, 
+                    						   endTime, 
+                    						   location, 
+                    						   startDate, 
+                    						   endDate, 
+                    						   rRule, 
+                    						   notes, 
+                    						   textbooks, 
+                    						   courseColor);
                 	dbHandler.addCourse(course);
                 	return true;
                     

@@ -14,6 +14,7 @@ public class Assignment {
 	private String notes;
 	private String textbook;
 	private boolean completed;
+	private String color;
 	
 	private String courseDesignation;
 
@@ -24,7 +25,7 @@ public class Assignment {
 	// constructor
 	public Assignment(int id, String name, int course, String type,
 			String due_date, int h, int m, int reminder, String reminder_time,
-			String n, String tb) {
+			String n, String tb, String c) {
 		this.id = id;
 		this.name = name;
 		this.course = course;
@@ -36,6 +37,7 @@ public class Assignment {
 		this.reminder_time = reminder_time;
 		this.notes = n;
 		this.textbook = tb;
+		this.color = c;
 	}
 
 	// getters for each of the Assignment elements
@@ -151,5 +153,13 @@ public class Assignment {
 		String obj = super.toString();
 		obj += " " + name;
 		return obj;
+	}
+
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
 	}
 }

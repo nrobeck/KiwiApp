@@ -35,4 +35,12 @@
     <string name="default_course">Course (optional)</string>
     <string name="assignment_tile_popup_view">View</string>
     <string name="assignment_title_empty_error">You must enter a name</string>
+    <string-array name="course_color_strings">
+        <item >orange</item>
+        <item >green</item>
+        <item >blue</item>
+        <item >red</item>
+        <item >purple</item>
+        <item >yellow</item>
+    </string-array>
 </resources>

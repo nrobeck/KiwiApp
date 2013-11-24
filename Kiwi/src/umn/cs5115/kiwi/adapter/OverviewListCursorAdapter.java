@@ -4,6 +4,7 @@ import umn.cs5115.kiwi.Assignment;
 import umn.cs5115.kiwi.DatabaseHandler;
 import umn.cs5115.kiwi.R;
 import android.content.Context;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -81,11 +82,63 @@ public class OverviewListCursorAdapter extends CursorAdapter {
 		aDate 	= (TextView) view.findViewById(R.id.assignment_date);
 		aCourse = (TextView) view.findViewById(R.id.course_name);
 		aType 	= (TextView) view.findViewById(R.id.assignment_type);
+		CheckBox completedCB = (CheckBox) view.findViewById(R.id.completed_check_box);
+		
+		// Set the color of the TextViews
+		//DatabaseHandler dbHandler = new DatabaseHandler(context);
+		
+	//	dbHandler.
+		Resources res = context.getResources();
+		if(assignment.getColor() == null) {
+			//Skip the rest of this code
+		}
+		else if(assignment.getColor().equals("orange")) {
+			aName.setTextColor(res.getColor(R.color.orange));
+			aDate.setTextColor(res.getColor(R.color.orange));
+			aCourse.setTextColor(res.getColor(R.color.orange));
+			aType.setTextColor(res.getColor(R.color.orange));
+			completedCB.setTextColor(res.getColor(R.color.orange));
+		}
+		else if(assignment.getColor().equals("green")) {
+			aName.setTextColor(res.getColor(R.color.green));
+			aDate.setTextColor(res.getColor(R.color.green));
+			aCourse.setTextColor(res.getColor(R.color.green));
+			aType.setTextColor(res.getColor(R.color.green));
+			completedCB.setTextColor(res.getColor(R.color.green));
+		}
+		else if(assignment.getColor().equals("blue")) {
+			aName.setTextColor(res.getColor(R.color.blue));
+			aDate.setTextColor(res.getColor(R.color.blue));
+			aCourse.setTextColor(res.getColor(R.color.blue));
+			aType.setTextColor(res.getColor(R.color.blue));
+			completedCB.setTextColor(res.getColor(R.color.blue));
+		}
+		else if(assignment.getColor().equals("red")) {
+			aName.setTextColor(res.getColor(R.color.red));
+			aDate.setTextColor(res.getColor(R.color.red));
+			aCourse.setTextColor(res.getColor(R.color.red));
+			aType.setTextColor(res.getColor(R.color.red));
+			completedCB.setTextColor(res.getColor(R.color.red));
+		}
+		else if(assignment.getColor().equals("purple")){
+			aName.setTextColor(res.getColor(R.color.purple));
+			aDate.setTextColor(res.getColor(R.color.purple));
+			aCourse.setTextColor(res.getColor(R.color.purple));
+			aType.setTextColor(res.getColor(R.color.purple));
+			completedCB.setTextColor(res.getColor(R.color.purple));
+		}
+		else if(assignment.getColor().equals("yellow")) {
+			aName.setTextColor(res.getColor(R.color.yellow));
+			aDate.setTextColor(res.getColor(R.color.yellow));
+			aCourse.setTextColor(res.getColor(R.color.yellow));
+			aType.setTextColor(res.getColor(R.color.yellow));
+			completedCB.setTextColor(res.getColor(R.color.yellow));
+		}
 		
 		// Set their text values
 		aName.setText(assignment.getName());
 		aDate.setText(assignment.getDueDate());
-		aCourse.setText(assignment.getCourseDesignation());
+		aCourse.setText(assignment.getCourseDesignation()); //I do not know how this value was being stored but it broke when I changed to put in the course colors
 		aType.setText(assignment.getType());
 
 		// Get the CheckBox
