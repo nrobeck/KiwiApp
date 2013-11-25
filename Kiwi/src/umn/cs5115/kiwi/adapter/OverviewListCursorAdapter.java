@@ -90,6 +90,11 @@ public class OverviewListCursorAdapter extends CursorAdapter {
 	//	dbHandler.
 		Resources res = context.getResources();
 		if(assignment.getColor() == null) {
+			aName.setTextColor(res.getColor(R.color.black));
+			aDate.setTextColor(res.getColor(R.color.black));
+			aCourse.setTextColor(res.getColor(R.color.black));
+			aType.setTextColor(res.getColor(R.color.black));
+			completedCB.setTextColor(res.getColor(R.color.black));
 			//Skip the rest of this code
 		}
 		else if(assignment.getColor().equals("orange")) {
