@@ -398,7 +398,32 @@ public class EditAssignmentFragment extends Fragment {
 		        eActivity.finish();
 		    }
 		    
+		    //Filling in the information for the assignment
 		    ((EditText)findView(R.id.editText1)).setText(as.getName());
+		    
+		    String[] assignmentTypes = getResources().getStringArray(R.array.assignment_types);
+		    int assignmentTypePos = 0;
+		    for(int i = 0; i < assignmentTypes.length; i++) {
+		    	if(assignmentTypes[i].equals(as.getType())) {
+		    		assignmentTypePos = i;
+		    		assignmentTypePos++; //This is because of the hint dummy item in the spinner
+		    	}
+		    }
+		    ((Spinner)findView(R.id.assignment_types_spinner)).setSelection(assignmentTypePos);
+		    
+		    int assignmentCoursePos = 0;
+		    for(int i = 0; i < coursesArray.length; i++) {
+		    	if(coursesArray[i].getCourseDesignation().equals(as.getCourseDesignation())) { //This is assuming all are unique
+		    		assignmentCoursePos = i;
+		    		assignmentCoursePos++; //This is because of the hint dummy item in the spinner
+		    	}
+		    }
+		    ((Spinner)findView(R.id.courses_spinner)).setSelection(assignmentCoursePos);
+		    
+		    ((EditText)findView(R.id.assignment_notes_field)).setText(as.getNotes());
+		    
+		    //TODO: Need to pull in the textbook info too
+		    //TODO: Need to pull in the due date and time
 		}
 	}
 }
