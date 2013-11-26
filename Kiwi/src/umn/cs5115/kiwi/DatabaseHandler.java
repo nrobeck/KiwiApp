@@ -139,17 +139,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String filterString = String.format("%s.%s = %d", TABLE_ASSIGNMENTS, KEY_ID, assignmentId);
         DbAndCursor dbc = getRawAssignmentCursor(filterString);
         Cursor cursor = dbc.cursor;
+        Assignment as = null;
         if (!cursor.moveToFirst()) {
             /*
              * if moveToFirst returns null, the cursor is empty, and there must
              * be no assignment with that ID in the database.
              */
-            return null;
         } else {
-            Assignment as = convertToAssignment(cursor);
-            dbc.close();
-            return as;
+            as = convertToAssignment(cursor);
         }
+
+        dbc.close();
+        return as;
     }
 
     //add new assignment to the database
