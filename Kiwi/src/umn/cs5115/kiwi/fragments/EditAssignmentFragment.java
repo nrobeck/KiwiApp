@@ -30,7 +30,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.datetimepicker.date.DatePickerDialog;
@@ -67,7 +66,7 @@ public class EditAssignmentFragment extends Fragment {
 	}
 
 	private boolean onActionBarDone(final EditAssignmentActivity activity) {
-		int selectedCourse = 0;
+		int selectedCourseId = 0;
 		String assignmentType = "";
 		String assignmentName = "";
 		String textbook = "";
@@ -78,13 +77,13 @@ public class EditAssignmentFragment extends Fragment {
 		if(courseNameSpinner.getSelectedItemPosition() > 0) {
 			Object tag = courseNameSpinner.getSelectedView().getTag();
 			if (tag instanceof Integer) {
-				selectedCourse = (Integer)tag;
+				selectedCourseId = (Integer)tag;
 			} else {
 				Log.e("EditAssignmentFragment", "selected course view tag is not Integer!");
 			}
 		}
 		else {
-			selectedCourse = 0;
+			selectedCourseId = 0;
 		}
 
 		// Assignment type
@@ -142,22 +141,10 @@ public class EditAssignmentFragment extends Fragment {
 		int assignmentId = activity.getAssignmentId();
 		
 		DatabaseHandler dbHandler = new DatabaseHandler(activity);
-		Course[] coursesArray = dbHandler.getCourses();
-	//	for(int i = 0; i < coursesArray.length; i++) {
-	//		if(coursesArray[i].getCourseTitle().equals()) { //TODO: This might have to change
-	//			
-	//		}
-	//	}
-		String courseColor = "black";
-		if(selectedCourse >= 1) {
-			courseColor = coursesArray[selectedCourse - 1].getColor();
-			//String courseColor = "green";
-		}
 		
-		//TODO: the information into the assignment object 
 		Assignment assignment = new Assignment(
-		        assignmentId, assignmentName, selectedCourse, assignmentType,
-		        "", 0, 0, 0, "", notes, textbook, courseColor);
+		        assignmentId, assignmentName, selectedCourseId, assignmentType,
+		        "", 0, 0, 0, "", notes, textbook);
 
         //Store the assignment
         

@@ -25,7 +25,7 @@ public class Assignment {
 	// constructor
 	public Assignment(int id, String name, int course, String type,
 			String due_date, int h, int m, int reminder, String reminder_time,
-			String n, String tb, String c) {
+			String n, String tb) {
 		this.id = id;
 		this.name = name;
 		this.course = course;
@@ -37,7 +37,6 @@ public class Assignment {
 		this.reminder_time = reminder_time;
 		this.notes = n;
 		this.textbook = tb;
-		this.color = c;
 	}
 
 	// getters for each of the Assignment elements
