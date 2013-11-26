@@ -12,6 +12,7 @@ import umn.cs5115.kiwi.EditAssignmentActivity;
 import umn.cs5115.kiwi.R;
 import umn.cs5115.kiwi.adapter.DummyItemAdapter;
 import umn.cs5115.kiwi.assignment.AssignmentUtils;
+import umn.cs5115.kiwi.assignment.AssignmentUtils.EmptyErrorTextWatcher;
 import umn.cs5115.kiwi.ui.DateButton;
 import umn.cs5115.kiwi.ui.DoneBar.DoneBarListenable;
 import umn.cs5115.kiwi.ui.DoneBar.DoneBarListener;
@@ -19,9 +20,7 @@ import umn.cs5115.kiwi.ui.TimeButton;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -168,32 +167,10 @@ public class EditAssignmentFragment extends Fragment {
 		loadLocals(layout);
 
 		final EditText assignmentNameEditText = (EditText) layout.findViewById(R.id.editText1); //Assignment Name   
-		assignmentNameEditText.addTextChangedListener(new TextWatcher() {
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				/*
-				 * Call setError with null or the error message, depending on the
-				 * contents of assignmentNameEditText. (Otherwise, the error state does not
-				 * clear itself out automatically until space is pressed...)
-				 */
-				if (TextUtils.isEmpty(s)) {
-					assignmentNameEditText.setError(getResources().getString(R.string.assignment_title_empty_error));
-				} else {
-					assignmentNameEditText.setError(null);
-				}
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
-				// pass
-			}
-
-			@Override
-			public void afterTextChanged(Editable s) {
-				// pass
-			}
-		});
+		assignmentNameEditText.addTextChangedListener(
+				new EmptyErrorTextWatcher(
+						assignmentNameEditText,
+						getResources().getString(R.string.assignment_title_empty_error)));
 
 		typesSpinner  = (Spinner)layout.findViewById(R.id.assignment_types_spinner);
 		typesArray = getResources().getStringArray(R.array.assignment_types);

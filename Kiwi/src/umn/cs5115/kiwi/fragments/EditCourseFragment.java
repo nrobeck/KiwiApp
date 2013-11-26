@@ -3,31 +3,31 @@ package umn.cs5115.kiwi.fragments;
 import java.util.Calendar;
 import java.util.Locale;
 
-import com.android.datetimepicker.date.DatePickerDialog;
-import com.android.datetimepicker.date.DatePickerDialog.OnDateSetListener;
-import com.android.datetimepicker.time.RadialPickerLayout;
-import com.android.datetimepicker.time.TimePickerDialog.OnTimeSetListener;
-
 import umn.cs5115.kiwi.Course;
 import umn.cs5115.kiwi.DatabaseHandler;
-import umn.cs5115.kiwi.EditAssignmentActivity;
 import umn.cs5115.kiwi.EditCourseActivity;
 import umn.cs5115.kiwi.R;
 import umn.cs5115.kiwi.assignment.AssignmentUtils;
+import umn.cs5115.kiwi.assignment.AssignmentUtils.EmptyErrorTextWatcher;
 import umn.cs5115.kiwi.ui.DateButton;
-import umn.cs5115.kiwi.ui.TimeButton;
 import umn.cs5115.kiwi.ui.DoneBar.DoneBarListenable;
 import umn.cs5115.kiwi.ui.DoneBar.DoneBarListener;
+import umn.cs5115.kiwi.ui.TimeButton;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.android.datetimepicker.date.DatePickerDialog;
+import com.android.datetimepicker.date.DatePickerDialog.OnDateSetListener;
+import com.android.datetimepicker.time.RadialPickerLayout;
+import com.android.datetimepicker.time.TimePickerDialog.OnTimeSetListener;
 
 public class EditCourseFragment extends Fragment {
 
@@ -44,6 +44,11 @@ public class EditCourseFragment extends Fragment {
 				minute = current.get(Calendar.MINUTE);
 		final int incrementedMonth = month + 2;
 		final int incrementedHour = hour + 1;
+		
+		EditText courseName = (EditText)layout.findViewById(R.id.editText1);
+		courseName.addTextChangedListener(new EmptyErrorTextWatcher(courseName, "Must give a course name."));
+		EditText courseDes = (EditText)layout.findViewById(R.id.editText2);
+		courseDes.addTextChangedListener(new EmptyErrorTextWatcher(courseDes, "Must give a course designation."));
 		
 		final DateButton startDB = (DateButton)layout.findViewById(R.id.start_date_button);
 		final DateButton endDB = (DateButton)layout.findViewById(R.id.end_date_button);
@@ -150,10 +155,12 @@ public class EditCourseFragment extends Fragment {
                 	String textbooks = "";
                     
                 	//TODO: Pull the information out of the activity's fields
-                	EditText courseNameEditText = (EditText) activity.findViewById(R.id.editText1); //Course Name   
+                	EditText courseNameEditText = (EditText) getView().findViewById(R.id.editText1); //Course Name   
                 	courseName = courseNameEditText.getText().toString();
                     //Put this on each of the required fields and change the Toast message to say what is wrong
                     if (courseName.isEmpty()) {
+                    	courseNameEditText.requestFocus(); // jump there
+                    	courseNameEditText.setError("Must give a course name.");
                         Toast.makeText(getActivity(), "No Course Name Specified", Toast.LENGTH_SHORT).show();
                         return false;
                     }
@@ -162,6 +169,8 @@ public class EditCourseFragment extends Fragment {
                     courseDesignation = courseDesignationEditText.getText().toString();
                     //Put this on each of the required fields and change the Toast message to say what is wrong
                     if (courseDesignation.isEmpty()) {
+                    	courseDesignationEditText.requestFocus(); // jump there
+                    	courseDesignationEditText.setError("Must give a course designation.");
                         Toast.makeText(getActivity(), "No Course Designation Specified", Toast.LENGTH_SHORT).show();
                         return false;
                     }
