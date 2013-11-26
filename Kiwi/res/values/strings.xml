@@ -43,4 +43,6 @@
         <item >purple</item>
         <item >yellow</item>
     </string-array>
+    <string name="undo">Undo</string>
+    <string name="retry">Retry</string>
 </resources>
