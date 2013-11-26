@@ -1,6 +1,8 @@
 package umn.cs5115.kiwi.assignment;
 
-import umn.cs5115.kiwi.R;
+import java.util.Calendar;
+import java.util.Date;
+
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -12,6 +14,16 @@ import com.android.datetimepicker.date.DatePickerDialog;
 import com.android.datetimepicker.time.TimePickerDialog;
 
 public class AssignmentUtils {
+	public static final Date END_OF_SEMESTER;
+	static {
+		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.YEAR, 2013);
+		cal.set(Calendar.MONTH, 11); // december. it's stupid
+		cal.set(Calendar.DAY_OF_MONTH, 31);
+		cal.set(Calendar.HOUR_OF_DAY, 23);
+		cal.set(Calendar.MINUTE, 59);
+		END_OF_SEMESTER = cal.getTime();
+	}
 	public static void showDateEditDialog(FragmentManager manager, int year, int month, int day, DatePickerDialog.OnDateSetListener listener) {
 		DatePickerDialog dialog = DatePickerDialog.newInstance(listener, year, month, day);
 		
