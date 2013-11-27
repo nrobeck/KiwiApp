@@ -11,8 +11,7 @@
      distributed under the License is distributed on an "AS IS" BASIS,
      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
      See the License for the specific language governing permissions and
-     limitations under the License.
--->
+     limitations under the License.-->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -34,17 +33,17 @@
 
             <TextView
                 android:id="@+id/course_name"
-                android:paddingBottom="0dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true" />
+                android:layout_alignParentLeft="true"
+                android:paddingBottom="0dp" />
 
             <TextView
                 android:id="@+id/assignment_date"
-                android:paddingBottom="0dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true" />
+                android:layout_alignParentRight="true"
+                android:paddingBottom="0dp" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -62,7 +61,7 @@
                 android:gravity="center_horizontal" />
         </RelativeLayout>
 
-       	<RelativeLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -72,27 +71,27 @@
 
             <TextView
                 android:id="@+id/assignment_type"
-                android:paddingTop="0dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_centerVertical="true" />
+                android:layout_centerVertical="true"
+                android:paddingTop="0dp" />
         </RelativeLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:descendantFocusability="blocksDescendants"
-            android:orientation="horizontal" >
+            android:descendantFocusability="blocksDescendants" >
 
             <CheckBox
                 android:id="@+id/completed_check_box"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="3"
-                android:gravity="center_vertical"
+                android:layout_alignParentLeft="true"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
+                android:gravity="center_vertical"
+                android:padding="8dp"
                 android:text="Completed"
                 android:textSize="18sp" />
 
@@ -100,11 +99,12 @@
                 android:id="@+id/assignment_tile_textbook_identifier"
                 android:layout_width="48dp"
                 android:layout_height="match_parent"
+                android:layout_toLeftOf="@+id/ass"
                 android:contentDescription="@string/textbook"
-                android:gravity="center_vertical"
-                android:padding="12dp"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
+                android:gravity="center_vertical"
+                android:padding="12dp"
                 android:scaleType="center"
                 android:src="@drawable/textbook_icon" />
 
@@ -112,11 +112,12 @@
                 android:id="@+id/assignment_tile_notes_identifier"
                 android:layout_width="48dp"
                 android:layout_height="match_parent"
-                android:padding="12dp"
-                android:gravity="center_vertical"
+                android:layout_toLeftOf="@+id/assignment_tile_popup_button"
+                android:contentDescription="@string/notes"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                android:contentDescription="@string/notes"
+                android:gravity="center_vertical"
+                android:padding="12dp"
                 android:scaleType="center"
                 android:src="@drawable/ic_4_collections_view_as_list" />
 
@@ -124,54 +125,16 @@
                 android:id="@+id/assignment_tile_popup_button"
                 android:layout_width="48dp"
                 android:layout_height="match_parent"
-                android:gravity="center_vertical|right"
-                android:padding="12dp"
+                android:layout_alignParentRight="true"
                 android:background="@drawable/list_selection_background"
                 android:focusable="false"
-                android:scaleType="center"
                 android:focusableInTouchMode="false"
+                android:gravity="center_vertical|right"
+                android:padding="12dp"
+                android:scaleType="center"
                 android:src="@drawable/ic_action_overflow"
                 android:text="@string/assignment_tile_popup_button_title" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <!--
-    <LinearLayout
-        android:id="@+id/top"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:orientation="horizontal">
+        </RelativeLayout>
         
-        <ImageView
-            android:id="@+id/image_view"
-            android:layout_height="match_parent"
-            android:layout_width="0dp"
-            android:gravity="center_vertical"
-            android:layout_weight="1"
-            android:scaleType="center"/>
-
-        <TextView
-            android:id="@+id/title_view"
-            android:layout_height="0dp"
-            android:layout_width="0dp"
-            android:gravity="center"
-            android:layout_weight="2"
-            android:textStyle="bold"
-            android:textSize="22sp"
-            android:textColor="#333"/>
-
     </LinearLayout>
-    -->
-
-    <include layout="@layout/assignment_tile_expanded" />
-
-    <ImageView
-        android:id="@+id/expandContractIcon"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_gravity="center_horizontal"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ic_action_expand"
-        android:visibility="gone" />
-
 </LinearLayout>

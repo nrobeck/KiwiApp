@@ -3,6 +3,8 @@ package umn.cs5115.kiwi;
 import umn.cs5115.kiwi.FilterDefinition.SortBy;
 import umn.cs5115.kiwi.adapter.OverviewListCursorAdapter.TileInteractionListener;
 import umn.cs5115.kiwi.app.KiwiActivity;
+import umn.cs5115.kiwi.fragments.DeleteCoursesFragment;
+import umn.cs5115.kiwi.fragments.EditAssignmentFragment;
 import umn.cs5115.kiwi.fragments.FilterDialogFragment;
 import umn.cs5115.kiwi.fragments.FilterDialogFragment.FilterListener;
 import umn.cs5115.kiwi.fragments.OverviewFragment;
@@ -23,8 +25,8 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
-import android.widget.PopupMenu;
 import android.widget.Toast;
+import android.widget.ViewSwitcher;
 
 import com.cocosw.undobar.UndoBarController;
 import com.cocosw.undobar.UndoBarController.UndoListener;
@@ -36,6 +38,23 @@ public class MainActivity extends KiwiActivity
                         CustomEmptyViewButtonListener {
 	private FilterDefinition filter;
 	private DatabaseHandler database;
+	
+	private static final String OVERVIEW_TAG = "overview_frag";
+	private static final String VIEW_ASSIGN_TAG = "view_frag";
+	
+	/**
+	 * Get a reference to a fragment to show, in order to view that assignment's
+	 * information. Pretty much you're going to want to instantiate a new
+	 * ViewAssignmentFragment, and give it identifying information about the
+	 * assignment that's being viewed.
+	 * @param viewingAssignment the assignment that's being viewed
+	 * @return a fragment that will "view" the given assignment
+	 */
+	private Fragment getViewAssignmentFragment(Assignment viewingAssignment) {
+	    // Until we have a ViewAssignmentFragment to work with, just load
+	    // a DeleteCoursesFragment. It's sad, I know.
+	    return new DeleteCoursesFragment();
+	}
 	
 	public FilterDefinition getFilter() {
 		return this.filter;
@@ -67,7 +86,7 @@ public class MainActivity extends KiwiActivity
 		// But we may not be able to call vibrate if hasVibrator is false.
 		// TODO: Check if this is the case...
 		if (vib.hasVibrator())
-			vib.vibrate(15);
+			vib.vibrate(20);
     	
 		String toast = String.format("Marked '%s' as%s completed.", assignment.getName(), (isCompleted ? "" : " not"));
     	
@@ -84,6 +103,11 @@ public class MainActivity extends KiwiActivity
 	public void viewAssignment(Assignment assignment) {
 		// TODO: Switch view to show ViewAssignmentFragment.
 		Log.d("MainActivity", "Viewing assignment " + assignment);
+		
+		FragmentTransaction ft = getFragmentManager().beginTransaction();
+		ft.setCustomAnimations(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
+		ft.replace(R.id.base, getViewAssignmentFragment(assignment));
+		ft.commit();
 	}
 
 	@Override
@@ -105,11 +129,15 @@ public class MainActivity extends KiwiActivity
 		.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				Log.d("MainActivity", "Deleting assignment " + assignment);
-				final OverviewFragment overview = (OverviewFragment)getFragmentManager().findFragmentById(R.id.main_list_fragment);
+				final OverviewFragment overview = (OverviewFragment)getFragmentManager().findFragmentByTag(OVERVIEW_TAG);
+                Toast.makeText(MainActivity.this, "Deleted assignment " + assignment.getName(), Toast.LENGTH_SHORT).show();
+                database.removeAssignment(assignment);
+                
+                if (overview == null) {
+                    return;
+                }
 				overview.getListView().setEnabled(false);
 				overview.getListView().setClickable(false);
-				database.removeAssignment(assignment);
-				Toast.makeText(MainActivity.this, "Deleted assignment " + assignment.getName(), Toast.LENGTH_SHORT).show();
 				ViewCompat.setHasTransientState(deletingView, true);
 				Animation anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.assignment_tile_remove);
 				anim.setAnimationListener(new AnimationListener() {
@@ -155,6 +183,11 @@ public class MainActivity extends KiwiActivity
         	if (filter != null) {
         		Log.d("MainActivity", "Found filter: " + filter.toQueryString());
         	}
+        } else {
+            OverviewFragment overview = new OverviewFragment();
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.add(R.id.base, overview, OVERVIEW_TAG);
+            ft.commit();
         }
         
         if (filter == null) {
@@ -165,7 +198,10 @@ public class MainActivity extends KiwiActivity
     }
     
     private void refreshOverviewFragment() {
-		OverviewFragment overview = (OverviewFragment)getFragmentManager().findFragmentById(R.id.main_list_fragment);
+		OverviewFragment overview = (OverviewFragment)getFragmentManager().findFragmentByTag(OVERVIEW_TAG);
+		if (overview == null) {
+		    return;
+		}
 		overview.refreshFilter();
     }
 
@@ -223,6 +259,8 @@ public class MainActivity extends KiwiActivity
         	case R.id.action_settings:
         		startActivity(new Intent(this, AdvancedOptionsActivity.class));
         		return true;
+        	case android.R.id.home:
+        	    onBackPressed();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -287,5 +325,20 @@ public class MainActivity extends KiwiActivity
     @Override
     public void onClickFilter() {
         showFilterDialog();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Fragment overview = getFragmentManager().findFragmentByTag(OVERVIEW_TAG);
+        if (overview == null || overview.isDetached()) {
+            // We aren't viewing the overview page. Switch back to it...
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.setCustomAnimations(R.anim.slide_in_from_left, R.anim.slide_out_to_right);
+            OverviewFragment f = new OverviewFragment();
+            ft.replace(R.id.base, f, OVERVIEW_TAG);
+            ft.commit();
+            return;
+        }
+        super.onBackPressed();
     }
 }

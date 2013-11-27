@@ -53,6 +53,8 @@ public class OverviewFragment extends CustomOverviewListFragment {
 		} else {
 		    throw new ClassCastException(makeInterfaceErrorString(CustomEmptyViewButtonListener.class));
 		}
+		
+		getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
 
         super.onAttach(activity);
 	}

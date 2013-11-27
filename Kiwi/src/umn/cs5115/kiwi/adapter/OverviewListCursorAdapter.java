@@ -65,6 +65,7 @@ public class OverviewListCursorAdapter extends CursorAdapter {
 
 	@Override
 	public void bindView(final View view, final Context context, Cursor cursor) {
+	    view.setHapticFeedbackEnabled(false);
 		final Assignment assignment = DatabaseHandler.convertToAssignment(cursor);
 		
 		// Fade out completed assignments
