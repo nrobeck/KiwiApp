@@ -1,9 +1,12 @@
 package umn.cs5115.kiwi.fragments;
 
 import umn.cs5115.kiwi.Assignment;
+import umn.cs5115.kiwi.EditAssignmentActivity;
 import umn.cs5115.kiwi.R;
+import umn.cs5115.kiwi.Utils;
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -90,7 +93,17 @@ public class ViewAssignmentFragment extends Fragment {
                 try {
                     final SwipeDetector detector = new SwipeDetector(e1, e2, velocityX, velocityY);
                     if (detector.isRightSwipe()) {
+                        // Swipe to right -> go back to the assignment list.
                         getActivity().onBackPressed();
+                    } else if (detector.isLeftSwipe()) {
+                        // Swipe to left -> launch edit assignment activity.
+                        Intent editIntent = Utils.goToAddAssignment(getActivity().getBaseContext());
+                        editIntent
+                            .putExtra(EditAssignmentActivity.EXTRA_IS_EDIT, true)
+                            .putExtra(EditAssignmentActivity.EXTRA_ASSIGNMENT, mAssignment.getId());
+                        // Start the edit activity from the main activity, so the
+                        // launch animation is used (sliding views)
+                        getActivity().startActivity(editIntent);
                     } else {
                         return false;
                     }
