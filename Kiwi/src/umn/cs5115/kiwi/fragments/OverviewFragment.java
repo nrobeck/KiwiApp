@@ -162,7 +162,7 @@ public class OverviewFragment extends CustomOverviewListFragment {
 					boolean destCompletion = !a.isCompleted();
 					mListenerActivity.onChangeCompletion(a, destCompletion);
 				}
-				return false;
+				return true;
 			}
 		});
 		
