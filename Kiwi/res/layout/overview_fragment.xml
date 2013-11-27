@@ -15,7 +15,7 @@
 ** limitations under the License.
 */-->
 
-<FrameLayout
+<umn.cs5115.kiwi.ui.SlidingFrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:kiwi="http://schemas.android.com/apk/res/umn.cs5115.kiwi"
     android:id="@+id/listContainer"
@@ -39,4 +39,4 @@
         kiwi:icon="@drawable/icon_kiwi"
         kiwi:text="@string/overview_no_assignments" />
 
-</FrameLayout>
+</umn.cs5115.kiwi.ui.SlidingFrameLayout>

@@ -10,6 +10,7 @@ import umn.cs5115.kiwi.adapter.OverviewListCursorAdapter;
 import umn.cs5115.kiwi.adapter.OverviewListCursorAdapter.TileInteractionListener;
 import umn.cs5115.kiwi.app.CustomOverviewListFragment;
 import umn.cs5115.kiwi.ui.OverviewEmptyView.CustomEmptyViewButtonListener;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,6 +22,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 
 public class OverviewFragment extends CustomOverviewListFragment {
+    private static final String TAG = "OverviewFragment";
 	private TileInteractionListener mListenerActivity;
 	private CustomEmptyViewButtonListener mEmptyViewListenerActivity;
 	private DbAndCursor assignments;
@@ -42,6 +44,8 @@ public class OverviewFragment extends CustomOverviewListFragment {
 	
 	@Override
 	public void onAttach(Activity activity) {
+	    Log.d(TAG, "onAttach");
+	    
 		if (activity instanceof TileInteractionListener) {
 			mListenerActivity = (TileInteractionListener) activity;
 		} else {
@@ -53,8 +57,6 @@ public class OverviewFragment extends CustomOverviewListFragment {
 		} else {
 		    throw new ClassCastException(makeInterfaceErrorString(CustomEmptyViewButtonListener.class));
 		}
-		
-		getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
 
         super.onAttach(activity);
 	}
@@ -95,8 +97,21 @@ public class OverviewFragment extends CustomOverviewListFragment {
 		
 		setHasOptionsMenu(true);
 	}
-	
-	private FilterDefinition getFilter() {
+    
+	@Override
+    public void onResume() {
+        super.onResume();
+        if (isAdded()) {
+            ActionBar ab = getActivity().getActionBar();
+            // Disable the Up button on the activity.
+            ab.setDisplayHomeAsUpEnabled(false);
+//            ab.setTitle(getActivity().getTitle());
+            ab.setTitle("Assignments");
+            ab.setSubtitle(null);
+        }
+    }
+
+    private FilterDefinition getFilter() {
 		MainActivity activity = (MainActivity)getActivity();
 		return activity.getFilter();
 	}

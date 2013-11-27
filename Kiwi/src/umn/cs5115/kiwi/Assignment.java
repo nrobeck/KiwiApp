@@ -1,6 +1,9 @@
 package umn.cs5115.kiwi;
 
-public class Assignment {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Assignment implements Parcelable {
 	// private variables
 	private int id;
 	private String name;
@@ -161,4 +164,61 @@ public class Assignment {
 	public void setColor(String color) {
 		this.color = color;
 	}
+	
+	//==========================================================================
+	// Methods required by Parcelable interface.
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(name);
+        dest.writeInt(course);
+        dest.writeString(type);
+        dest.writeString(due_date);
+        dest.writeInt(hours);
+        dest.writeInt(minutes);
+        dest.writeInt(reminder);
+        dest.writeString(reminder_time);
+        dest.writeString(notes);
+        dest.writeString(textbook);
+        dest.writeByte((byte) (completed ? 1 : 0));
+        dest.writeString(color);
+        dest.writeString(courseDesignation);
+    }
+    
+    /**
+     * Constructor for the CREATOR inner class.
+     * @param in the Parcel to read from to create this assignment object
+     */
+    private Assignment(Parcel in) {
+        id = in.readInt();
+        name = in.readString();
+        course = in.readInt();
+        type = in.readString();
+        due_date = in.readString();
+        hours = in.readInt();
+        minutes = in.readInt();
+        reminder = in.readInt();
+        reminder_time = in.readString();
+        notes = in.readString();
+        textbook = in.readString();
+        completed = in.readByte() != 0;
+        color = in.readString();
+        courseDesignation = in.readString();
+    }
+    
+    public static final Parcelable.Creator<Assignment> CREATOR = new Parcelable.Creator<Assignment>() {
+        public Assignment createFromParcel(Parcel in) {
+            return new Assignment(in);
+        }
+
+        public Assignment[] newArray(int size) {
+            return new Assignment[size];
+        }
+    };
 }

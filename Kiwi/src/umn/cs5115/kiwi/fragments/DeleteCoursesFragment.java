@@ -3,13 +3,11 @@ package umn.cs5115.kiwi.fragments;
 import umn.cs5115.kiwi.Course;
 import umn.cs5115.kiwi.DatabaseHandler;
 import umn.cs5115.kiwi.R;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -23,17 +21,9 @@ import android.widget.Toast;
 public class DeleteCoursesFragment extends Fragment {
 	
 	@Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        Log.d("DeleteCoursesFragment", "--------- onAttach --------");
-        
-        getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
-    }
-
-    @Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.delete_courses, null);
+		return inflater.inflate(R.layout.delete_courses, container);
 	}
 	
     @Override
@@ -99,4 +89,5 @@ public class DeleteCoursesFragment extends Fragment {
 			}
 		});
     }
+    
 }

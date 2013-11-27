@@ -3,11 +3,10 @@ package umn.cs5115.kiwi;
 import umn.cs5115.kiwi.FilterDefinition.SortBy;
 import umn.cs5115.kiwi.adapter.OverviewListCursorAdapter.TileInteractionListener;
 import umn.cs5115.kiwi.app.KiwiActivity;
-import umn.cs5115.kiwi.fragments.DeleteCoursesFragment;
-import umn.cs5115.kiwi.fragments.EditAssignmentFragment;
 import umn.cs5115.kiwi.fragments.FilterDialogFragment;
 import umn.cs5115.kiwi.fragments.FilterDialogFragment.FilterListener;
 import umn.cs5115.kiwi.fragments.OverviewFragment;
+import umn.cs5115.kiwi.fragments.ViewAssignmentFragment;
 import umn.cs5115.kiwi.ui.OverviewEmptyView.CustomEmptyViewButtonListener;
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -26,7 +25,6 @@ import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.widget.Toast;
-import android.widget.ViewSwitcher;
 
 import com.cocosw.undobar.UndoBarController;
 import com.cocosw.undobar.UndoBarController.UndoListener;
@@ -51,9 +49,20 @@ public class MainActivity extends KiwiActivity
 	 * @return a fragment that will "view" the given assignment
 	 */
 	private Fragment getViewAssignmentFragment(Assignment viewingAssignment) {
-	    // Until we have a ViewAssignmentFragment to work with, just load
-	    // a DeleteCoursesFragment. It's sad, I know.
-	    return new DeleteCoursesFragment();
+	    return ViewAssignmentFragment.newInstance(viewingAssignment);
+	}
+	
+	/**
+	 * Takes in a FragmentTransaction and calls setCustomAnimations on that
+	 * transaction to ensure consistent animations.
+	 * @param ft the fragment transaction to set animations on
+	 */
+	private void setSwapAnimations(FragmentTransaction ft) {
+        ft.setCustomAnimations(
+            R.anim.slide_in_from_right_objanim, 
+            R.anim.slide_out_to_left_objanim,
+            R.anim.slide_in_from_left_objanim,
+            R.anim.slide_out_to_right_objanim);
 	}
 	
 	public FilterDefinition getFilter() {
@@ -105,8 +114,9 @@ public class MainActivity extends KiwiActivity
 		Log.d("MainActivity", "Viewing assignment " + assignment);
 		
 		FragmentTransaction ft = getFragmentManager().beginTransaction();
-		ft.setCustomAnimations(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
-		ft.replace(R.id.base, getViewAssignmentFragment(assignment));
+		setSwapAnimations(ft);
+		ft.replace(R.id.base, getViewAssignmentFragment(assignment), VIEW_ASSIGN_TAG);
+		ft.addToBackStack(null);
 		ft.commit();
 	}
 
@@ -202,7 +212,8 @@ public class MainActivity extends KiwiActivity
 		if (overview == null) {
 		    return;
 		}
-		overview.refreshFilter();
+		if (overview.isVisible())
+		    overview.refreshFilter();
     }
 
     @Override
@@ -329,16 +340,13 @@ public class MainActivity extends KiwiActivity
 
     @Override
     public void onBackPressed() {
-        Fragment overview = getFragmentManager().findFragmentByTag(OVERVIEW_TAG);
-        if (overview == null || overview.isDetached()) {
-            // We aren't viewing the overview page. Switch back to it...
-            FragmentTransaction ft = getFragmentManager().beginTransaction();
-            ft.setCustomAnimations(R.anim.slide_in_from_left, R.anim.slide_out_to_right);
-            OverviewFragment f = new OverviewFragment();
-            ft.replace(R.id.base, f, OVERVIEW_TAG);
-            ft.commit();
-            return;
+        FragmentManager fm = getFragmentManager();
+        if (fm.getBackStackEntryCount() > 0) {
+            FragmentTransaction transaction = fm.beginTransaction();
+            fm.popBackStack();
+            transaction.commit();
+        } else {
+            super.onBackPressed();
         }
-        super.onBackPressed();
     }
 }
