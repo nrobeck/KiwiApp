@@ -254,23 +254,29 @@ public class MainActivity extends KiwiActivity
 
     @Override
     public void onClickAddCourses(View buttonView) {
-        PopupMenu popup = new PopupMenu(this, buttonView);
-        popup.getMenuInflater().inflate(R.menu.overview_add_course_popup_menu, popup.getMenu());
-
-        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            public boolean onMenuItemClick(final MenuItem item) {
-                switch (item.getItemId()) {
-                case R.id.add_course_menu_add:
-                    Utils.goToAddCourse(MainActivity.this);
-                    return true;
-                case R.id.add_menu_course_import:
-                    startActivity(new Intent(MainActivity.this, ImportCoursesActivity.class));
-                    return true;
-                }
-                return true;
-            }
-        });
-        popup.show();
+//        PopupMenu popup = new PopupMenu(this, buttonView);
+//        popup.getMenuInflater().inflate(R.menu.overview_add_course_popup_menu, popup.getMenu());
+//
+//        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+//            public boolean onMenuItemClick(final MenuItem item) {
+//                switch (item.getItemId()) {
+//                case R.id.add_course_menu_add:
+//                    Utils.goToAddCourse(MainActivity.this);
+//                    return true;
+//                case R.id.add_menu_course_import:
+//                    startActivity(new Intent(MainActivity.this, ImportCoursesActivity.class));
+//                    return true;
+//                }
+//                return true;
+//            }
+//        });
+//        popup.show();
+        
+        /*
+         * Until we have importing from calendar working, just go directly
+         * to the Add course activity.
+         */
+        Utils.goToAddCourse(this);
     }
 
     @Override
