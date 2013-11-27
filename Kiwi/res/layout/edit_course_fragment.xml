@@ -39,12 +39,13 @@
 	        android:inputType="textCapCharacters|textNoSuggestions|textEmailSubject"
 	        android:hint="Course designation (e.g. CSCI 5115)" />
 	    
+	    <!-- Scheduling -->
 	    <TextView
 	        android:id="@+id/textView3"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:text="Scheduling"
-	        android:layout_marginTop="16dp"
+	        android:layout_marginTop="@dimen/form_section_spacing"
 	        style="?android:attr/listSeparatorTextViewStyle"
 	        android:textAppearance="?android:attr/textAppearanceSmall" />
 	    
@@ -89,35 +90,6 @@
 	        android:id="@+id/spinner4"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content" />
-	    
-	    <TextView
-	        android:id="@+id/start_and_end_date_text_view"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:text="Course Start and End Date"
-	        style="?android:attr/listSeparatorTextViewStyle"
-	        android:textAppearance="?android:attr/textAppearanceSmall" />
-	    
-	    <LinearLayout
-	        android:orientation="horizontal"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content" >
-
-	        <umn.cs5115.kiwi.ui.DateButton
-	            android:id="@+id/start_date_button"
-	            style="@style/KiwiSpinner"
-	            android:gravity="center"
-	            android:layout_width="match_parent"
-	            android:layout_weight="1" />
-	        
-	        <umn.cs5115.kiwi.ui.DateButton
-	            android:id="@+id/end_date_button"
-	            style="@style/KiwiSpinner"
-	            android:gravity="center"
-	            android:layout_width="match_parent"
-	            android:layout_weight="1" />
-
-	    </LinearLayout>
 
 	    <TextView
 	        android:id="@+id/start_and_end_time_text_view"
@@ -125,6 +97,7 @@
 	        android:layout_height="wrap_content"
 	        android:text="Course Start and End Time"
 	        style="?android:attr/listSeparatorTextViewStyle"
+	        android:layout_marginTop="@dimen/form_section_spacing"
 	        android:textAppearance="?android:attr/textAppearanceSmall" />
 	    
 	    <LinearLayout
@@ -152,6 +125,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Course days"
+            android:layout_marginTop="@dimen/form_section_spacing"
             style="?android:attr/listSeparatorTextViewStyle"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 	    
@@ -197,11 +171,45 @@
 	        android:layout_height="wrap_content"
 	        android:text="Saturday" />
 	    
+	           
+        <!-- Start/End Date -->
+        
+        <TextView
+            android:id="@+id/start_and_end_date_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Course Start and End Date"
+            style="?android:attr/listSeparatorTextViewStyle"
+            android:layout_marginTop="@dimen/form_section_spacing"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+        
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <umn.cs5115.kiwi.ui.DateButton
+                android:id="@+id/start_date_button"
+                style="@style/KiwiSpinner"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_weight="1" />
+            
+            <umn.cs5115.kiwi.ui.DateButton
+                android:id="@+id/end_date_button"
+                style="@style/KiwiSpinner"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+	    
 	    <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Other course information"
             style="?android:attr/listSeparatorTextViewStyle"
+            android:layout_marginTop="@dimen/form_section_spacing"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
 	    <LinearLayout
