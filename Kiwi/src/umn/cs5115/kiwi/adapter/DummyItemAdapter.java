@@ -19,7 +19,7 @@ public abstract class DummyItemAdapter<T> extends ArrayAdapter<T> {
 	}
 
 	@Override
-	public int getCount() {
+	public final int getCount() {
 		return objects.size() + 1;
 	}
 
@@ -41,6 +41,10 @@ public abstract class DummyItemAdapter<T> extends ArrayAdapter<T> {
 		} else {
 			return -1;
 		}
+	}
+	
+	protected final T getDummy() {
+	    return dummy;
 	}
 
 	public DummyItemAdapter(Context context, int textViewResourceId, List<T> objects, T dummy) {

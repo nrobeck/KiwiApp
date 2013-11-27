@@ -13,7 +13,7 @@ public class Course {
 	private String endDate;
 	private String rRule;
 	private String notes;
-	private String DELIMITER = "\n";
+	public static final String TEXTBOOK_DELIMITER = "\n";
 	private String textbooks;
 	private String color;
 
@@ -86,8 +86,11 @@ public class Course {
 	}
 	
 	//read textbooks from the course as an array
-	public String[] getTextbooksArray(){
-		String deliminator = "[" + DELIMITER + "]+";//sets the DELIMITER character as a deliminator and treats multiple DELIMITER characters in a row as one deliminator
+	public String[] getTextbooksArray() {
+	    if (this.textbooks == null) {
+	        return new String[] {};
+	    }
+		String deliminator = "[" + TEXTBOOK_DELIMITER + "]+";//sets the DELIMITER character as a deliminator and treats multiple DELIMITER characters in a row as one deliminator
 		String[] textbookArray = this.textbooks.split(deliminator);//split the textbooks  string into an array of the individual books
 		return textbookArray;
 	}
@@ -140,19 +143,19 @@ public class Course {
 	
 	//add a textbook to the course
 	public void addTextbook(String textbook){
-		this.textbooks = this.textbooks + textbook + DELIMITER;//add textbook to the end of the string
+		this.textbooks = this.textbooks + textbook + TEXTBOOK_DELIMITER;//add textbook to the end of the string
 	}
 	
 	//remove textbook from the course
 	public void removeTextbook(String textbook){
 		String[] tb = getTextbooksArray();//get the array format of textbooks for the course
-		String newTextbooks = DELIMITER;//new string to set textbooks to after removal of the textbook
+		String newTextbooks = TEXTBOOK_DELIMITER;//new string to set textbooks to after removal of the textbook
 	
 		//loop through and add textbooks other than textbook to be removed to the new string
 		int i;
 		for(i = 0; i < tb.length; i++){
 			if(!tb[i].equals(textbook)){
-				newTextbooks = newTextbooks + tb[i] + DELIMITER;
+				newTextbooks = newTextbooks + tb[i] + TEXTBOOK_DELIMITER;
 			}
 		}
 	
@@ -165,5 +168,10 @@ public class Course {
 
 	public void setColor(String color) {
 		this.color = color;
+	}
+	
+	@Override
+	public String toString() {
+	    return String.format("<Course@%d %d %s>", hashCode(), this.id, this.courseTitle);
 	}
 }

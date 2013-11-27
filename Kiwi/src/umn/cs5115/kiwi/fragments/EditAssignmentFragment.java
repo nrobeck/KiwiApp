@@ -20,12 +20,15 @@ import umn.cs5115.kiwi.ui.TimeButton;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.Spinner;
@@ -65,7 +68,7 @@ public class EditAssignmentFragment extends Fragment {
 	}
 
 	private boolean onActionBarDone(final EditAssignmentActivity activity) {
-		int selectedCourseId = 0;
+		Course selectedCourse = null;
 		String assignmentType = "";
 		String assignmentName = "";
 		String textbook = "";
@@ -75,14 +78,14 @@ public class EditAssignmentFragment extends Fragment {
 		Spinner courseNameSpinner = (Spinner) activity.findViewById(R.id.courses_spinner); //Course Name
 		if(courseNameSpinner.getSelectedItemPosition() > 0) {
 			Object tag = courseNameSpinner.getSelectedView().getTag();
-			if (tag instanceof Integer) {
-				selectedCourseId = (Integer)tag;
+			if (tag instanceof Course) {
+				selectedCourse = (Course)tag;
 			} else {
-				Log.e("EditAssignmentFragment", "selected course view tag is not Integer!");
+				Log.e("EditAssignmentFragment", "selected course view tag is not Course object!");
 			}
 		}
 		else {
-			selectedCourseId = 0;
+			selectedCourse = null;
 		}
 
 		// Assignment type
@@ -141,6 +144,7 @@ public class EditAssignmentFragment extends Fragment {
 		
 		DatabaseHandler dbHandler = new DatabaseHandler(activity);
 		
+		int selectedCourseId = (selectedCourse == null) ? 0 : selectedCourse.getId();
 		Assignment assignment = new Assignment(
 		        assignmentId, assignmentName, selectedCourseId, assignmentType,
 		        "", 0, 0, 0, "", notes, textbook);
@@ -227,39 +231,6 @@ public class EditAssignmentFragment extends Fragment {
 				});
 			}
 		});
-
-		//TODO: Need to put in a textbook spinner in the edit assignment fragment
-		//TODO: Need to change the textbook spinner values to the current selected course's textbooks
-		//http://stackoverflow.com/questions/1337424/android-spinner-get-the-selected-item-change-event
-
-		/*		final Spinner textbookSpinner = (Spinner) getActivity().findViewById(R.id.textbook_spinner);	
-		Spinner courseNameSpinner = (Spinner) getActivity().findViewById(R.id.spinner2); //Course Name Spinner
-		courseNameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-			@Override
-			public void onItemSelected(AdapterView<?> parentView, View selectedItemView,
-					int position, long id) {
-				// TODO Change the textbook spinner contents
-				Log.i("EditAssignmentFragment", "Course Name Changed");
-
-				//TODO: Put the dummy first item in the spinner to (Textbook Name) even if there are no textbooks
-				List<String> textbookSpinnerArray =  new ArrayList<String>();
-				textbookSpinnerArray.add("ALL THE TEXTBOOKS");
-
-				ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, textbookSpinnerArray);
-			    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-			    Spinner Items = (Spinner) getActivity().findViewById(R.id.textbook_spinner);
-			    Items.setAdapter(adapter);
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> parentView) {
-				// TODO Auto-generated method stub
-
-			}
-		});
-		 */
-
 		return layout;
 	}
 
@@ -269,7 +240,7 @@ public class EditAssignmentFragment extends Fragment {
 		final EditAssignmentActivity eActivity = (EditAssignmentActivity) activity;
 
 		//TODO: Pull all the course names from the Database to fill the Course Name Spinner
-		DatabaseHandler dbHandler = new DatabaseHandler(getActivity());
+		final DatabaseHandler dbHandler = new DatabaseHandler(getActivity());
 		List<String> courseSpinnerArray =  new ArrayList<String>();
 		courseSpinnerArray.add("(Course)");
 		Course[] coursesArray = dbHandler.getCourses(); //TODO: This is NOT returning any courses when there have been courses add?
@@ -290,11 +261,11 @@ public class EditAssignmentFragment extends Fragment {
 			}
 		}
 
-		DummyItemAdapter<Course> adapter = new DummyItemAdapter<Course>(
+		DummyItemAdapter<Course> coursesAdapter = new DummyItemAdapter<Course>(
 				getActivity(), android.R.layout.simple_spinner_dropdown_item, coursesArray, new Course()) {
 			@Override
 			public Object getViewTag(Course obj) {
-				return Integer.valueOf(obj.getId());
+				return obj;
 			}
 
 			@Override
@@ -308,9 +279,87 @@ public class EditAssignmentFragment extends Fragment {
 				}
 			}
 		};
-		Spinner Items = (Spinner) findView(R.id.courses_spinner);
-		Items.setAdapter(adapter);
-		Items.setSelection(selectedCourseIndex, false);
+		Spinner courseSpinner = (Spinner) findView(R.id.courses_spinner);
+		courseSpinner.setAdapter(coursesAdapter);
+		courseSpinner.setSelection(selectedCourseIndex, false);
+		
+		final ArrayList<String> textbooksList = new ArrayList<String>();
+		final DummyItemAdapter<String> textbooksAdapter =
+		        new DummyItemAdapter<String>(getActivity(),
+		                android.R.layout.simple_spinner_dropdown_item,
+		                textbooksList, "Textbook (optional)") {
+
+            @Override
+            public Object getViewTag(String obj) {
+                if (obj.equals(getDummy())) {
+                    return null;
+                } else {
+                    return obj;
+                }
+            }
+            
+            @Override
+            public String getViewText(int position, String obj,
+                    boolean isDummy) {
+                return obj;
+            }
+        };
+        final Spinner textbooks = (Spinner) findView(R.id.textbook_spinner);
+        textbooks.setAdapter(textbooksAdapter);
+        textbooks.setSelection(0, false);
+        
+        courseSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> spinner, View selection,
+                    int pos, long id) {
+                Log.d("EditAssignmentFragment", "on course selected " + pos);
+                try {
+                    Object tag = selection.getTag();
+                    Course course = (Course)tag;
+                    
+                    DummyItemAdapter<?> textbooksAdapter = (DummyItemAdapter<?>)textbooks.getAdapter();
+                    String currentTextbook = (String) textbooks.getSelectedItem();
+                    Log.d("EditAssignmentFragment", "Current textbook: " + currentTextbook);
+
+                    textbooksList.clear();
+                    if (course == null || course.getId() == 0) {
+                        // Hide the textbook spinner, since it's pointless
+                        // without the course.
+                        textbooks.setVisibility(View.GONE);
+                    } else {
+                        textbooks.setVisibility(View.VISIBLE);
+                        // Add the course's textbooks to the list
+                        String[] textbooksArray = course.getTextbooksArray();
+                        for (String tb : textbooksArray) {
+                            textbooksList.add(tb);
+                        }
+                    }
+                    
+                    // This is a bit of a terrible hack. Select the textbook
+                    // that is the same as the old selected textbook...
+                    int index = textbooksList.indexOf(currentTextbook);
+                    if (index < 0) {
+                        index = 0;
+                    } else {
+                        index++;
+                    }
+                    Log.d("EditAssignmentFragment", "selecting textbook index " + index);
+
+                    textbooksAdapter.notifyDataSetChanged();
+                    textbooks.setSelection(index, true);
+                } catch (ClassCastException exc) {
+                    // tag on the views should be Course objects...
+                    Log.e("EditAssignmentFragment", "Caught ClassCastException", exc);
+                } catch (Exception e) {
+                    Log.e("EditAssignmentFragment", "Caught exception", e);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+            }
+        });
 
 		if (activity instanceof DoneBarListenable) {
 			final DoneBarListenable listenable = (DoneBarListenable) getActivity();
@@ -341,8 +390,6 @@ public class EditAssignmentFragment extends Fragment {
          * EditTexts, checkbox state, etc.) so leverage that here.
          */
         super.onActivityCreated(savedInstanceState);
-        
-        
 		final boolean isEdit = eActivity.isEdit();
 		if (isEdit) {
 		    int id = eActivity.getAssignmentId();
@@ -373,7 +420,7 @@ public class EditAssignmentFragment extends Fragment {
 		    		assignmentTypePos++; //This is because of the hint dummy item in the spinner
 		    	}
 		    }
-		    ((Spinner)findView(R.id.assignment_types_spinner)).setSelection(assignmentTypePos);
+		    typesSpinner.setSelection(assignmentTypePos);
 		    
 		    int assignmentCoursePos = 0;
 		    for(int i = 0; i < coursesArray.length; i++) {
@@ -382,7 +429,61 @@ public class EditAssignmentFragment extends Fragment {
 		    		assignmentCoursePos++; //This is because of the hint dummy item in the spinner
 		    	}
 		    }
-		    ((Spinner)findView(R.id.courses_spinner)).setSelection(assignmentCoursePos);
+		    
+		    int courseCount = coursesAdapter.getCount();
+		    int courseSelectionIndex = 0;
+		    Course selectedCourse = null;
+		    for (int i = 0; i < courseCount; i++) {
+		        Course c = coursesAdapter.getItem(i);
+		        if (c.getId() == as.getCourse()) {
+		            courseSelectionIndex = i;
+		            selectedCourse = c;
+		            break;
+		        }
+		    }
+		    courseSpinner.setSelection(courseSelectionIndex, false);
+		    
+		    /*
+		     * Now that the course has been selected, and presumably the
+		     * textbook adapter has been similarly updated, we must
+		     * select the textbook.
+		     */
+
+		    final Assignment assignment = as;
+            int textbookIndex = 0;
+            if (assignment.getTextbook() == null) {
+                /*
+                 * Just select the first (dummy) textbook...
+                 */
+                textbookIndex = 0;
+            } else if (selectedCourse == null) {
+                /*
+                 * Do nothing (no textbooks to choose from)
+                 */
+            } else {
+                String[] textbooksArray = selectedCourse.getTextbooksArray();
+                for (int i = 0; i < textbooksArray.length; i++) {
+                    String t = textbooksArray[i];
+                    if (assignment.getTextbook().equals(t)) {
+                        textbookIndex = i;
+                        break;
+                    }
+                }
+            }
+            
+            textbooksList.clear();
+            if (selectedCourse == null || selectedCourse.getId() == 0) {
+                // do nothing specific. We already cleared out the list
+            } else {
+                // Add the course's textbooks to the list
+                String[] textbooksArray = selectedCourse.getTextbooksArray();
+                for (String tb : textbooksArray) {
+                    textbooksList.add(tb);
+                }
+            }
+
+            ((DummyItemAdapter)textbooks.getAdapter()).notifyDataSetChanged();
+            textbooks.setSelection(textbookIndex + 1, false);
 		    
 		    ((EditText)findView(R.id.assignment_notes_field)).setText(as.getNotes());
 		    

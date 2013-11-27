@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:orientation="horizontal" >
+
+    <EditText
+        android:id="@+id/textbook_title"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:ems="10"
+        android:hint="Textbook title"
+        android:inputType="textAutoCorrect|textCapWords"
+        android:maxLength="100"
+        android:singleLine="true">
+        <requestFocus />
+    </EditText>
+
+    <ImageButton
+        android:id="@+id/remove_textbook_icon"
+        android:layout_width="96dp"
+        android:gravity="center_vertical"
+        android:padding="16dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/list_selection_background"
+        android:scaleType="center"
+        android:src="@drawable/ic_action_cancel" />
+
+</LinearLayout>

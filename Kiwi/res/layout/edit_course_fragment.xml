@@ -203,16 +203,21 @@
             android:text="Other course information"
             style="?android:attr/listSeparatorTextViewStyle"
             android:textAppearance="?android:attr/textAppearanceSmall" />
-	    
-	    <EditText
-	        android:id="@+id/textbooks"
+
+	    <LinearLayout
+	        android:id="@+id/course_textbooks_layout"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-	        android:ems="10"
-	        android:layout_marginTop="4dp"
-	        android:layout_marginBottom="4dp"
-            android:inputType="textCapWords|textAutoCorrect"
-	        android:hint="Textbooks (Optional)" />
+	        android:orientation="vertical" >
+	    </LinearLayout>
+	    
+	    <Button
+	        android:id="@+id/course_add_textbook_btn"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:background="@drawable/list_selection_background"
+	        android:textColor="#AAA"
+	        android:text="Add textbook (optional)" />
 	    
 	    <EditText
 	        android:id="@+id/notes"

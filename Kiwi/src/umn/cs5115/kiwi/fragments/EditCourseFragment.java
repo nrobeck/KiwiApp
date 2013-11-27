@@ -1,5 +1,6 @@
 package umn.cs5115.kiwi.fragments;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -12,15 +13,18 @@ import umn.cs5115.kiwi.assignment.AssignmentUtils.EmptyErrorTextWatcher;
 import umn.cs5115.kiwi.ui.DateButton;
 import umn.cs5115.kiwi.ui.DoneBar.DoneBarListenable;
 import umn.cs5115.kiwi.ui.DoneBar.DoneBarListener;
+import umn.cs5115.kiwi.ui.TextbookEntry;
 import umn.cs5115.kiwi.ui.TimeButton;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -32,6 +36,12 @@ import com.android.datetimepicker.time.TimePickerDialog.OnTimeSetListener;
 public class EditCourseFragment extends Fragment {
 
 	@Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        setRetainInstance(true);
+    }
+
+    @Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View layout = inflater.inflate(R.layout.edit_course_fragment, container);
@@ -49,6 +59,16 @@ public class EditCourseFragment extends Fragment {
 		courseName.addTextChangedListener(new EmptyErrorTextWatcher(courseName, "Must give a course name."));
 		EditText courseDes = (EditText)layout.findViewById(R.id.editText2);
 		courseDes.addTextChangedListener(new EmptyErrorTextWatcher(courseDes, "Must give a course designation."));
+		
+		Button addTextbookButton = (Button) layout.findViewById(R.id.course_add_textbook_btn);
+		final ViewGroup textbookEntries = (ViewGroup) layout.findViewById(R.id.course_textbooks_layout);
+		addTextbookButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TextbookEntry entry = new TextbookEntry(getActivity());
+                textbookEntries.addView(entry);
+            }
+        });
 		
 		final DateButton startDB = (DateButton)layout.findViewById(R.id.start_date_button);
 		final DateButton endDB = (DateButton)layout.findViewById(R.id.end_date_button);
@@ -192,11 +212,21 @@ public class EditCourseFragment extends Fragment {
                     	location = "";
                     }
                     
-                    EditText textbookEditText = (EditText) activity.findViewById(R.id.textbooks); //Textbooks
-                    textbooks = textbookEditText.getText().toString();
-                    if (textbooks == null) {
-                    	textbooks = "";
+                    ArrayList<String> textbooksList = new ArrayList<String>();
+                    ViewGroup textbookEntries = (ViewGroup)getView().findViewById(R.id.course_textbooks_layout);
+                    for (int i = 0; i < textbookEntries.getChildCount(); i++) {
+                        try {
+                            TextbookEntry entry = (TextbookEntry)textbookEntries.getChildAt(i);
+                            if (!entry.isEmpty()) {
+                                textbooksList.add(entry.getInput());
+                            }
+                        } catch (Exception e) {
+                            // Most likely a ClassCastException, if for some reason
+                            // we added a child view that isn't TextbookEntry.
+                            Log.e("EditCourseFragment", "Exception caught pulling out textbooks", e);
+                        }
                     }
+                    textbooks = TextUtils.join(Course.TEXTBOOK_DELIMITER, textbooksList);
                     
                     EditText notesEditText = (EditText) activity.findViewById(R.id.notes); //Notes
                     notes = notesEditText.getText().toString();

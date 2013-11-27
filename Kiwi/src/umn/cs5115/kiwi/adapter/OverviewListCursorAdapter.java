@@ -172,7 +172,7 @@ public class OverviewListCursorAdapter extends CursorAdapter {
 		//Setting if the assignment tiles need to have the notes and textbook identifier turned on
 		ImageView notesIdentifier = (ImageView) view.findViewById(R.id.assignment_tile_notes_identifier);
 		if (assignment.getNotes() == null || assignment.getNotes().isEmpty()) {
-			notesIdentifier.setVisibility(View.INVISIBLE);
+			notesIdentifier.setVisibility(View.GONE);
 		}
 		else {
 			notesIdentifier.setVisibility(View.VISIBLE);
@@ -180,7 +180,7 @@ public class OverviewListCursorAdapter extends CursorAdapter {
 
 		ImageView textbookIdentifier = (ImageView) view.findViewById(R.id.assignment_tile_textbook_identifier);
 		if (assignment.getTextbook() == null || assignment.getTextbook().isEmpty()) {
-			textbookIdentifier.setVisibility(View.INVISIBLE);
+			textbookIdentifier.setVisibility(View.GONE);
 		}
 		else {
 			textbookIdentifier.setVisibility(View.VISIBLE);
