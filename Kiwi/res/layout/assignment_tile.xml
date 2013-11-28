@@ -99,7 +99,7 @@
                 android:id="@+id/assignment_tile_textbook_identifier"
                 android:layout_width="48dp"
                 android:layout_height="match_parent"
-                android:layout_toLeftOf="@+id/ass"
+                android:layout_toLeftOf="@+id/assignment_tile_notes_identifier"
                 android:contentDescription="@string/textbook"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
