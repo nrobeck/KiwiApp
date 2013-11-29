@@ -9,11 +9,8 @@ public class Assignment implements Parcelable {
 	private String name;
 	private int course;
 	private String type;
-	private String due_date;
-	private int hours;
-	private int minutes;
+	private long due_millis;
 	private int reminder;
-	private String reminder_time;
 	private String notes;
 	private String textbook;
 	private boolean completed;
@@ -27,19 +24,15 @@ public class Assignment implements Parcelable {
 
 	// constructor
 	public Assignment(int id, String name, int course, String type,
-			String due_date, int h, int m, int reminder, String reminder_time,
-			String n, String tb) {
+			long due_millis, int reminder, String notes, String textbook) {
 		this.id = id;
 		this.name = name;
 		this.course = course;
 		this.type = type;
-		this.due_date = due_date;
-		this.hours = h;
-		this.minutes = m;
+		this.due_millis = due_millis;
 		this.reminder = reminder;
-		this.reminder_time = reminder_time;
-		this.notes = n;
-		this.textbook = tb;
+		this.notes = notes;
+		this.textbook = textbook;
 	}
 
 	// getters for each of the Assignment elements
@@ -60,16 +53,12 @@ public class Assignment implements Parcelable {
 		return this.type;
 	}
 
-	public String getDueDate() {
-		return this.due_date;
+	public long getDueMillis() {
+		return this.due_millis;
 	}
 
 	public int getReminder() {
 		return this.reminder;
-	}
-
-	public String getReminderTime() {
-		return this.reminder_time;
 	}
 
 	public int getId() {
@@ -78,14 +67,6 @@ public class Assignment implements Parcelable {
 
 	public String getNotes() {
 		return this.notes;
-	}
-
-	public int getHours() {
-		return this.hours;
-	}
-
-	public int getMinutes() {
-		return this.minutes;
 	}
 	
 	public String getTextbook() {
@@ -118,24 +99,12 @@ public class Assignment implements Parcelable {
 		this.type = t;
 	}
 
-	public void setDueDate(String d) {
-		this.due_date = d;
-	}
-
-	public void setHours(int h) {
-		this.hours = h;
-	}
-
-	public void setMinutes(int m) {
-
+	public void setDueMillis(long d) {
+		this.due_millis = d;
 	}
 
 	public void setReminder(int r) {
 		this.reminder = r;
-	}
-
-	public void setReminderTime(String t) {
-		this.reminder_time = t;
 	}
 
 	public void setId(int i) {
@@ -179,11 +148,8 @@ public class Assignment implements Parcelable {
         dest.writeString(name);
         dest.writeInt(course);
         dest.writeString(type);
-        dest.writeString(due_date);
-        dest.writeInt(hours);
-        dest.writeInt(minutes);
+        dest.writeLong(due_millis);
         dest.writeInt(reminder);
-        dest.writeString(reminder_time);
         dest.writeString(notes);
         dest.writeString(textbook);
         dest.writeByte((byte) (completed ? 1 : 0));
@@ -200,11 +166,8 @@ public class Assignment implements Parcelable {
         name = in.readString();
         course = in.readInt();
         type = in.readString();
-        due_date = in.readString();
-        hours = in.readInt();
-        minutes = in.readInt();
+        due_millis = in.readLong();
         reminder = in.readInt();
-        reminder_time = in.readString();
         notes = in.readString();
         textbook = in.readString();
         completed = in.readByte() != 0;

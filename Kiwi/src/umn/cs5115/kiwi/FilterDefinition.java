@@ -59,7 +59,7 @@ public class FilterDefinition implements Parcelable {
     	case COURSE:
     		return "cname ASC";
     	case DUE_DATE:
-    		return DatabaseHandler.DUE_DATE + " ASC";
+    		return DatabaseHandler.DUE_MILLIS + " ASC";
     	default:
     		return DatabaseHandler.TYPE + " ASC";
     	}

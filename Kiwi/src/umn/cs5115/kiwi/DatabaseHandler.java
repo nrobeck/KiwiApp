@@ -43,13 +43,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public static final String NAME = "name";
     public static final String COURSE = "course";
     public static final String TYPE = "type";
-    public static final String DUE_DATE = "due_date";
-    public static final String DUE_HOURS = "due_hours";
-    public static final String DUE_MINUTES = "due_minutes";
+    public static final String DUE_MILLIS = "due_millis";
     public static final String REMINDER = "reminder";
-    public static final String REMINDER_TIME = "reminder_time";
     public static final String NOTES = "notes";
     public static final String COMPLETED = "completed";
+    public static final String ASSIGNMENT_CDES = "course_designation";
+    public static final String ASSIGNMENT_COLOR = "color";
     //public static final String COLOR = "color"; //Do not know if this is the way to do this
 
     // Course table column names
@@ -67,8 +66,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     static {
     	ASSIGNMENTS_QUERY = String.format(
     	    // assignments.*, courses.designation as cname from assignments .. courses ON assignments.course = courses._id
-    	    "SELECT %1$s.*, %2$s.%3$s, %2$s.%6$s as cname from %1$s LEFT OUTER JOIN %2$s ON %1$s.%4$s = %2$s.%5$s",
-    	    TABLE_ASSIGNMENTS, TABLE_COURSES, DESIGNATION, COURSE, KEY_ID, COURSE_COLOR);
+    		// assignments.*, courses.designation as course_designation, courses.color as course_color from assignments .. courses ON assignments.course = courses._id
+    	    //"SELECT %1$s.*, %2$s.%3$s as %, %2$s.%6$s as cname from %1$s LEFT OUTER JOIN %2$s ON %1$s.%4$s = %2$s.%5$s",
+    	    "SELECT %1$s.*, %2$s.%3$s as %4$s, %2$s.%5$s as %6$s from %1$s LEFT OUTER JOIN %2$s ON %1$s.%7$s = %2$s.%8$s",
+    	    TABLE_ASSIGNMENTS, TABLE_COURSES, DESIGNATION, ASSIGNMENT_CDES, COURSE_COLOR, ASSIGNMENT_COLOR,
+    	    COURSE, KEY_ID);
     }
 
     public DatabaseHandler(Context context) {
@@ -84,11 +86,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + NAME + " TEXT,"
                 + COURSE + " INTEGER,"
                 + TYPE + " TEXT,"
-                + DUE_DATE + " TEXT,"
-                + DUE_HOURS + " TEXT,"
-                + DUE_MINUTES + " TEXT,"
+                + DUE_MILLIS + " TEXT,"
                 + REMINDER + " INTEGER,"
-                + REMINDER_TIME + " TEXT,"
                 + NOTES + " TEXT,"
                 + TEXTBOOKS + " TEXT,"
                 + COMPLETED + " INTEGER"
@@ -163,11 +162,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         cv.put(NAME, a.getName());//assignment name
         cv.put(COURSE, a.getCourse());//assignment course
         cv.put(TYPE, a.getType());//assignment type
-        cv.put(DUE_DATE, a.getDueDate());//assignment due date
-        cv.put(DUE_HOURS, a.getHours());//assignment due hours
-        cv.put(DUE_MINUTES, a.getMinutes());//assignment due minutes
+        cv.put(DUE_MILLIS, a.getDueMillis());//assignment due date/time
         cv.put(REMINDER, a.getReminder());//assignment reminder value
-        cv.put(REMINDER_TIME, a.getReminderTime());//assignment reminder time
         cv.put(NOTES, a.getNotes());//assignment notes
         cv.put(TEXTBOOKS, a.getTextbook());//assignment textbook
         cv.put(COMPLETED, a.isCompleted());//assignment done
@@ -197,11 +193,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         cv.put(NAME, a.getName());//assignment name
         cv.put(COURSE, a.getCourse());//assignment course
         cv.put(TYPE, a.getType());//assignment type
-        cv.put(DUE_DATE, a.getDueDate());//assignment due date
-        cv.put(DUE_HOURS, a.getHours());//assignment due hours
-        cv.put(DUE_MINUTES, a.getMinutes());//assignment due minutes
+        cv.put(DUE_MILLIS, a.getDueMillis());//assignment due date/time
         cv.put(REMINDER, a.getReminder());//assignment reminder value
-        cv.put(REMINDER_TIME, a.getReminderTime());//assignment reminder time
         cv.put(NOTES, a.getNotes());//assignment notes
         cv.put(TEXTBOOKS, a.getTextbook());//assignment textbooks
         cv.put(COMPLETED, a.isCompleted());//assignment done
@@ -260,20 +253,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Assignment a = new Assignment();//assignment object to return
         
         //move fields from the cursor row into the assignment object
-        a.setId(c.getInt(0)); //0
-        a.setName(c.getString(c.getColumnIndex(NAME))); //1
-        a.setCourse(c.getInt(c.getColumnIndex(COURSE))); //2 
-        a.setType(c.getString(c.getColumnIndex(TYPE))); //3
-        a.setDueDate(c.getString(c.getColumnIndex(DUE_DATE))); //4
-        a.setHours(c.getInt(c.getColumnIndex(DUE_HOURS))); //5
-        a.setMinutes(c.getInt(c.getColumnIndex(DUE_MINUTES))); //6
-        a.setReminder(c.getInt(c.getColumnIndex(REMINDER))); //7
-        a.setReminderTime(c.getString(c.getColumnIndex(REMINDER_TIME))); //8
-        a.setNotes(c.getString(c.getColumnIndex(NOTES))); //9
-        a.setTextbook(c.getString(c.getColumnIndex(TEXTBOOKS))); //10
-        a.setCompleted(c.getInt(c.getColumnIndex(COMPLETED)) != 0); //11
-        a.setCourseDesignation(c.getString(12)); //12
-        a.setColor(c.getString(13));
+        a.setId(c.getInt(0));
+        a.setName(c.getString(c.getColumnIndex(NAME)));
+        a.setCourse(c.getInt(c.getColumnIndex(COURSE)));
+        a.setType(c.getString(c.getColumnIndex(TYPE)));
+        a.setDueMillis(c.getInt(c.getColumnIndex(DUE_MILLIS)));
+        a.setReminder(c.getInt(c.getColumnIndex(REMINDER)));
+        a.setNotes(c.getString(c.getColumnIndex(NOTES)));
+        a.setTextbook(c.getString(c.getColumnIndex(TEXTBOOKS)));
+        a.setCompleted(c.getInt(c.getColumnIndex(COMPLETED)) != 0);
+        a.setCourseDesignation(c.getString(c.getColumnIndex(ASSIGNMENT_CDES)));
+        a.setColor(c.getString(c.getColumnIndex(ASSIGNMENT_COLOR)));
         
         return a;
     }

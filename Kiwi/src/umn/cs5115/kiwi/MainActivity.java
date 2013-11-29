@@ -210,16 +210,30 @@ public class MainActivity extends KiwiActivity
     private void refreshOverviewFragment() {
 		OverviewFragment overview = (OverviewFragment)getFragmentManager().findFragmentByTag(OVERVIEW_TAG);
 		if (overview == null) {
+			Log.d("MainActivity", "refreshOverviewFragment - overview frag is null!");
 		    return;
 		}
-		if (overview.isVisible())
-		    overview.refreshFilter();
+		if (overview.isResumed()) {
+			Log.d("MainActivity", "calling overview.refreshFilter");
+			overview.refreshFilter();
+		} else {
+			Log.d("MainActivity", "overview not resumed");
+		}
     }
 
-    @Override
-	protected void onResume() {
-    	Log.d("MainActivity", "onResume");
-		super.onResume();
+    /*
+     * We override onPostResume here because onResume is too early
+     * to execute refreshOverviewFragment (because at that point,
+     * the OverviewFragment still hasn't been completely started -
+     * the fragment's onResume doesn't get called until a tiny bit
+     * later).
+     */
+	@Override
+	protected void onPostResume() {
+		super.onPostResume();
+		/*
+		 * Update the overview fragment's filter.
+		 */
 		refreshOverviewFragment();
 	}
 

@@ -10,7 +10,6 @@
 	    android:focusableInTouchMode="true">
 	
 	    <TextView
-	        android:id="@+id/textView1"
 	        style="?android:attr/listSeparatorTextViewStyle"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
@@ -49,7 +48,6 @@
 	    <!-- Due date/time -->
 	
 	    <TextView
-	        android:id="@+id/textView2"
 	        style="?android:attr/listSeparatorTextViewStyle"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
@@ -105,9 +103,23 @@
 	            android:layout_weight="1" />
 
 	    </LinearLayout>
+	    
+	    <TextView
+	        style="?android:attr/listSeparatorTextViewStyle"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="@dimen/form_section_spacing"
+	        android:text="Remind Me"
+	        android:textAppearance="?android:attr/textAppearanceSmall" />
+	    
+	    <Spinner
+	        android:id="@+id/reminder_spinner"
+	        style="@style/KiwiSpinnerButton"
+	        android:layout_width="match_parent"
+	        android:layout_height="@dimen/form_spinner_button_height"
+	        android:entries="@array/reminder_entries" />
 	
 	    <TextView
-	        android:id="@+id/textView3"
 	        style="?android:attr/listSeparatorTextViewStyle"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
@@ -126,6 +138,7 @@
 	        android:maxLines="10"
 	        android:maxLength="1000"
 	        android:inputType="textMultiLine|textCapSentences"
+	        android:padding="16sp"
 	        android:imeOptions="actionDone" />
 	
     </LinearLayout>

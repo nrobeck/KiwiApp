@@ -100,6 +100,7 @@ public class OverviewFragment extends CustomOverviewListFragment {
     
 	@Override
     public void onResume() {
+		Log.d(TAG, "onResume OverviewFragment");
         super.onResume();
         if (isAdded()) {
             ActionBar ab = getActivity().getActionBar();
@@ -117,6 +118,7 @@ public class OverviewFragment extends CustomOverviewListFragment {
 	}
 	
 	public void refreshFilter() {
+		Log.d(TAG, "refreshFilter OverviewFragment");
 		OverviewListCursorAdapter adapter = (OverviewListCursorAdapter) getListView().getAdapter();
 		FilterDefinition defn = getFilter();
 		DatabaseHandler dbh = new DatabaseHandler(getActivity());

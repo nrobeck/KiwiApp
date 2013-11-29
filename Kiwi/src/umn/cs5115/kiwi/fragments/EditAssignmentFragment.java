@@ -2,6 +2,7 @@ package umn.cs5115.kiwi.fragments;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -12,6 +13,7 @@ import umn.cs5115.kiwi.EditAssignmentActivity;
 import umn.cs5115.kiwi.R;
 import umn.cs5115.kiwi.adapter.DummyItemAdapter;
 import umn.cs5115.kiwi.assignment.AssignmentUtils;
+import umn.cs5115.kiwi.assignment.AssignmentUtils.DueDateBuilder;
 import umn.cs5115.kiwi.assignment.AssignmentUtils.EmptyErrorTextWatcher;
 import umn.cs5115.kiwi.ui.DateButton;
 import umn.cs5115.kiwi.ui.DoneBar.DoneBarListenable;
@@ -141,13 +143,22 @@ public class EditAssignmentFragment extends Fragment {
 		//       }
 
 		int assignmentId = activity.getAssignmentId();
+
+		final DateButton db = (DateButton)findView(R.id.date_button);
+		final TimeButton tb = (TimeButton)findView(R.id.time_button);
+		
+		DueDateBuilder ddb = new DueDateBuilder();
+		ddb.setYear(db.getYear())
+			.setMonth(db.getMonth())
+			.setDayOfMonth(db.getDay())
+			.setHour(tb.getHour())
+			.setMinute(tb.getMinute());
+		long dueMillis = ddb.toMilliseconds();
 		
 		DatabaseHandler dbHandler = new DatabaseHandler(activity);
 		
 		int selectedCourseId = (selectedCourse == null) ? 0 : selectedCourse.getId();
-		Assignment assignment = new Assignment(
-		        assignmentId, assignmentName, selectedCourseId, assignmentType,
-		        "", 0, 0, 0, "", notes, textbook);
+		Assignment assignment = new Assignment(assignmentId, assignmentName, selectedCourseId, assignmentType, dueMillis, -100, notes, textbook);
 
         //Store the assignment
         
@@ -192,24 +203,14 @@ public class EditAssignmentFragment extends Fragment {
 		};
 
 		typesSpinner.setAdapter(typesAdapter);
-
+		
 		final DateButton db = (DateButton)layout.findViewById(R.id.date_button);
 		final TimeButton tb = (TimeButton)layout.findViewById(R.id.time_button);
-
-		Calendar current = Calendar.getInstance(Locale.US);
-		final int year = current.get(Calendar.YEAR),
-				month = current.get(Calendar.MONTH),
-				day = current.get(Calendar.DAY_OF_MONTH),
-				hour = current.get(Calendar.HOUR_OF_DAY),
-				minute = current.get(Calendar.MINUTE);
-
-		db.setDate(year, month, day);
-		tb.setTime(hour, minute);
 
 		db.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				AssignmentUtils.showDateEditDialog(getFragmentManager(), year, month, day, new OnDateSetListener() {
+				AssignmentUtils.showDateEditDialog(getFragmentManager(), db.getYear(), db.getMonth(), db.getDay(), new OnDateSetListener() {
 					@Override
 					public void onDateSet(DatePickerDialog dialog, int year, int monthOfYear,
 							int dayOfMonth) {
@@ -222,7 +223,7 @@ public class EditAssignmentFragment extends Fragment {
 		tb.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				AssignmentUtils.showTimeEditDialog(getFragmentManager(), hour, minute, new OnTimeSetListener() {
+				AssignmentUtils.showTimeEditDialog(getFragmentManager(), tb.getHour(), tb.getMinute(), new OnTimeSetListener() {
 
 					@Override
 					public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
@@ -231,6 +232,7 @@ public class EditAssignmentFragment extends Fragment {
 				});
 			}
 		});
+
 		return layout;
 	}
 
@@ -390,6 +392,16 @@ public class EditAssignmentFragment extends Fragment {
          * EditTexts, checkbox state, etc.) so leverage that here.
          */
         super.onActivityCreated(savedInstanceState);
+        
+
+		final DateButton db = (DateButton)findView(R.id.date_button);
+		final TimeButton tb = (TimeButton)findView(R.id.time_button);
+		
+		// Set due date/time to right now (TODO change this to something sane. Or add a null option...)
+		Calendar cal = new GregorianCalendar();
+		db.setDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
+		tb.setTime(cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE));
+        
 		final boolean isEdit = eActivity.isEdit();
 		if (isEdit) {
 		    int id = eActivity.getAssignmentId();
@@ -407,6 +419,16 @@ public class EditAssignmentFragment extends Fragment {
 		         * Guess we'll have to forcibly finish out...
 		         */
 		        eActivity.finish();
+		    }
+		    
+		    DueDateBuilder ddb = new DueDateBuilder(as.getDueMillis());
+		    // TODO: Pick a sane "no assignment will be due before this time" time
+		    long noDueBefore = 1000;
+		    if (ddb.toMilliseconds() < noDueBefore) {
+		    	// Assignment can't be due before this time. Don't mess with DateButton/TimeButton
+		    } else {
+		    	db.setDate(ddb.getYear(), ddb.getMonth(), ddb.getDayOfMonth());
+		    	tb.setTime(ddb.getHour(), ddb.getMinute());
 		    }
 		    
 		    //Filling in the information for the assignment
@@ -477,8 +499,8 @@ public class EditAssignmentFragment extends Fragment {
             } else {
                 // Add the course's textbooks to the list
                 String[] textbooksArray = selectedCourse.getTextbooksArray();
-                for (String tb : textbooksArray) {
-                    textbooksList.add(tb);
+                for (String textbook : textbooksArray) {
+                    textbooksList.add(textbook);
                 }
             }
 

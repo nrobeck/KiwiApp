@@ -76,14 +76,16 @@ public class OverviewListCursorAdapter extends CursorAdapter {
 		// Populate text and state of the tile.
 
 		TextView aName, aDate, aCourse, aType;
-		CheckBox completedCheckbox;
+		CheckBox completedCB;
 		
 		// Get TextViews
 		aName 	= (TextView) view.findViewById(R.id.assignment_name);
 		aDate 	= (TextView) view.findViewById(R.id.assignment_date);
 		aCourse = (TextView) view.findViewById(R.id.course_name);
 		aType 	= (TextView) view.findViewById(R.id.assignment_type);
-		CheckBox completedCB = (CheckBox) view.findViewById(R.id.completed_check_box);
+		
+		// Get the checkbox
+		completedCB = (CheckBox) view.findViewById(R.id.completed_check_box);
 		
 		// Set the color of the TextViews
 		//DatabaseHandler dbHandler = new DatabaseHandler(context);
@@ -143,12 +145,9 @@ public class OverviewListCursorAdapter extends CursorAdapter {
 		
 		// Set their text values
 		aName.setText(assignment.getName());
-		aDate.setText(assignment.getDueDate());
+		aDate.setText(Long.toString(assignment.getDueMillis()));
 		aCourse.setText(assignment.getCourseDesignation()); //I do not know how this value was being stored but it broke when I changed to put in the course colors
 		aType.setText(assignment.getType());
-
-		// Get the CheckBox
-		completedCheckbox = (CheckBox)view.findViewById(R.id.completed_check_box);
 		
 		/*
 		 * Remove any pre-existing listeners that might be on this view.
@@ -156,8 +155,8 @@ public class OverviewListCursorAdapter extends CursorAdapter {
 		 * then any toggling of the checkbox's state will trigger that click
 		 * handler, which we don't want to have happen.
 		 */
-		completedCheckbox.setOnCheckedChangeListener(null);
-		completedCheckbox.setChecked(assignment.isCompleted());
+		completedCB.setOnCheckedChangeListener(null);
+		completedCB.setChecked(assignment.isCompleted());
 		/*
 		 * Bake up a new listener for the checkbox, and add it.
 		 */
@@ -167,7 +166,7 @@ public class OverviewListCursorAdapter extends CursorAdapter {
 				mListener.onChangeCompletion(assignment, isChecked);
 			}
 		};
-		completedCheckbox.setOnCheckedChangeListener(listener);
+		completedCB.setOnCheckedChangeListener(listener);
 
 		
 		//Setting if the assignment tiles need to have the notes and textbook identifier turned on

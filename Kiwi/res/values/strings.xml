@@ -45,4 +45,21 @@
     </string-array>
     <string name="undo">Undo</string>
     <string name="retry">Retry</string>
+    
+    <string-array name="reminder_entries">
+        <item>12 hours</item>
+        <item>1 day</item>
+        <item>2 days</item>
+        <item>3 days</item>
+        <item>5 days</item>
+        <item>1 week</item>
+    </string-array>
+    <integer-array name="reminder_entry_values">
+        <item>12</item>
+        <item>24</item>
+        <item>48</item>
+        <item>72</item>
+        <item>120</item>
+        <item>168</item>
+    </integer-array>
 </resources>
