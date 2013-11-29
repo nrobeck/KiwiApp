@@ -1,8 +1,12 @@
 package umn.cs5115.kiwi.adapter;
 
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 import umn.cs5115.kiwi.Assignment;
 import umn.cs5115.kiwi.DatabaseHandler;
 import umn.cs5115.kiwi.R;
+import umn.cs5115.kiwi.assignment.AssignmentUtils.DueDateBuilder;
 import android.content.Context;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -145,7 +149,11 @@ public class OverviewListCursorAdapter extends CursorAdapter {
 		
 		// Set their text values
 		aName.setText(assignment.getName());
-		aDate.setText(Long.toString(assignment.getDueMillis()));
+		if (assignment.getDueMillis() > 10000) {
+			aDate.setText(new SimpleDateFormat("h:mm aaa, EEE, MMM dd, ''yy", Locale.US).format(new DueDateBuilder(assignment.getDueMillis()).toDate()));
+		} else {
+			aDate.setText(null);
+		}
 		aCourse.setText(assignment.getCourseDesignation()); //I do not know how this value was being stored but it broke when I changed to put in the course colors
 		aType.setText(assignment.getType());
 		

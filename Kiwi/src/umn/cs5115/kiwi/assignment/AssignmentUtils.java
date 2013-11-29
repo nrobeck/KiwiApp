@@ -108,12 +108,22 @@ public class AssignmentUtils {
 			return minute;
 		}
 		
+		private Calendar toCalendar() {
+			Calendar cal = Calendar.getInstance();
+			cal.set(Calendar.YEAR, year);
+			cal.set(Calendar.MONTH, month);
+			cal.set(Calendar.DAY_OF_MONTH, day);
+			cal.set(Calendar.HOUR_OF_DAY, hour);
+			cal.set(Calendar.MINUTE, minute);
+			return cal;
+		}
+		
 		/**
 		 * "Build" the due date out to a Date object (for comparisons, etc.)
 		 * @return a Date object representing this due date builder's values
 		 */
 		public Date toDate() {
-			return new GregorianCalendar(year, month, day, hour, minute).getTime();
+			return toCalendar().getTime();
 		}
 		
 		/**
@@ -121,8 +131,7 @@ public class AssignmentUtils {
 		 * @return the milliseconds value represented by this builder
 		 */
 		public long toMilliseconds() {
-			Calendar cal = new GregorianCalendar(year, month, day, hour, minute);
-			return cal.getTimeInMillis();
+			return toCalendar().getTimeInMillis();
 		}
 	}
 	

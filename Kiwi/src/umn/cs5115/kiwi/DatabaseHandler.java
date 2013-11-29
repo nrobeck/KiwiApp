@@ -86,7 +86,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + NAME + " TEXT,"
                 + COURSE + " INTEGER,"
                 + TYPE + " TEXT,"
-                + DUE_MILLIS + " TEXT,"
+                + DUE_MILLIS + " INTEGER,"
                 + REMINDER + " INTEGER,"
                 + NOTES + " TEXT,"
                 + TEXTBOOKS + " TEXT,"
@@ -257,7 +257,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         a.setName(c.getString(c.getColumnIndex(NAME)));
         a.setCourse(c.getInt(c.getColumnIndex(COURSE)));
         a.setType(c.getString(c.getColumnIndex(TYPE)));
-        a.setDueMillis(c.getInt(c.getColumnIndex(DUE_MILLIS)));
+        a.setDueMillis(c.getLong(c.getColumnIndex(DUE_MILLIS)));
         a.setReminder(c.getInt(c.getColumnIndex(REMINDER)));
         a.setNotes(c.getString(c.getColumnIndex(NOTES)));
         a.setTextbook(c.getString(c.getColumnIndex(TEXTBOOKS)));
