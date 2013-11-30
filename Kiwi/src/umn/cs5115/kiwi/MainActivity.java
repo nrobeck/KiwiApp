@@ -14,12 +14,10 @@ import umn.cs5115.kiwi.model.Assignment;
 import umn.cs5115.kiwi.model.FilterDefinition;
 import umn.cs5115.kiwi.model.FilterDefinition.SortBy;
 import umn.cs5115.kiwi.ui.OverviewEmptyView.CustomEmptyViewButtonListener;
-import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -262,13 +260,7 @@ public class MainActivity extends KiwiActivity
         }
         dbc.close();
         NotificationReceiver.removeNotifications(this);
-		Intent i = new Intent(this, NotificationReceiver.class);
-		i.putStringArrayListExtra(NotificationReceiver.EXTRA_REMINDERS, reminders);
-		PendingIntent reminderIntent = PendingIntent.getBroadcast(this, 11111, i, PendingIntent.FLAG_CANCEL_CURRENT);
-		// Cancel any currently scheduled notifications.
-		AlarmManager mManager = (AlarmManager)getSystemService(ALARM_SERVICE);
-		mManager.cancel(reminderIntent);
-		mManager.set(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis() + 1000, reminderIntent);
+        ReminderUtils.scheduleReminders(this, null, current + 1000);
     }
 
     private void refreshOverviewFragment() {

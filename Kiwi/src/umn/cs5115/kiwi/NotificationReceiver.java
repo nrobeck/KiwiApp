@@ -3,39 +3,81 @@ package umn.cs5115.kiwi;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import umn.cs5115.kiwi.DatabaseHandler.DbAndCursor;
+
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationCompat.InboxStyle;
 import android.support.v4.app.NotificationCompat.Style;
+import android.text.TextUtils;
 import android.util.Log;
 
 public class NotificationReceiver extends BroadcastReceiver {
-	private static final int NOTIF_ID = 0x12435671;
-	public static final String EXTRA_REMINDERS = "reminders";
+	private static final int NOTIFICATION_ID = 0x54946683; // KIWINOTF
+	public static final String EXTRA_REMINDER_TIME = "when";
+	
 	public static void removeNotifications(Context context) {
         NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.cancel(NOTIF_ID);
+        manager.cancel(NOTIFICATION_ID);
+	}
+	
+	private ArrayList<String> getCurrentReminders(Context context, long time) {
+        DbAndCursor dbc = new DatabaseHandler(context).queryReminders(time);
+        ArrayList<String> reminders = new ArrayList<String>();
+        Cursor c = dbc.cursor;
+        if (c.getCount() > 0) {
+        	c.moveToFirst();
+        	while (!c.isAfterLast()) {
+        		String cdes = c.getString(c.getColumnIndex(DatabaseHandler.REMINDER_CDES));
+        		String aname = c.getString(c.getColumnIndex(DatabaseHandler.REMINDER_ANAME));
+        		String atype = c.getString(c.getColumnIndex(DatabaseHandler.REMINDER_ATYPE));
+        		long remindermillis = c.getLong(c.getColumnIndex(DatabaseHandler.REMINDER_MILLIS));
+//        		Log.d("MainActivity", String.format("%s %s %s %d", cdes, aname, atype, remindermillis));
+        		if (remindermillis > time) {
+        			// Somehow a reminder got through the query WHERE filter...
+        			c.moveToNext();
+        			continue;
+        		}
+        		
+        		if (TextUtils.isEmpty(cdes)) {
+        			cdes = "";
+        		} else {
+        			cdes = String.format("%s: ", cdes);
+        		}
+        		if (TextUtils.isEmpty(atype)) {
+        			atype = "";
+        		} else {
+        			atype = String.format(" (%s)", atype);
+        		}
+        		
+        		reminders.add(cdes + aname + atype);
+        		c.moveToNext();
+        	}
+        }
+        dbc.close();
+        
+        return reminders;
 	}
 
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.i("NotificationReceiver", "Got notification intent!");
         
-        ArrayList<String> reminders = intent.getStringArrayListExtra(EXTRA_REMINDERS);
-        int reminderCount;
-        if (reminders == null || reminders.size() < 1) {
-        	reminderCount = 0;
-        } else {
-        	reminderCount = reminders.size();
-        }
+        ArrayList<String> reminders = getCurrentReminders(
+        		context,
+        		intent.getLongExtra(EXTRA_REMINDER_TIME,
+        							Calendar.getInstance().getTimeInMillis()));
+        
         NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         
         String title = "Kiwi: Scheduled reminders";
         Style style;
+        int reminderCount = reminders.size();
         if (reminderCount > 0) {
         	style = new InboxStyle();
         	InboxStyle istyle = (InboxStyle)style;
@@ -82,9 +124,12 @@ public class NotificationReceiver extends BroadcastReceiver {
         				new Intent(context, MainActivity.class)
         					.setAction(Intent.ACTION_MAIN)
         					.addCategory(Intent.CATEGORY_LAUNCHER)
-        					.putStringArrayListExtra(EXTRA_REMINDERS, reminders),
+        					.putStringArrayListExtra("reminder_texts", reminders),
         				0));
-        manager.notify(NOTIF_ID, notif.build());
+        manager.notify(NOTIFICATION_ID, notif.build());
+        
+        // Schedule the next one
+        ReminderUtils.autoScheduleReminders(context);
     }
 
 }
