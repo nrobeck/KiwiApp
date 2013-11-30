@@ -1,5 +1,9 @@
 package umn.cs5115.kiwi;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+
+import umn.cs5115.kiwi.DatabaseHandler.DbAndCursor;
 import umn.cs5115.kiwi.adapter.OverviewListCursorAdapter.TileInteractionListener;
 import umn.cs5115.kiwi.app.KiwiActivity;
 import umn.cs5115.kiwi.fragments.FilterDialogFragment;
@@ -10,16 +14,20 @@ import umn.cs5115.kiwi.model.Assignment;
 import umn.cs5115.kiwi.model.FilterDefinition;
 import umn.cs5115.kiwi.model.FilterDefinition.SortBy;
 import umn.cs5115.kiwi.ui.OverviewEmptyView.CustomEmptyViewButtonListener;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.os.Vibrator;
 import android.support.v4.view.ViewCompat;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -205,6 +213,61 @@ public class MainActivity extends KiwiActivity
         	filter = new FilterDefinition(SortBy.DUE_DATE, true, null, null);
         	Log.d("MainActivity", "New filter: " + filter.toQueryString());
         }
+        
+        /*
+         * =================================================
+         * Temporary code. Preferably will be removed once the reminder notification system
+         * is completely in place.
+         * =================================================
+         * 
+         * Query the database for reminders on upcoming events, and schedule a
+         * notification (for a second from now) with those reminders.
+         */
+        
+        long current = Calendar.getInstance().getTimeInMillis();
+        DbAndCursor dbc = new DatabaseHandler(this).queryReminders(current);
+//        Log.d("MainActivity", "Current millis: " + current + ", Reminder count: " + dbc.cursor.getCount());
+        
+        ArrayList<String> reminders = new ArrayList<String>();
+        Cursor c = dbc.cursor;
+        if (c.getCount() > 0) {
+        	c.moveToFirst();
+        	while (!c.isAfterLast()) {
+        		String cdes = c.getString(c.getColumnIndex(DatabaseHandler.REMINDER_CDES));
+        		String aname = c.getString(c.getColumnIndex(DatabaseHandler.REMINDER_ANAME));
+        		String atype = c.getString(c.getColumnIndex(DatabaseHandler.REMINDER_ATYPE));
+        		long remindermillis = c.getLong(c.getColumnIndex(DatabaseHandler.REMINDER_MILLIS));
+//        		Log.d("MainActivity", String.format("%s %s %s %d", cdes, aname, atype, remindermillis));
+        		if (remindermillis > current) {
+        			// Somehow a reminder got through the query WHERE filter...
+        			c.moveToNext();
+        			continue;
+        		}
+        		
+        		if (TextUtils.isEmpty(cdes)) {
+        			cdes = "";
+        		} else {
+        			cdes = String.format("%s: ", cdes);
+        		}
+        		if (TextUtils.isEmpty(atype)) {
+        			atype = "";
+        		} else {
+        			atype = String.format(" (%s)", atype);
+        		}
+        		
+        		reminders.add(cdes + aname + atype);
+        		c.moveToNext();
+        	}
+        }
+        dbc.close();
+        NotificationReceiver.removeNotifications(this);
+		Intent i = new Intent(this, NotificationReceiver.class);
+		i.putStringArrayListExtra(NotificationReceiver.EXTRA_REMINDERS, reminders);
+		PendingIntent reminderIntent = PendingIntent.getBroadcast(this, 11111, i, PendingIntent.FLAG_CANCEL_CURRENT);
+		// Cancel any currently scheduled notifications.
+		AlarmManager mManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+		mManager.cancel(reminderIntent);
+		mManager.set(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis() + 1000, reminderIntent);
     }
     
     private void refreshOverviewFragment() {

@@ -2,7 +2,6 @@ package umn.cs5115.kiwi.assignment;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 import android.app.Fragment;
 import android.app.FragmentManager;

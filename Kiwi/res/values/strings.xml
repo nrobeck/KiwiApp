@@ -47,14 +47,16 @@
     <string name="retry">Retry</string>
     
     <string-array name="reminder_entries">
-        <item>12 hours</item>
-        <item>1 day</item>
-        <item>2 days</item>
-        <item>3 days</item>
-        <item>5 days</item>
-        <item>1 week</item>
+        <item>Don\'t remind me</item>
+        <item>Start 12 hours before due</item>
+        <item>Start 1 day before due</item>
+        <item>Start 2 days before due</item>
+        <item>Start 3 days before due</item>
+        <item>Start 5 days before due</item>
+        <item>Start 1 week before due</item>
     </string-array>
     <integer-array name="reminder_entry_values">
+        <item>-1</item>
         <item>12</item>
         <item>24</item>
         <item>48</item>

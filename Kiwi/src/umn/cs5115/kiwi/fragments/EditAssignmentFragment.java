@@ -1,6 +1,7 @@
 package umn.cs5115.kiwi.fragments;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -126,6 +127,17 @@ public class EditAssignmentFragment extends Fragment {
 		else {
 			textbook = "";
 		}
+		
+		Spinner reminderSpinner = (Spinner) findView(R.id.reminder_spinner);
+		int reminderHoursPosition = reminderSpinner.getSelectedItemPosition();
+		int reminderHours = -1;
+		int[] hoursArray = getResources().getIntArray(R.array.reminder_entry_values);
+		if (reminderHoursPosition >= hoursArray.length || reminderHoursPosition < 0) {
+			// Something's wrong with resources, or the spinner...
+			reminderHours = -1;
+		} else {
+			reminderHours = hoursArray[reminderHoursPosition];
+		}
 
 		//TODO: Due Date
 		//TODO: Reminder and number picker for this field
@@ -156,7 +168,7 @@ public class EditAssignmentFragment extends Fragment {
 		DatabaseHandler dbHandler = new DatabaseHandler(activity);
 		
 		int selectedCourseId = (selectedCourse == null) ? 0 : selectedCourse.getId();
-		Assignment assignment = new Assignment(assignmentId, assignmentName, selectedCourseId, assignmentType, dueMillis, -100, notes, textbook);
+		Assignment assignment = new Assignment(assignmentId, assignmentName, selectedCourseId, assignmentType, dueMillis, reminderHours, notes, textbook);
 
         //Store the assignment
         
@@ -464,6 +476,24 @@ public class EditAssignmentFragment extends Fragment {
 		    courseSpinner.setSelection(courseSelectionIndex, false);
 		    
 		    /*
+		     * Pick the relevant item in the reminders spinner.
+		     */
+		    Spinner reminderSpinner = (Spinner)findView(R.id.reminder_spinner);
+		    int[] originalReminderEntries = getResources().getIntArray(R.array.reminder_entry_values);
+		    Integer[] reminderEntries = new Integer[originalReminderEntries.length];
+		    for (int i = 0; i < reminderEntries.length; i++) {
+		    	reminderEntries[i] = originalReminderEntries[i];
+		    }
+		    int reminderIndex = Arrays.asList(reminderEntries).indexOf(as.getReminder());
+		    if (reminderIndex < 0) {
+		    	// No matching reminder hour value in entries. Just reset to "Don't remind me"...
+		    	// Might be nicer to try to pick the closest value, but do we really want to write
+		    	// the code to do that? No. No we don't.
+		    	reminderIndex = 0;
+		    }
+		    reminderSpinner.setSelection(reminderIndex, false);
+		    
+		    /*
 		     * Now that the course has been selected, and presumably the
 		     * textbook adapter has been similarly updated, we must
 		     * select the textbook.
@@ -506,9 +536,6 @@ public class EditAssignmentFragment extends Fragment {
             textbooks.setSelection(textbookIndex + 1, false);
 		    
 		    ((EditText)findView(R.id.assignment_notes_field)).setText(as.getNotes());
-		    
-		    //TODO: Need to pull in the textbook info too
-		    //TODO: Need to pull in the due date and time
 		}
 	}
 }

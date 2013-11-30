@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteStatement;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 	public static final class DbAndCursor {
@@ -64,14 +65,27 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public static final String TEXTBOOKS = "textbooks";
     public static final String COURSE_COLOR = "course_color";
     
-    public static final String ASSIGNMENTS_QUERY;
-    static {
-    	ASSIGNMENTS_QUERY = String.format(
-    		// assignments.*, courses.designation as course_designation, courses.color as course_color from assignments .. courses ON assignments.course = courses._id
+    // Column names when querying for reminders
+    public static final String REMINDER_CDES = "course_designation";
+    public static final String REMINDER_ANAME = "assignment_name";
+    public static final String REMINDER_ATYPE = "assignment_type";
+    public static final String REMINDER_MILLIS = "remind_after";
+    
+    public static final String ASSIGNMENTS_QUERY = String.format(
+    		// assignments.*, courses.designation as course_designation, courses.color as course_color from assignments
+    		// LEFT OUTER JOIN courses ON assignments.course = courses._id
     	    "SELECT %1$s.*, %2$s.%3$s as %4$s, %2$s.%5$s as %6$s from %1$s LEFT OUTER JOIN %2$s ON %1$s.%7$s = %2$s.%8$s",
     	    TABLE_ASSIGNMENTS, TABLE_COURSES, DESIGNATION, ASSIGNMENT_CDES, COURSE_COLOR, ASSIGNMENT_COLOR,
     	    COURSE, KEY_ID);
-    }
+    
+    public static final String REMINDERS_QUERY = String.format(
+    		// get course designation, assignment name, type, and reminder time
+    		// on every assignment that wants a reminder, is not completed,
+    		// and reminder millis <= now, ordered by assignment due millis
+    		"SELECT c.%1$s as %2$s, a.%3$s as %4$s, a.%5$s as %6$s, (a.%7$s - (a.%8$s * 3600000)) as %9$s " +
+    		"FROM %10$s as a LEFT OUTER JOIN %11$s as c ON a.%12$s = c._id WHERE (a.%8$s >= 0 AND a.%13$s = 0 AND %9$s <= ?) ORDER BY a.%8$s ASC",
+    		DESIGNATION, REMINDER_CDES, NAME, REMINDER_ANAME, TYPE, REMINDER_ATYPE, DUE_MILLIS, REMINDER, REMINDER_MILLIS,
+    		TABLE_ASSIGNMENTS, TABLE_COURSES, COURSE, COMPLETED);
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -84,10 +98,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + "("
                 + KEY_ID + " INTEGER PRIMARY KEY,"
                 + NAME + " TEXT,"
-                + COURSE + " INTEGER,"
+                + COURSE + " INTEGER DEFAULT 0,"
                 + TYPE + " TEXT,"
-                + DUE_MILLIS + " INTEGER,"
-                + REMINDER + " INTEGER,"
+                + DUE_MILLIS + " INTEGER DEFAULT 0,"
+                + REMINDER + " INTEGER DEFAULT -1,"
                 + NOTES + " TEXT,"
                 + TEXTBOOKS + " TEXT,"
                 + COMPLETED + " INTEGER"
@@ -379,6 +393,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         co.setColor(c.getString(11));
 
         return co;
+    }
+    
+    public DbAndCursor queryReminders(long currentMillis) {
+    	SQLiteDatabase db = this.getReadableDatabase();
+    	
+    	// Android SQLite API is stupid and does WHERE argument bindings as strings...
+    	// But we need to compare using integers! So we go and do this...
+    	String query = REMINDERS_QUERY.replaceFirst("\\?", Long.toString(currentMillis));
+    	Cursor cursor = db.rawQuery(query, null);
+    	
+    	return new DbAndCursor(db, cursor);
     }
 
     //clear ALL database values
