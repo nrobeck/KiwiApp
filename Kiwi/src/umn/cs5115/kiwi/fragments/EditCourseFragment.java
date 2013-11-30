@@ -172,7 +172,7 @@ public class EditCourseFragment extends Fragment {
                 	String endDate = "";
                 	String rRule = "";
                 	String notes = "";
-                	String textbooks = "";
+                	String textbooks = null;
                     
                 	//TODO: Pull the information out of the activity's fields
                 	EditText courseNameEditText = (EditText) getView().findViewById(R.id.editText1); //Course Name   
@@ -226,13 +226,14 @@ public class EditCourseFragment extends Fragment {
                             Log.e("EditCourseFragment", "Exception caught pulling out textbooks", e);
                         }
                     }
-                    textbooks = TextUtils.join(Course.TEXTBOOK_DELIMITER, textbooksList);
+                    if (textbooksList.size() > 0) {
+                        textbooks = TextUtils.join(Course.TEXTBOOK_DELIMITER, textbooksList);
+                    } else {
+                    	textbooks = null;
+                    }
                     
                     EditText notesEditText = (EditText) activity.findViewById(R.id.notes); //Notes
                     notes = notesEditText.getText().toString();
-                    if (notes == null) {
-                    	notes = "";
-                    }
                     
                 	//TODO: Checking to make sure the data if valid
                 	

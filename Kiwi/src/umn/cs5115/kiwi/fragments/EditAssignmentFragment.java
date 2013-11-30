@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Locale;
 
 import umn.cs5115.kiwi.DatabaseHandler;
 import umn.cs5115.kiwi.EditAssignmentActivity;
@@ -22,7 +21,6 @@ import umn.cs5115.kiwi.ui.TimeButton;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -325,9 +323,9 @@ public class EditAssignmentFragment extends Fragment {
                     Log.d("EditAssignmentFragment", "Current textbook: " + currentTextbook);
 
                     textbooksList.clear();
-                    if (course == null || course.getId() == 0) {
+                    if (course == null || course.getId() == 0 || course.getTextbooksArray().length < 1) {
                         // Hide the textbook spinner, since it's pointless
-                        // without the course.
+                        // without the course or any textbooks to pick from.
                         textbooks.setVisibility(View.GONE);
                     } else {
                         textbooks.setVisibility(View.VISIBLE);
