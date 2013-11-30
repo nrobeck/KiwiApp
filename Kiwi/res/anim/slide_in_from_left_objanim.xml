@@ -5,5 +5,5 @@
         android:valueTo="0"
         android:valueType="floatType"
         android:propertyName="xFraction"
-        android:duration="@integer/inter_activity_anim_duration" />
+        android:duration="@integer/inter_activity_anim_duration_faster" />
 </set>
