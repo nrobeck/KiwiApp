@@ -1,12 +1,14 @@
 package umn.cs5115.kiwi;
 
-import umn.cs5115.kiwi.FilterDefinition.SortBy;
 import umn.cs5115.kiwi.adapter.OverviewListCursorAdapter.TileInteractionListener;
 import umn.cs5115.kiwi.app.KiwiActivity;
 import umn.cs5115.kiwi.fragments.FilterDialogFragment;
 import umn.cs5115.kiwi.fragments.FilterDialogFragment.FilterListener;
 import umn.cs5115.kiwi.fragments.OverviewFragment;
 import umn.cs5115.kiwi.fragments.ViewAssignmentFragment;
+import umn.cs5115.kiwi.model.Assignment;
+import umn.cs5115.kiwi.model.FilterDefinition;
+import umn.cs5115.kiwi.model.FilterDefinition.SortBy;
 import umn.cs5115.kiwi.ui.OverviewEmptyView.CustomEmptyViewButtonListener;
 import android.app.AlertDialog;
 import android.app.Fragment;

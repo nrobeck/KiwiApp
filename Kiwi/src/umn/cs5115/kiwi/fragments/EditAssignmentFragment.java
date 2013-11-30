@@ -6,8 +6,6 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 
-import umn.cs5115.kiwi.Assignment;
-import umn.cs5115.kiwi.Course;
 import umn.cs5115.kiwi.DatabaseHandler;
 import umn.cs5115.kiwi.EditAssignmentActivity;
 import umn.cs5115.kiwi.R;
@@ -15,6 +13,8 @@ import umn.cs5115.kiwi.adapter.DummyItemAdapter;
 import umn.cs5115.kiwi.assignment.AssignmentUtils;
 import umn.cs5115.kiwi.assignment.AssignmentUtils.DueDateBuilder;
 import umn.cs5115.kiwi.assignment.AssignmentUtils.EmptyErrorTextWatcher;
+import umn.cs5115.kiwi.model.Assignment;
+import umn.cs5115.kiwi.model.Course;
 import umn.cs5115.kiwi.ui.DateButton;
 import umn.cs5115.kiwi.ui.DoneBar.DoneBarListenable;
 import umn.cs5115.kiwi.ui.DoneBar.DoneBarListener;

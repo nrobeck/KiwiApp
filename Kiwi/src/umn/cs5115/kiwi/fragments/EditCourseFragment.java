@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
-import umn.cs5115.kiwi.Course;
 import umn.cs5115.kiwi.DatabaseHandler;
 import umn.cs5115.kiwi.EditCourseActivity;
 import umn.cs5115.kiwi.R;
 import umn.cs5115.kiwi.assignment.AssignmentUtils;
 import umn.cs5115.kiwi.assignment.AssignmentUtils.EmptyErrorTextWatcher;
+import umn.cs5115.kiwi.model.Course;
 import umn.cs5115.kiwi.ui.DateButton;
 import umn.cs5115.kiwi.ui.DoneBar.DoneBarListenable;
 import umn.cs5115.kiwi.ui.DoneBar.DoneBarListener;

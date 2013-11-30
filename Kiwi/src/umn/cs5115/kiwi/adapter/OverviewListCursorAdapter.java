@@ -3,10 +3,10 @@ package umn.cs5115.kiwi.adapter;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
-import umn.cs5115.kiwi.Assignment;
 import umn.cs5115.kiwi.DatabaseHandler;
 import umn.cs5115.kiwi.R;
 import umn.cs5115.kiwi.assignment.AssignmentUtils.DueDateBuilder;
+import umn.cs5115.kiwi.model.Assignment;
 import android.content.Context;
 import android.content.res.Resources;
 import android.database.Cursor;

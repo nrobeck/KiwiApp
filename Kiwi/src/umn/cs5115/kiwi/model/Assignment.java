@@ -1,4 +1,4 @@
-package umn.cs5115.kiwi;
+package umn.cs5115.kiwi.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

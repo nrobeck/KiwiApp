@@ -1,4 +1,6 @@
-package umn.cs5115.kiwi;
+package umn.cs5115.kiwi.model;
+
+import android.text.TextUtils;
 
 public class Course {
 
@@ -87,8 +89,9 @@ public class Course {
 	
 	//read textbooks from the course as an array
 	public String[] getTextbooksArray() {
-	    if (this.textbooks == null) {
-	        return new String[] {};
+	    if (TextUtils.isEmpty(this.textbooks)) {
+	    	// 'textbooks' could be null, or just an empty string.
+	        return new String[0];
 	    }
 		String deliminator = "[" + TEXTBOOK_DELIMITER + "]+";//sets the DELIMITER character as a deliminator and treats multiple DELIMITER characters in a row as one deliminator
 		String[] textbookArray = this.textbooks.split(deliminator);//split the textbooks  string into an array of the individual books
@@ -143,7 +146,10 @@ public class Course {
 	
 	//add a textbook to the course
 	public void addTextbook(String textbook){
-		this.textbooks = this.textbooks + textbook + TEXTBOOK_DELIMITER;//add textbook to the end of the string
+		if (this.textbooks == null) {
+			this.textbooks = "";
+		}
+		this.textbooks += textbook + TEXTBOOK_DELIMITER;//add textbook to the end of the string
 	}
 	
 	//remove textbook from the course

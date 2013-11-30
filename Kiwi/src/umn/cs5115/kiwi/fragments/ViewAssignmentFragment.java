@@ -1,9 +1,9 @@
 package umn.cs5115.kiwi.fragments;
 
-import umn.cs5115.kiwi.Assignment;
 import umn.cs5115.kiwi.EditAssignmentActivity;
 import umn.cs5115.kiwi.R;
 import umn.cs5115.kiwi.Utils;
+import umn.cs5115.kiwi.model.Assignment;
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.content.Intent;

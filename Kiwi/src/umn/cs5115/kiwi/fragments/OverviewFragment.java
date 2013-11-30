@@ -1,14 +1,14 @@
 package umn.cs5115.kiwi.fragments;
 
-import umn.cs5115.kiwi.Assignment;
 import umn.cs5115.kiwi.DatabaseHandler;
 import umn.cs5115.kiwi.DatabaseHandler.DbAndCursor;
-import umn.cs5115.kiwi.FilterDefinition;
 import umn.cs5115.kiwi.MainActivity;
 import umn.cs5115.kiwi.R;
 import umn.cs5115.kiwi.adapter.OverviewListCursorAdapter;
 import umn.cs5115.kiwi.adapter.OverviewListCursorAdapter.TileInteractionListener;
 import umn.cs5115.kiwi.app.CustomOverviewListFragment;
+import umn.cs5115.kiwi.model.Assignment;
+import umn.cs5115.kiwi.model.FilterDefinition;
 import umn.cs5115.kiwi.ui.OverviewEmptyView.CustomEmptyViewButtonListener;
 import android.app.ActionBar;
 import android.app.Activity;

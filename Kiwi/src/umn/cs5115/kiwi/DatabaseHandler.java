@@ -1,5 +1,7 @@
 package umn.cs5115.kiwi;
 
+import umn.cs5115.kiwi.model.Assignment;
+import umn.cs5115.kiwi.model.Course;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;

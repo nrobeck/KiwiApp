@@ -2,10 +2,10 @@ package umn.cs5115.kiwi.fragments;
 
 import java.util.ArrayList;
 
-import umn.cs5115.kiwi.Course;
 import umn.cs5115.kiwi.DatabaseHandler;
-import umn.cs5115.kiwi.FilterDefinition;
-import umn.cs5115.kiwi.FilterDefinition.SortBy;
+import umn.cs5115.kiwi.model.Course;
+import umn.cs5115.kiwi.model.FilterDefinition;
+import umn.cs5115.kiwi.model.FilterDefinition.SortBy;
 import umn.cs5115.kiwi.R;
 import android.app.AlertDialog;
 import android.app.Dialog;

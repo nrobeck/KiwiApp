@@ -1,8 +1,8 @@
 package umn.cs5115.kiwi.fragments;
 
-import umn.cs5115.kiwi.Course;
 import umn.cs5115.kiwi.DatabaseHandler;
 import umn.cs5115.kiwi.R;
+import umn.cs5115.kiwi.model.Course;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;

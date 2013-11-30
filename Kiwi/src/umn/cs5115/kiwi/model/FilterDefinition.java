@@ -1,6 +1,8 @@
-package umn.cs5115.kiwi;
+package umn.cs5115.kiwi.model;
 
 import java.util.ArrayList;
+
+import umn.cs5115.kiwi.DatabaseHandler;
 
 import android.os.Parcel;
 import android.os.Parcelable;
