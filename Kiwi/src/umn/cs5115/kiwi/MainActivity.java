@@ -28,11 +28,9 @@ import android.widget.Toast;
 
 import com.cocosw.undobar.UndoBarController;
 import com.cocosw.undobar.UndoBarController.UndoListener;
-import com.espian.showcaseview.ShowcaseView;
 
 public class MainActivity extends KiwiActivity
-            implements ShowcaseView.OnShowcaseEventListener,
-                        FilterListener, TileInteractionListener,
+            implements FilterListener, TileInteractionListener,
                         CustomEmptyViewButtonListener {
 	private FilterDefinition filter;
 	private DatabaseHandler database;
@@ -217,7 +215,8 @@ public class MainActivity extends KiwiActivity
 			Log.d("MainActivity", "calling overview.refreshFilter");
 			overview.refreshFilter();
 		} else {
-			Log.d("MainActivity", "overview not resumed");
+			Log.d("MainActivity", "Not refreshing OverviewFragment because it isn't resumed yet. Setting it to refresh in onResume");
+			overview.setRefreshUponResume(true);
 		}
     }
 
@@ -296,18 +295,6 @@ public class MainActivity extends KiwiActivity
 //        ((AlarmManager) getSystemService(ALARM_SERVICE)).set(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis() + 3000, alarm);
 //    }
 
-    @Override
-    public void onShowcaseViewHide(ShowcaseView showcaseView) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void onShowcaseViewShow(ShowcaseView showcaseView) {
-        // TODO Auto-generated method stub
-
-    }
-
 	@Override
 	public void onNewFilter(FilterDefinition newfilter) {
 //		Toast.makeText(this, "Got filter!", Toast.LENGTH_SHORT).show();
@@ -359,6 +346,7 @@ public class MainActivity extends KiwiActivity
             FragmentTransaction transaction = fm.beginTransaction();
             fm.popBackStack();
             transaction.commit();
+			refreshOverviewFragment();
         } else {
             super.onBackPressed();
         }

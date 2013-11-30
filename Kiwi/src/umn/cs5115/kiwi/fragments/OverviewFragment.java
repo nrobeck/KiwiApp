@@ -28,6 +28,8 @@ public class OverviewFragment extends CustomOverviewListFragment {
 	private DbAndCursor assignments;
 	private boolean showFilterButton;
 	
+	private boolean shouldRefreshFilterUponResume;
+	
 	/**
 	 * Generate a String to use as an exception message, specifying that this
 	 * fragment can only be added to activities implementing the given interface
@@ -110,12 +112,22 @@ public class OverviewFragment extends CustomOverviewListFragment {
             ab.setTitle("Assignments");
             ab.setSubtitle(null);
         }
+        
+        if (shouldRefreshFilterUponResume) {
+        	Log.d(TAG, "Refreshing filter because we were told we should...");
+        	shouldRefreshFilterUponResume = false;
+        	refreshFilter();
+        }
     }
 
     private FilterDefinition getFilter() {
 		MainActivity activity = (MainActivity)getActivity();
 		return activity.getFilter();
 	}
+    
+    public void setRefreshUponResume(boolean should) {
+    	this.shouldRefreshFilterUponResume = should;
+    }
 	
 	public void refreshFilter() {
 		Log.d(TAG, "refreshFilter OverviewFragment");
