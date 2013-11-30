@@ -57,7 +57,7 @@ public class FilterDefinition implements Parcelable {
     public String getOrderString() {
     	switch (sorter) {
     	case COURSE:
-    		return "cname ASC";
+    		return DatabaseHandler.ASSIGNMENT_CDES + " ASC";
     	case DUE_DATE:
     		return DatabaseHandler.DUE_MILLIS + " ASC";
     	default:
