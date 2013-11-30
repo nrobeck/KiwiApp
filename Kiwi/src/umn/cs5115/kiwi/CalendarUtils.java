@@ -5,6 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import net.fortuna.ical4j.model.Recur;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
@@ -68,24 +70,15 @@ public class CalendarUtils {
             final Date date = new Date();
             for (int i = 0; i < this.count; i++) {
                 super.moveToPosition(i);
-                EventRecurrence recur = new EventRecurrence();
-                recur.parse(this.getString(1));
-                Date until;
-                try {
-                    until = format.parse(recur.until);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                    continue;
-                } catch (NullPointerException e) {
-                    // recur.until is null. We're fine with this
-                    try {
-                        // Fake an end datetime. Yay!
-                        until = format.parse("55551231T235959Z");
-                    } catch (ParseException e1) {
-                        e1.printStackTrace();
-                        continue;
-                    }
-                }
+                Recur recur;
+				try {
+					recur = new Recur(this.getString(1));
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					continue;
+				}
+                Date until = recur.getUntil();
                 // Only track this item if its UNTIL is after now
 				if (until == null || until.after(date)) {
                     this.index[this.pos++] = i;
