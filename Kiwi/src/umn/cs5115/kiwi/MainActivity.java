@@ -44,10 +44,10 @@ public class MainActivity extends KiwiActivity
                         CustomEmptyViewButtonListener {
 	private FilterDefinition filter;
 	private DatabaseHandler database;
-	
+
 	private static final String OVERVIEW_TAG = "overview_frag";
 	private static final String VIEW_ASSIGN_TAG = "view_frag";
-	
+
 	/**
 	 * Get a reference to a fragment to show, in order to view that assignment's
 	 * information. Pretty much you're going to want to instantiate a new
@@ -59,7 +59,7 @@ public class MainActivity extends KiwiActivity
 	private Fragment getViewAssignmentFragment(Assignment viewingAssignment) {
 	    return ViewAssignmentFragment.newInstance(viewingAssignment);
 	}
-	
+
 	/**
 	 * Takes in a FragmentTransaction and calls setCustomAnimations on that
 	 * transaction to ensure consistent animations.
@@ -67,16 +67,16 @@ public class MainActivity extends KiwiActivity
 	 */
 	private void setSwapAnimations(FragmentTransaction ft) {
         ft.setCustomAnimations(
-            R.anim.slide_in_from_right_objanim, 
+            R.anim.slide_in_from_right_objanim,
             R.anim.slide_out_to_left_objanim,
             R.anim.slide_in_from_left_objanim,
             R.anim.slide_out_to_right_objanim);
 	}
-	
+
 	public FilterDefinition getFilter() {
 		return this.filter;
 	}
-	
+
 	/**
 	 * Fundamental body of the onChangeCompletion method. We can't let the UndoBar
 	 * launched by that method just call onChangeCompletion... If we did, you get
@@ -95,7 +95,7 @@ public class MainActivity extends KiwiActivity
     @Override
 	public void onChangeCompletion(final Assignment assignment, final boolean isCompleted) {
     	changeCompletion(assignment, isCompleted);
-    	
+
     	/*
     	 * Give a little bit of haptic feedback.
     	 */
@@ -104,9 +104,9 @@ public class MainActivity extends KiwiActivity
 		// TODO: Check if this is the case...
 		if (vib.hasVibrator())
 			vib.vibrate(20);
-    	
+
 		String toast = String.format("Marked '%s' as%s completed.", assignment.getName(), (isCompleted ? "" : " not"));
-    	
+
 		Log.d("MainActivity", "onChangeCompletion " + assignment + " " + isCompleted);
     	UndoBarController.show(this, toast, new UndoListener() {
 			@Override
@@ -120,7 +120,7 @@ public class MainActivity extends KiwiActivity
 	public void viewAssignment(Assignment assignment) {
 		// TODO: Switch view to show ViewAssignmentFragment.
 		Log.d("MainActivity", "Viewing assignment " + assignment);
-		
+
 		FragmentTransaction ft = getFragmentManager().beginTransaction();
 		setSwapAnimations(ft);
 		ft.replace(R.id.base, getViewAssignmentFragment(assignment), VIEW_ASSIGN_TAG);
@@ -150,8 +150,9 @@ public class MainActivity extends KiwiActivity
 				final OverviewFragment overview = (OverviewFragment)getFragmentManager().findFragmentByTag(OVERVIEW_TAG);
                 Toast.makeText(MainActivity.this, "Deleted assignment " + assignment.getName(), Toast.LENGTH_SHORT).show();
                 database.removeAssignment(assignment);
-                
-                if (overview == null) {
+
+                if (overview == null || deletingView == null) {
+                    refreshOverviewFragment();
                     return;
                 }
 				overview.getListView().setEnabled(false);
@@ -192,7 +193,7 @@ public class MainActivity extends KiwiActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
+
         DatabaseHandler dbh = new DatabaseHandler(this);
         this.database = dbh;
 
@@ -207,27 +208,27 @@ public class MainActivity extends KiwiActivity
             ft.add(R.id.base, overview, OVERVIEW_TAG);
             ft.commit();
         }
-        
+
         if (filter == null) {
         	Log.d("MainActivity", "Filter is null! Making fresh filter.");
         	filter = new FilterDefinition(SortBy.DUE_DATE, true, null, null);
         	Log.d("MainActivity", "New filter: " + filter.toQueryString());
         }
-        
+
         /*
          * =================================================
          * Temporary code. Preferably will be removed once the reminder notification system
          * is completely in place.
          * =================================================
-         * 
+         *
          * Query the database for reminders on upcoming events, and schedule a
          * notification (for a second from now) with those reminders.
          */
-        
+
         long current = Calendar.getInstance().getTimeInMillis();
         DbAndCursor dbc = new DatabaseHandler(this).queryReminders(current);
 //        Log.d("MainActivity", "Current millis: " + current + ", Reminder count: " + dbc.cursor.getCount());
-        
+
         ArrayList<String> reminders = new ArrayList<String>();
         Cursor c = dbc.cursor;
         if (c.getCount() > 0) {
@@ -243,7 +244,7 @@ public class MainActivity extends KiwiActivity
         			c.moveToNext();
         			continue;
         		}
-        		
+
         		if (TextUtils.isEmpty(cdes)) {
         			cdes = "";
         		} else {
@@ -254,7 +255,7 @@ public class MainActivity extends KiwiActivity
         		} else {
         			atype = String.format(" (%s)", atype);
         		}
-        		
+
         		reminders.add(cdes + aname + atype);
         		c.moveToNext();
         	}
@@ -269,7 +270,7 @@ public class MainActivity extends KiwiActivity
 		mManager.cancel(reminderIntent);
 		mManager.set(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis() + 1000, reminderIntent);
     }
-    
+
     private void refreshOverviewFragment() {
 		OverviewFragment overview = (OverviewFragment)getFragmentManager().findFragmentByTag(OVERVIEW_TAG);
 		if (overview == null) {
@@ -322,7 +323,7 @@ public class MainActivity extends KiwiActivity
     /**
      * Handle clicking options menu items. These items will be created
      * in any fragments living inside this activity.
-     * 
+     *
      * @param item The MenuItem that was selected.
      */
     @Override
@@ -386,7 +387,7 @@ public class MainActivity extends KiwiActivity
 //            }
 //        });
 //        popup.show();
-        
+
         /*
          * Until we have importing from calendar working, just go directly
          * to the Add course activity.
