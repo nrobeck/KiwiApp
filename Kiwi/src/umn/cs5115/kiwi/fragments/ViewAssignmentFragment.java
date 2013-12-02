@@ -1,9 +1,15 @@
 package umn.cs5115.kiwi.fragments;
 
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 import umn.cs5115.kiwi.EditAssignmentActivity;
 import umn.cs5115.kiwi.R;
 import umn.cs5115.kiwi.Utils;
+import umn.cs5115.kiwi.assignment.AssignmentUtils.DueDateBuilder;
 import umn.cs5115.kiwi.model.Assignment;
+import umn.cs5115.kiwi.ui.DateButton;
+import umn.cs5115.kiwi.ui.TimeButton;
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.content.Intent;
@@ -14,6 +20,7 @@ import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -52,9 +59,21 @@ public class ViewAssignmentFragment extends Fragment {
     
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        // TODO: Make the actions menu for this view, and point to it here.
-        // inflater.inflate(R.menu.view_assignment_menu, menu);
+        inflater.inflate(R.menu.view_assignment_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	switch(item.getItemId()) {
+    	case 1:
+    		
+    		return true;
+    	case 2:
+    		
+    		return true;
+    	}
+    	return super.onOptionsItemSelected(item);
     }
     
     @Override
@@ -84,21 +103,21 @@ public class ViewAssignmentFragment extends Fragment {
         	TextView assignmentNameTextView = (TextView) view.findViewById(R.id.assignmentName);
         	assignmentNameTextView.setText(mAssignment.getName());
         	
-        	//assignment course--problem here!
+        	//assignment course
         	TextView assignmentCourseTextView = (TextView) view.findViewById(R.id.assignmentCourse);
-        	assignmentCourseTextView.setText(mAssignment.getCourseDesignation());
+        	assignmentCourseTextView.setText("Course: " + mAssignment.getCourseDesignation());
         	
         	//assignment type
         	TextView assignmentTypeTextView = (TextView) view.findViewById(R.id.assignmentType);
-        	assignmentTypeTextView.setText(mAssignment.getType());
+        	assignmentTypeTextView.setText("Type: " + mAssignment.getType());
         	
         	//assignment book
         	TextView assignmentBookTextView = (TextView) view.findViewById(R.id.assignmentBook);
-        	assignmentBookTextView.setText(mAssignment.getTextbook());
+        	assignmentBookTextView.setText("TextBook: " + mAssignment.getTextbook());
         	
         	//assignment due date
-        	TextView assignmentDueTextView = (TextView) view.findViewById(R.id.assignmentDue);        	
-        	assignmentDueTextView.setText("Due");
+        	TextView assignmentDueTextView = (TextView) view.findViewById(R.id.assignmentDue);
+        	assignmentDueTextView.setText(new SimpleDateFormat("h:mm aaa, EEE, MMM dd, ''yy", Locale.US).format(new DueDateBuilder(mAssignment.getDueMillis()).toDate()));
         	
         	//assignment notes
         	TextView assignmentNotesTextView = (TextView) view.findViewById(R.id.assignmentNotes);

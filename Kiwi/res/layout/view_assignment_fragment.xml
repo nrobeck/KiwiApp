@@ -1,7 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?><umn.cs5115.kiwi.ui.SlidingFrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?><umn.cs5115.kiwi.ui.SlidingFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content" >
     
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -9,22 +8,14 @@
     android:paddingTop="4dp"
     android:paddingBottom="4dp"
     android:orientation="vertical" >
-    
-    	<!-- Title -->
-        <TextView
-	        android:id="@+id/fragmentTitle"
-	        style="?android:attr/listSeparatorTextViewStyle"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:text="Assignment Overview"
-	        android:textAppearance="?android:attr/textAppearanceMedium" />
-        
+            
         <!-- Assignment Name -->
         <TextView 
             android:id="@+id/assignmentName"
             android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-	        android:textSize="20sp"
+	        android:textSize="22sp"
+	        style="?android:attr/listSeparatorTextViewStyle"
 	        />
         
         <!-- Assignment Course -->
@@ -53,6 +44,15 @@
         
         <!-- Assignment Due -->
         <TextView 
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="20sp"
+            android:textSize="20sp"
+            android:text="Due"
+            style="?android:attr/listSeparatorTextViewStyle"
+            />
+        
+        <TextView 
             android:id="@+id/assignmentDue"
             android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
@@ -60,8 +60,16 @@
 	        />
         
         
-        
         <!-- Assignment Notes -->
+        <TextView 
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:paddingTop="20sp"
+            android:text="Notes"
+            style="?android:attr/listSeparatorTextViewStyle"
+            />
+        
         <TextView 
             android:id="@+id/assignmentNotes"
             android:layout_width="match_parent"
