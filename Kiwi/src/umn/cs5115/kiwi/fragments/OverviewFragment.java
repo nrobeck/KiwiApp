@@ -159,8 +159,6 @@ public class OverviewFragment extends CustomOverviewListFragment {
 		
 		setListShown(true);
 		
-		getListView().setDivider(null);
-		
 		String filter = getFilter().toQueryString();
 		
 		final DatabaseHandler database = new DatabaseHandler(getActivity());
