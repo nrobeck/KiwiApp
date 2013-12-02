@@ -1,14 +1,74 @@
-<?xml version="1.0" encoding="utf-8"?>
-<umn.cs5115.kiwi.ui.SlidingFrameLayout
+<?xml version="1.0" encoding="utf-8"?><umn.cs5115.kiwi.ui.SlidingFrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="4dp"
+    android:paddingBottom="4dp"
+    android:orientation="vertical" >
+    
+    	<!-- Title -->
+        <TextView
+	        android:id="@+id/fragmentTitle"
+	        style="?android:attr/listSeparatorTextViewStyle"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:text="Assignment Overview"
+	        android:textAppearance="?android:attr/textAppearanceMedium" />
+        
+        <!-- Assignment Name -->
+        <TextView 
+            android:id="@+id/assignmentName"
+            android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:textSize="20sp"
+	        />
+        
+        <!-- Assignment Course -->
+        <TextView 
+            android:id="@+id/assignmentCourse"
+            android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:textSize="20sp"
+	        />
+        
+        <!-- Assignment Type -->
+        <TextView 
+            android:id="@+id/assignmentType"
+            android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:textSize="20sp"
+	        />
+        
+        <!-- Assignment Book -->
+        <TextView 
+            android:id="@+id/assignmentBook"
+            android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+			android:textSize="20sp"
+	        />
+        
+        <!-- Assignment Due -->
+        <TextView 
+            android:id="@+id/assignmentDue"
+            android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:textSize="20sp"
+	        />
+        
+        
+        
+        <!-- Assignment Notes -->
+        <TextView 
+            android:id="@+id/assignmentNotes"
+            android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:textSize="20sp"
+	        android:autoLink="web"
+	        />
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="View Assignment!"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
+     </LinearLayout>
 </umn.cs5115.kiwi.ui.SlidingFrameLayout>

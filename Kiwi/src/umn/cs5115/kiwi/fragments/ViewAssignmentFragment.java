@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.b50.gesticulate.SwipeDetector;
 
@@ -45,6 +46,8 @@ public class ViewAssignmentFragment extends Fragment {
         if (args != null) {
             mAssignment = (Assignment)args.getParcelable(ASSIGNMENT_ARG);
         }
+        
+        
     }
     
     @Override
@@ -77,9 +80,30 @@ public class ViewAssignmentFragment extends Fragment {
         View view = inflater.inflate(R.layout.view_assignment_fragment, null);
         
         if (mAssignment != null) {
-            // TODO: Fill in text views, etc. in the view with information
-            // stored on mAssignment here.
-            
+            //assignment name
+        	TextView assignmentNameTextView = (TextView) view.findViewById(R.id.assignmentName);
+        	assignmentNameTextView.setText(mAssignment.getName());
+        	
+        	//assignment course--problem here!
+        	TextView assignmentCourseTextView = (TextView) view.findViewById(R.id.assignmentCourse);
+        	assignmentCourseTextView.setText(mAssignment.getCourseDesignation());
+        	
+        	//assignment type
+        	TextView assignmentTypeTextView = (TextView) view.findViewById(R.id.assignmentType);
+        	assignmentTypeTextView.setText(mAssignment.getType());
+        	
+        	//assignment book
+        	TextView assignmentBookTextView = (TextView) view.findViewById(R.id.assignmentBook);
+        	assignmentBookTextView.setText(mAssignment.getTextbook());
+        	
+        	//assignment due date
+        	TextView assignmentDueTextView = (TextView) view.findViewById(R.id.assignmentDue);        	
+        	assignmentDueTextView.setText("Due");
+        	
+        	//assignment notes
+        	TextView assignmentNotesTextView = (TextView) view.findViewById(R.id.assignmentNotes);
+        	assignmentNotesTextView.setText(mAssignment.getNotes());
+        	
         } else {
             // Hopefully we aren't stupid enough to not pass an assignment in.
             // But if we are, log it.
