@@ -97,40 +97,23 @@
             
             <ImageView
                 android:id="@+id/assignment_tile_reminders_identifier"
-                android:layout_width="48dp"
-                android:layout_height="match_parent"
+                style="@style/AssignmentTileSmallIcon"
                 android:layout_toLeftOf="@+id/assignment_tile_textbook_identifier"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:gravity="center_vertical"
-                android:padding="12dp"
-                android:scaleType="center"
+                android:contentDescription="Reminders"
                 android:src="@drawable/ic_reminders" />
 
             <ImageView
                 android:id="@+id/assignment_tile_textbook_identifier"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                style="@style/AssignmentTileSmallIcon"
                 android:layout_toLeftOf="@+id/assignment_tile_notes_identifier"
                 android:contentDescription="@string/textbook"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:gravity="center_vertical"
-                android:padding="12dp"
-                android:scaleType="center"
                 android:src="@drawable/textbook_icon" />
 
             <ImageView
                 android:id="@+id/assignment_tile_notes_identifier"
-                android:layout_width="48dp"
-                android:layout_height="match_parent"
+                style="@style/AssignmentTileSmallIcon"
                 android:layout_toLeftOf="@+id/assignment_tile_popup_button"
                 android:contentDescription="@string/notes"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:gravity="center_vertical"
-                android:padding="12dp"
-                android:scaleType="center"
                 android:src="@drawable/ic_4_collections_view_as_list" />
 
             <ImageButton
