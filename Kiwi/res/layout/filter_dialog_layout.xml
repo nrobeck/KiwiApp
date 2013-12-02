@@ -4,21 +4,27 @@
     android:layout_height="match_parent">
 <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp">
 
-    <TextView
-        android:id="@+id/TextView01"
+    <Button
+        android:id="@+id/sortByTextview"
         style="?android:attr/listSeparatorTextViewStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Sort by..."
+        android:drawableRight="@drawable/ic_action_expand"
+        android:background="@drawable/list_selection_background"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <RadioGroup
         android:id="@+id/radioGroup1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:visibility="gone">
 
         <RadioButton
             android:id="@+id/sort_by_due"
@@ -43,12 +49,20 @@
             android:text="Assignment Type" />
     </RadioGroup>
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/form_section_spacing"
+        android:background="@color/window_background_darker" />
 
-    <TextView
-        android:id="@+id/TextView02"
+    <Button
+        android:id="@+id/completedAssignmentsTextview"
         style="?android:attr/listSeparatorTextViewStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/form_section_spacing"
+        android:drawableRight="@drawable/ic_action_expand"
+        android:background="@drawable/list_selection_background"
         android:text="Completed Assignments"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -56,13 +70,23 @@
         android:id="@+id/show_completed"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Show completed assignments" />
+        android:text="Show completed assignments"
+        android:visibility="gone" />
     
-    <TextView
-        android:id="@+id/textView2"
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/form_section_spacing"
+        android:background="@color/window_background_darker" />
+    
+    <Button
+        android:id="@+id/coursesTextview"
         style="?android:attr/listSeparatorTextViewStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/form_section_spacing"
+        android:drawableRight="@drawable/ic_action_expand"
+        android:background="@drawable/list_selection_background"
         android:text="Show Courses"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -70,21 +94,24 @@
         android:id="@+id/courses_linearlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
-        <TextView
-            android:id="@+id/no_courses_textview" 
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="No courses!"
-            android:visibility="gone"
-            android:textAppearance="?android:attr/textAppearanceMedium"/>
+        android:orientation="vertical"
+        android:visibility="gone" >
     </LinearLayout>
     
-	<TextView
-	    android:id="@+id/textView3"
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/form_section_spacing"
+        android:background="@color/window_background_darker" />
+    
+	<Button
+	    android:id="@+id/typeTextview"
 	    style="?android:attr/listSeparatorTextViewStyle"
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/form_section_spacing"
+        android:drawableRight="@drawable/ic_action_expand"
+        android:background="@drawable/list_selection_background"
 	    android:text="Show Assignment Type"
 	    android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -92,7 +119,8 @@
 	    android:id="@+id/assignment_types_linearlayout"
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
-	    android:orientation="vertical" >
+	    android:orientation="vertical"
+        android:visibility="gone" >
 
 	</LinearLayout>
 </LinearLayout>

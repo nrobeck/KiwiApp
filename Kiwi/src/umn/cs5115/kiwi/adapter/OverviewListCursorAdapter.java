@@ -154,7 +154,7 @@ public class OverviewListCursorAdapter extends CursorAdapter {
 		} else {
 			aDate.setText(null);
 		}
-		aCourse.setText(assignment.getCourseDesignation()); //I do not know how this value was being stored but it broke when I changed to put in the course colors
+		aCourse.setText(assignment.getCourseDesignation());
 		aType.setText(assignment.getType());
 		
 		/*

@@ -10,7 +10,7 @@
         android:focusableInTouchMode="true">
 
 	    <TextView
-	        android:id="@+id/textView2"
+	        android:id="@+id/coursesTextview"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:text="Course Info"
@@ -41,7 +41,7 @@
 	    
 	    <!-- Scheduling -->
 	    <TextView
-	        android:id="@+id/textView3"
+	        android:id="@+id/typeTextview"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:text="Scheduling"

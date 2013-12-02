@@ -3,10 +3,10 @@ package umn.cs5115.kiwi.fragments;
 import java.util.ArrayList;
 
 import umn.cs5115.kiwi.DatabaseHandler;
+import umn.cs5115.kiwi.R;
 import umn.cs5115.kiwi.model.Course;
 import umn.cs5115.kiwi.model.FilterDefinition;
 import umn.cs5115.kiwi.model.FilterDefinition.SortBy;
-import umn.cs5115.kiwi.R;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -17,10 +17,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 
 public class FilterDialogFragment extends DialogFragment {
     public static interface FilterListener {
@@ -51,6 +53,17 @@ public class FilterDialogFragment extends DialogFragment {
     private void makeCheckboxWide(CheckBox cb) {
         cb.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
     }
+    
+    private boolean toggleVisibility(Button clicked, View showHide) {
+        boolean currentlyVisible = showHide.isShown();
+        boolean endingVisible = !currentlyVisible;
+        int rightDrawable = endingVisible ? R.drawable.ic_action_collapse : R.drawable.ic_action_expand;
+        
+        showHide.setVisibility(endingVisible ? View.VISIBLE : View.GONE);
+        clicked.setCompoundDrawablesWithIntrinsicBounds(0, 0, rightDrawable, 0);
+        
+        return endingVisible;
+    }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -62,6 +75,59 @@ public class FilterDialogFragment extends DialogFragment {
         if (defn == null) {
             defn = new FilterDefinition(SortBy.DUE_DATE, true, null, null);
         }
+        
+        final View sortRadio = rootView.findViewById(R.id.radioGroup1);
+        final View showCompleted = rootView.findViewById(R.id.show_completed);
+        final LinearLayout coursesLayout = (LinearLayout) rootView.findViewById(R.id.courses_linearlayout);
+        final LinearLayout typesLayout = (LinearLayout) rootView.findViewById(R.id.assignment_types_linearlayout);
+        
+        /*
+         * Add click listeners to the expand/collapse buttons.
+         */
+        final Button sortButton = (Button)rootView.findViewById(R.id.sortByTextview);
+        final Button showCompletedButton = (Button)rootView.findViewById(R.id.completedAssignmentsTextview);
+        final Button filterCoursesButton = (Button)rootView.findViewById(R.id.coursesTextview);
+        final Button filterTypesButton = (Button)rootView.findViewById(R.id.typeTextview);
+        sortButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleVisibility(sortButton, sortRadio);
+            }
+        });
+        showCompletedButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleVisibility(showCompletedButton, showCompleted);
+            }
+        });
+        filterCoursesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleVisibility(filterCoursesButton, coursesLayout);
+            }
+        });
+        filterTypesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleVisibility(filterTypesButton, typesLayout);
+                /*
+                 * Auto-scroll the dialog contents to the bottom. This is to
+                 * make sure that when expanding the types area, the user is
+                 * presented with the option there (otherwise, it might just
+                 * expand off the bottom, and the user might not be sure it
+                 * worked at all).
+                 * 
+                 * This is a bit janky, but we'll live with it.
+                 */
+                final ScrollView layout = (ScrollView)rootView;
+                layout.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        layout.fullScroll(View.FOCUS_DOWN);
+                    }
+                });
+            }
+        });
 
         Context ctx = getActivity();
 
@@ -90,24 +156,16 @@ public class FilterDialogFragment extends DialogFragment {
             }
         }
 
-        //		TextView tv = (TextView)rootView.findViewById(R.id.textView1);
-        //		tv.setText(String.format("Hello! %d", getArguments().getInt("whatever")));
-
-        LinearLayout coursesLayout = (LinearLayout) rootView.findViewById(R.id.courses_linearlayout);
-        LinearLayout typesLayout = (LinearLayout) rootView.findViewById(R.id.assignment_types_linearlayout);
-
-        final RadioGroup sortRadios = (RadioGroup)rootView.findViewById(R.id.radioGroup1);
-
         // Select the correct radio button.
         RadioButton initialSortRadio;
-        initialSortRadio = (RadioButton)sortRadios.findViewWithTag(Integer.toString(defn.sorter.toInt()));
+        initialSortRadio = (RadioButton)sortRadio.findViewWithTag(Integer.toString(defn.sorter.toInt()));
         if (initialSortRadio == null) {
-            initialSortRadio = (RadioButton)sortRadios.findViewById(R.id.sort_by_due);
+            initialSortRadio = (RadioButton)sortRadio.findViewById(R.id.sort_by_due);
         }
         initialSortRadio.setChecked(true);
 
         // Check off the 'show completed' box if needed
-        ((CheckBox)rootView.findViewById(R.id.show_completed)).setChecked(defn.showCompleted);
+        ((CheckBox) showCompleted).setChecked(defn.showCompleted);
 
         final CheckBox[] courseCheckboxes = new CheckBox[courses.length + 1];
         final CheckBox[] typeCheckboxes = new CheckBox[types.length + 1];
@@ -227,7 +285,7 @@ public class FilterDialogFragment extends DialogFragment {
                     types[i] = selectedTypes.get(i);
                 }
 
-                SortBy sorter = SortBy.fromInt(getSortNumber(rootView, sortRadios));
+                SortBy sorter = SortBy.fromInt(getSortNumber(rootView, (RadioGroup)sortRadio));
 
                 boolean showCompleted = getShowCompleted(rootView);
 
