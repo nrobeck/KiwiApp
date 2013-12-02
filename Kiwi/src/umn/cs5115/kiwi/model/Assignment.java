@@ -16,6 +16,7 @@ public class Assignment implements Parcelable {
 	private boolean completed;
 	private String color;
 	
+	private String courseName;
 	private String courseDesignation;
 
 	// empty constructor
@@ -77,6 +78,10 @@ public class Assignment implements Parcelable {
 		return this.courseDesignation;
 	}
 	
+	public String getCourseName() {
+	    return this.courseName;
+	}
+	
 
 	// setters for each of the Assignment elements
 	public void setTextbook(String tb) {
@@ -118,6 +123,10 @@ public class Assignment implements Parcelable {
 	public void setCourseDesignation(String cd) {
 		this.courseDesignation = cd;
 	}
+	
+	public void setCourseName(String cn) {
+	    this.courseName = cn;
+	}
 
 	@Override
 	public String toString() {
@@ -155,6 +164,7 @@ public class Assignment implements Parcelable {
         dest.writeByte((byte) (completed ? 1 : 0));
         dest.writeString(color);
         dest.writeString(courseDesignation);
+        dest.writeString(courseName);
     }
     
     /**
@@ -173,6 +183,7 @@ public class Assignment implements Parcelable {
         completed = in.readByte() != 0;
         color = in.readString();
         courseDesignation = in.readString();
+        courseName = in.readString();
     }
     
     public static final Parcelable.Creator<Assignment> CREATOR = new Parcelable.Creator<Assignment>() {

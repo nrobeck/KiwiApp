@@ -50,6 +50,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public static final String NOTES = "notes";
     public static final String COMPLETED = "completed";
     public static final String ASSIGNMENT_CDES = "course_designation";
+    public static final String ASSIGNMENT_CNAME = "course_name";
     public static final String ASSIGNMENT_COLOR = "color";
     //public static final String COLOR = "color"; //Do not know if this is the way to do this
 
@@ -73,9 +74,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public static final String ASSIGNMENTS_QUERY = String.format(
     		// assignments.*, courses.designation as course_designation, courses.color as course_color from assignments
     		// LEFT OUTER JOIN courses ON assignments.course = courses._id
-    	    "SELECT %1$s.*, %2$s.%3$s as %4$s, %2$s.%5$s as %6$s from %1$s LEFT OUTER JOIN %2$s ON %1$s.%7$s = %2$s.%8$s",
+    	    "SELECT %1$s.*, %2$s.%9$s as %10$s, %2$s.%3$s as %4$s, %2$s.%5$s as %6$s " +
+    		"from %1$s LEFT OUTER JOIN %2$s ON %1$s.%7$s = %2$s.%8$s",
     	    TABLE_ASSIGNMENTS, TABLE_COURSES, DESIGNATION, ASSIGNMENT_CDES, COURSE_COLOR, ASSIGNMENT_COLOR,
-    	    COURSE, KEY_ID);
+    	    COURSE, KEY_ID, NAME, ASSIGNMENT_CNAME);
     
     public static final String REMINDERS_QUERY = String.format(
     		// get course designation, assignment name, type, and reminder time
@@ -288,6 +290,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         a.setTextbook(c.getString(c.getColumnIndex(TEXTBOOKS)));
         a.setCompleted(c.getInt(c.getColumnIndex(COMPLETED)) != 0);
         a.setCourseDesignation(c.getString(c.getColumnIndex(ASSIGNMENT_CDES)));
+        a.setCourseName(c.getString(c.getColumnIndex(ASSIGNMENT_CNAME)));
         a.setColor(c.getString(c.getColumnIndex(ASSIGNMENT_COLOR)));
         
         return a;
