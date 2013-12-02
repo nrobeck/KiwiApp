@@ -4,33 +4,37 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <LinearLayout
-        
-        android:id="@+id/delete_courses_linearlayout"
+    <Button
+        android:id="@+id/select_all_courses"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:text="Select all" />
 
-        <Button
-            android:id="@+id/select_all_courses"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Select all" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
 
-        <LinearLayout
-            android:id="@+id/delete_courses_cb_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
-
-        </LinearLayout>
-
+        <!-- This button actually appears below the scroll view. -->
         <Button
             android:id="@+id/delete_courses"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
             android:text="Delete selected courses" />
+        
+        <ScrollView
+            android:id="@+id/delete_courses_cb_scrollview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/delete_courses">
 
-    </LinearLayout>
+            <LinearLayout
+                android:id="@+id/delete_courses_cb_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+            </LinearLayout>
+        </ScrollView>
+    </RelativeLayout>
 
 </LinearLayout>

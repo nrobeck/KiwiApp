@@ -60,32 +60,43 @@ public class DeleteCoursesFragment extends Fragment {
 		button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				new AlertDialog.Builder(getActivity())
-				.setTitle("Delete Courses")
-				.setMessage("Are you sure you want to delete? This option cannot be undone!")
-				.setIcon(android.R.drawable.ic_dialog_alert)
-				.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int whichButton) {
-						int i = 0;
-						LinearLayout l = (LinearLayout)getView().findViewById(R.id.delete_courses_cb_layout);
-						DatabaseHandler dbh = new DatabaseHandler(getActivity());
-
-						for(CheckBox cb : courseCheckboxes){
-							if(cb.isChecked()){
-								dbh.removeCourse(courses[i]);
-								l.removeView(cb);
-							}
-							i++;
-						}
+				int count = 0;
+				for(CheckBox cb : courseCheckboxes){
+					if(cb.isChecked()){
+						count += 1;
+						break;
+					}
+				}
+				if(count == 0){
+					Toast.makeText(getActivity(), "No Courses Selected", Toast.LENGTH_SHORT).show();
+				}
+				else{
+					new AlertDialog.Builder(getActivity())
+					.setTitle("Delete Courses")
+					.setMessage("Are you sure you want to delete? This option cannot be undone!")
+					.setIcon(android.R.drawable.ic_dialog_alert)
+					.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int whichButton) {
+							int i = 0;
+							LinearLayout l = (LinearLayout)getView().findViewById(R.id.delete_courses_cb_layout);
+							DatabaseHandler dbh = new DatabaseHandler(getActivity());
 						
-						if (l.getChildCount() == 0) {
-							getActivity().finish();
-						}
-						//new DatabaseHandler(DeleteCoursesActivity.this).clearDatabase();
-				        Toast.makeText(getActivity(), "Courses Deleted", Toast.LENGTH_SHORT).show();
-				    }})
-				 .setNegativeButton(android.R.string.no, null).show();
-				
+							for(CheckBox cb : courseCheckboxes){
+								if(cb.isChecked()){
+									dbh.removeCourse(courses[i]);
+									l.removeView(cb);
+								}
+								i++;
+							}
+						
+							if (l.getChildCount() == 0) {
+								getActivity().finish();
+							}
+							//new DatabaseHandler(DeleteCoursesActivity.this).clearDatabase();
+							Toast.makeText(getActivity(), "Courses Deleted", Toast.LENGTH_SHORT).show();
+						}})
+					.setNegativeButton(android.R.string.no, null).show();
+				}	
 			}
 		});
     }
