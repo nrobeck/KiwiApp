@@ -94,10 +94,22 @@
                 android:padding="8dp"
                 android:text="Completed"
                 android:textSize="18sp" />
+            
+            <ImageView
+                android:id="@+id/assignment_tile_reminders_identifier"
+                android:layout_width="48dp"
+                android:layout_height="match_parent"
+                android:layout_toLeftOf="@+id/assignment_tile_textbook_identifier"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:gravity="center_vertical"
+                android:padding="12dp"
+                android:scaleType="center"
+                android:src="@drawable/ic_reminders" />
 
             <ImageView
                 android:id="@+id/assignment_tile_textbook_identifier"
-                android:layout_width="48dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_toLeftOf="@+id/assignment_tile_notes_identifier"
                 android:contentDescription="@string/textbook"
@@ -134,6 +146,7 @@
                 android:scaleType="center"
                 android:src="@drawable/ic_action_overflow"
                 android:text="@string/assignment_tile_popup_button_title" />
+
         </RelativeLayout>
         
     </LinearLayout>

@@ -180,7 +180,7 @@ public class Utils {
     										   1, //Course as an int
     										   "Presentation", //Assignment Type
     										   1386655140000l, //Due in Milliseconds
-    										   0, //Reminder
+    										   72, //Reminder
     										   "Remember to submit and print out all the stuff for the presentation!", //Notes
     										   "")); //Textbook
     	dbHandler.addAssignment(new Assignment(0, //ID
@@ -188,7 +188,7 @@ public class Utils {
 											   1, //Course as an int
 											   "Assignment", //Assignment Type
 											   1387000740000l, //Due in Milliseconds
-											   0, //Reminder
+											   72, //Reminder
 											   "", //Notes
 											   "")); //Textbook
     	dbHandler.addAssignment(new Assignment(0, //ID
@@ -196,7 +196,7 @@ public class Utils {
 											   2, //Course as an int
 											   "Assignment", //Assignment Type
 											   1386741540000l, //Due in Milliseconds
-											   0, //Reminder
+											   24, //Reminder
 											   "Remember to print it out!", //Notes
 											   "Intro to Data Mining")); //Textbook
     	dbHandler.addAssignment(new Assignment(0, //ID
@@ -220,7 +220,7 @@ public class Utils {
 											   3, //Course as an int
 											   "Paper", //Assignment Type
 											   1387173540000l, //Due in Milliseconds
-											   0, //Reminder
+											   12, //Reminder
 											   "", //Notes
 											   "Intro to Chemistry")); //Textbook
     	dbHandler.addAssignment(new Assignment(0, //ID
@@ -236,7 +236,7 @@ public class Utils {
 											   4, //Course as an int
 											   "Exam", //Assignment Type
 											   1387259940000l, //Due in Milliseconds
-											   0, //Reminder
+											   12, //Reminder
 											   "STUDY!!!", //Notes
 											   "Intro to Physics")); //Textbook
     }

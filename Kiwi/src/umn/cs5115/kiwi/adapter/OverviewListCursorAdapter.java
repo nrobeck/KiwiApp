@@ -193,6 +193,9 @@ public class OverviewListCursorAdapter extends CursorAdapter {
 		else {
 			textbookIdentifier.setVisibility(View.VISIBLE);
 		}
+		
+		ImageView reminders = (ImageView)view.findViewById(R.id.assignment_tile_reminders_identifier);
+		reminders.setVisibility((assignment.getReminder() > 0) ? View.VISIBLE : View.GONE);
 
 		final ImageButton popupButton = (ImageButton) view.findViewById(R.id.assignment_tile_popup_button);
 		popupButton.setOnClickListener(new OnClickListener() {
