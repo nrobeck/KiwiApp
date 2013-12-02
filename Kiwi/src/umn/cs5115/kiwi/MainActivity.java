@@ -341,6 +341,10 @@ public class MainActivity extends KiwiActivity
         	case R.id.action_settings:
         		startActivity(new Intent(this, AdvancedOptionsActivity.class));
         		return true;
+        	case R.id.presentation_button:	
+        		Utils.presentationDatabase(this);
+        		refreshOverviewFragment();
+        		return true;
         	case android.R.id.home:
         	    onBackPressed();
         }

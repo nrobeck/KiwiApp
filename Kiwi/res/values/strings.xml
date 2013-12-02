@@ -64,4 +64,5 @@
         <item>120</item>
         <item>168</item>
     </integer-array>
+    <string name="presentation_button_string">Presentation Option</string>
 </resources>
