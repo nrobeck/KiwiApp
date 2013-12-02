@@ -190,7 +190,7 @@ public class FilterDialogFragment extends DialogFragment {
 
         return new AlertDialog.Builder(getActivity())
         .setView(rootView)
-        .setTitle("Hello")
+        .setTitle("Filter and sort assignments")
         .setPositiveButton(android.R.string.ok, new OnClickListener() {
 
             @Override

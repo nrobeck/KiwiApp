@@ -1,9 +1,5 @@
 package umn.cs5115.kiwi;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-
-import umn.cs5115.kiwi.DatabaseHandler.DbAndCursor;
 import umn.cs5115.kiwi.adapter.OverviewListCursorAdapter.TileInteractionListener;
 import umn.cs5115.kiwi.app.KiwiActivity;
 import umn.cs5115.kiwi.fragments.FilterDialogFragment;
@@ -19,13 +15,12 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.os.Vibrator;
 import android.support.v4.view.ViewCompat;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -186,6 +181,38 @@ public class MainActivity extends KiwiActivity
 		})
 		.show();
 	}
+	
+	private void deleteCompleted() {
+	    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	    builder
+	        .setTitle("Delete all completed assignments?")
+	        .setMessage("Are you sure you want to delete all completed assignments? This cannot be undone!")
+	        .setPositiveButton("Yes", new OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    int removed = new DatabaseHandler(MainActivity.this)
+                                .deleteAllCompletedAssignments();
+                    Toast.makeText(MainActivity.this,
+                            String.format("Deleted %d completed assignment(s)", removed),
+                            Toast.LENGTH_SHORT).show();
+                    if (removed > 0) {
+                        refreshOverviewFragment();
+                        // Clear off any existing Undo bar. It would just be
+                        // confusing to be able to click Undo on changing the
+                        // completion of a deleted assignment. (Nothing will
+                        // happen, mind you... Just remove the possibility of
+                        // such an interaction.)
+                        UndoBarController.clear(MainActivity.this);
+                    }
+                }
+            })
+            .setNegativeButton("No", new OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Toast.makeText(MainActivity.this, "No assignments were deleted.", Toast.LENGTH_SHORT).show();
+                }
+            }).show();
+	}
 
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -213,54 +240,8 @@ public class MainActivity extends KiwiActivity
         	Log.d("MainActivity", "New filter: " + filter.toQueryString());
         }
 
-        /*
-         * =================================================
-         * Temporary code. Preferably will be removed once the reminder notification system
-         * is completely in place.
-         * =================================================
-         *
-         * Query the database for reminders on upcoming events, and schedule a
-         * notification (for a second from now) with those reminders.
-         */
-
-        long current = Calendar.getInstance().getTimeInMillis();
-        DbAndCursor dbc = new DatabaseHandler(this).queryReminders(current);
-//        Log.d("MainActivity", "Current millis: " + current + ", Reminder count: " + dbc.cursor.getCount());
-
-        ArrayList<String> reminders = new ArrayList<String>();
-        Cursor c = dbc.cursor;
-        if (c.getCount() > 0) {
-        	c.moveToFirst();
-        	while (!c.isAfterLast()) {
-        		String cdes = c.getString(c.getColumnIndex(DatabaseHandler.REMINDER_CDES));
-        		String aname = c.getString(c.getColumnIndex(DatabaseHandler.REMINDER_ANAME));
-        		String atype = c.getString(c.getColumnIndex(DatabaseHandler.REMINDER_ATYPE));
-        		long remindermillis = c.getLong(c.getColumnIndex(DatabaseHandler.REMINDER_MILLIS));
-//        		Log.d("MainActivity", String.format("%s %s %s %d", cdes, aname, atype, remindermillis));
-        		if (remindermillis > current) {
-        			// Somehow a reminder got through the query WHERE filter...
-        			c.moveToNext();
-        			continue;
-        		}
-
-        		if (TextUtils.isEmpty(cdes)) {
-        			cdes = "";
-        		} else {
-        			cdes = String.format("%s: ", cdes);
-        		}
-        		if (TextUtils.isEmpty(atype)) {
-        			atype = "";
-        		} else {
-        			atype = String.format(" (%s)", atype);
-        		}
-
-        		reminders.add(cdes + aname + atype);
-        		c.moveToNext();
-        	}
-        }
-        dbc.close();
-        NotificationReceiver.removeNotifications(this);
-        ReminderUtils.scheduleReminders(this, null, current + 1000);
+        ReminderAlarmReceiver.removeNotifications(this);
+        ReminderUtils.autoScheduleReminders(this);
     }
 
     private void refreshOverviewFragment() {
@@ -341,10 +322,17 @@ public class MainActivity extends KiwiActivity
         	case R.id.action_settings:
         		startActivity(new Intent(this, AdvancedOptionsActivity.class));
         		return true;
-        	case R.id.presentation_button:	
+        	case R.id.presentation_button:
+        	    Toast.makeText(this, "Adding courses and assignments for presentation...", Toast.LENGTH_SHORT).show();
         		Utils.presentationDatabase(this);
         		refreshOverviewFragment();
         		return true;
+        	case R.id.presentation_force_notification:
+        	    ReminderUtils.scheduleReminders(this, null, -1);
+        	    return true;
+        	case R.id.action_delete_completed:
+        	    deleteCompleted();
+        	    return true;
         	case android.R.id.home:
         	    onBackPressed();
         }

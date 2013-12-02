@@ -515,7 +515,7 @@ public class EditAssignmentFragment extends Fragment {
                 for (int i = 0; i < textbooksArray.length; i++) {
                     String t = textbooksArray[i];
                     if (assignment.getTextbook().equals(t)) {
-                        textbookIndex = i;
+                        textbookIndex = i + 1;
                         break;
                     }
                 }
@@ -533,7 +533,7 @@ public class EditAssignmentFragment extends Fragment {
             }
 
             ((DummyItemAdapter)textbooks.getAdapter()).notifyDataSetChanged();
-            textbooks.setSelection(textbookIndex + 1, false);
+            textbooks.setSelection(textbookIndex, false);
 		    
 		    ((EditText)findView(R.id.assignment_notes_field)).setText(as.getNotes());
 		}

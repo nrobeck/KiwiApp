@@ -28,7 +28,7 @@ public class ReminderUtils {
 	 * @return
 	 */
 	private static Pair<Intent, PendingIntent> getIntentPair(Context context) {
-		Intent intent = new Intent(context, NotificationReceiver.class);
+		Intent intent = new Intent(context, ReminderAlarmReceiver.class);
 		PendingIntent pend = PendingIntent.getBroadcast(
 				context, ALARM_REQUEST_CODE, intent, 0);
 		return new Pair<Intent, PendingIntent>(intent, pend);

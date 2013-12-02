@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import umn.cs5115.kiwi.DatabaseHandler.DbAndCursor;
-
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -17,7 +16,7 @@ import android.support.v4.app.NotificationCompat.Style;
 import android.text.TextUtils;
 import android.util.Log;
 
-public class NotificationReceiver extends BroadcastReceiver {
+public class ReminderAlarmReceiver extends BroadcastReceiver {
 	private static final int NOTIFICATION_ID = 0x54946683; // KIWINOTF
 	public static final String EXTRA_REMINDER_TIME = "when";
 	
@@ -75,7 +74,7 @@ public class NotificationReceiver extends BroadcastReceiver {
         
         NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         
-        String title = "Kiwi: Scheduled reminders";
+        String title = "Upcoming assignments";
         Style style;
         int reminderCount = reminders.size();
         if (reminderCount > 0) {
@@ -92,10 +91,11 @@ public class NotificationReceiver extends BroadcastReceiver {
         }
         
         NotificationCompat.Builder notif = new NotificationCompat.Builder(context);
-        notif.setSmallIcon(android.R.drawable.ic_media_play)
+        notif.setSmallIcon(R.drawable.ic_kiwi_notif)
+        //.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.icon_kiwi))
         .setContentTitle(title)
-        .setContentText("You have upcoming assignments")
-        .setTicker("Upcoming assignments: " + (reminderCount > 0 ? reminderCount : "None"))
+        .setContentText(String.format("You have %d upcoming assignment(s)", reminderCount))
+        .setTicker(reminderCount < 1 ? "No upcoming assignments" : reminderCount + " upcoming assignment(s)")
         .setWhen(Calendar.getInstance().getTimeInMillis())
         .setStyle(style)
         .setAutoCancel(true);

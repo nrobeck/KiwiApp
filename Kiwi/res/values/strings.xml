@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">Kiwi</string>
-    <string name="action_advanced_options">Advanced...</string>
+    <string name="action_advanced_options">Advanced options</string>
     <string name="hello_world">Hello world!</string>
     <string name="import_courses_nothing_to_import">No compatible events were found. Try adding courses manually!</string>
     <string name="import_courses_activity_label">Import courses</string>
@@ -64,5 +64,7 @@
         <item>120</item>
         <item>168</item>
     </integer-array>
-    <string name="presentation_button_string">Presentation Option</string>
+    <string name="presentation_button_string">Jump-start</string>
+    <string name="presentation_force_notification">Force notification</string>
+    <string name="delete_completed">Delete completed</string>
 </resources>

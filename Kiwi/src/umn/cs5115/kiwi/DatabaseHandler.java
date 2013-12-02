@@ -8,7 +8,6 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.database.sqlite.SQLiteStatement;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 	public static final class DbAndCursor {
@@ -240,6 +239,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         c.close();//close the cursor
         return a;
+    }
+    
+    /**
+     * Delete all assignments in the database which have been marked as
+     * completed.
+     * @return the number of assignments deleted
+     */
+    public int deleteAllCompletedAssignments() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int removed = db.delete(TABLE_ASSIGNMENTS, COMPLETED + " <> 0", null);
+        db.close();
+        return removed;
     }
     
     public DbAndCursor getRawAssignmentCursor(String filterBy) {

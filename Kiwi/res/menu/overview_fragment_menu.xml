@@ -22,7 +22,23 @@
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="@string/action_advanced_options"/>
-    <item android:id="@+id/presentation_button" android:orderInCategory="1000" android:title="@string/presentation_button_string"></item>
     
-
+    
+    <item
+        android:id="@+id/action_delete_completed"
+        android:orderInCategory="999"
+        android:title="@string/delete_completed" />
+    
+    <item
+        android:title="Presentation..."
+        android:orderInCategory="1000">
+        <menu>
+			<item
+			    android:id="@+id/presentation_button"
+			    android:title="@string/presentation_button_string" />
+			<item
+			    android:id="@+id/presentation_force_notification"
+			    android:title="@string/presentation_force_notification" />
+	    </menu>
+    </item>
 </menu>

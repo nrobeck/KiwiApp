@@ -51,7 +51,7 @@
        	    android:label="@string/action_advanced_options" />
        	
        	<uses-library android:name="android.test.runner" />
-        <receiver android:name="NotificationReceiver"></receiver>
+        <receiver android:name="ReminderAlarmReceiver" />
     </application>
 
     <instrumentation
