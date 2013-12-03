@@ -1,9 +1,15 @@
 package umn.cs5115.kiwi.fragments;
 
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 import umn.cs5115.kiwi.EditAssignmentActivity;
 import umn.cs5115.kiwi.R;
 import umn.cs5115.kiwi.Utils;
+import umn.cs5115.kiwi.assignment.AssignmentUtils.DueDateBuilder;
 import umn.cs5115.kiwi.model.Assignment;
+import umn.cs5115.kiwi.ui.DateButton;
+import umn.cs5115.kiwi.ui.TimeButton;
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.content.Intent;
@@ -14,11 +20,13 @@ import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.b50.gesticulate.SwipeDetector;
 
@@ -45,13 +53,27 @@ public class ViewAssignmentFragment extends Fragment {
         if (args != null) {
             mAssignment = (Assignment)args.getParcelable(ASSIGNMENT_ARG);
         }
+        
+        
     }
     
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        // TODO: Make the actions menu for this view, and point to it here.
-        // inflater.inflate(R.menu.view_assignment_menu, menu);
+        inflater.inflate(R.menu.view_assignment_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	switch(item.getItemId()) {
+    	case 1:
+    		
+    		return true;
+    	case 2:
+    		
+    		return true;
+    	}
+    	return super.onOptionsItemSelected(item);
     }
     
     @Override
@@ -77,9 +99,30 @@ public class ViewAssignmentFragment extends Fragment {
         View view = inflater.inflate(R.layout.view_assignment_fragment, null);
         
         if (mAssignment != null) {
-            // TODO: Fill in text views, etc. in the view with information
-            // stored on mAssignment here.
-            
+            //assignment name
+        	TextView assignmentNameTextView = (TextView) view.findViewById(R.id.assignmentName);
+        	assignmentNameTextView.setText(mAssignment.getName());
+        	
+        	//assignment course
+        	TextView assignmentCourseTextView = (TextView) view.findViewById(R.id.assignmentCourse);
+        	assignmentCourseTextView.setText("Course: " + mAssignment.getCourseDesignation());
+        	
+        	//assignment type
+        	TextView assignmentTypeTextView = (TextView) view.findViewById(R.id.assignmentType);
+        	assignmentTypeTextView.setText("Type: " + mAssignment.getType());
+        	
+        	//assignment book
+        	TextView assignmentBookTextView = (TextView) view.findViewById(R.id.assignmentBook);
+        	assignmentBookTextView.setText("TextBook: " + mAssignment.getTextbook());
+        	
+        	//assignment due date
+        	TextView assignmentDueTextView = (TextView) view.findViewById(R.id.assignmentDue);
+        	assignmentDueTextView.setText(new SimpleDateFormat("h:mm aaa, EEE, MMM dd, ''yy", Locale.US).format(new DueDateBuilder(mAssignment.getDueMillis()).toDate()));
+        	
+        	//assignment notes
+        	TextView assignmentNotesTextView = (TextView) view.findViewById(R.id.assignmentNotes);
+        	assignmentNotesTextView.setText(mAssignment.getNotes());
+        	
         } else {
             // Hopefully we aren't stupid enough to not pass an assignment in.
             // But if we are, log it.
