@@ -3,15 +3,16 @@ package umn.cs5115.kiwi.fragments;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
+import umn.cs5115.kiwi.DatabaseHandler;
 import umn.cs5115.kiwi.EditAssignmentActivity;
 import umn.cs5115.kiwi.R;
 import umn.cs5115.kiwi.Utils;
 import umn.cs5115.kiwi.assignment.AssignmentUtils.DueDateBuilder;
 import umn.cs5115.kiwi.model.Assignment;
-import umn.cs5115.kiwi.ui.DateButton;
-import umn.cs5115.kiwi.ui.TimeButton;
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,12 +28,14 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.b50.gesticulate.SwipeDetector;
 
 public class ViewAssignmentFragment extends Fragment {
     public static final String ASSIGNMENT_ARG = "assignment";
     private Assignment mAssignment;
+    private DatabaseHandler db; 
     
     public static ViewAssignmentFragment newInstance(Assignment assignment) {
         ViewAssignmentFragment fragment = new ViewAssignmentFragment();
@@ -66,11 +69,32 @@ public class ViewAssignmentFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
     	switch(item.getItemId()) {
-    	case 1:
-    		
+    	case R.id.assignment_view_menu_edit:
+    		Intent editIntent = Utils.goToAddAssignment(getActivity().getBaseContext());
+            	editIntent
+                	.putExtra(EditAssignmentActivity.EXTRA_IS_EDIT, true)
+                	.putExtra(EditAssignmentActivity.EXTRA_ASSIGNMENT, mAssignment.getId());
+            	getActivity().startActivity(editIntent);
     		return true;
-    	case 2:
     		
+    		case R.id.assignment_view_menu_delete:
+    			
+    			new AlertDialog.Builder(null)
+    			.setTitle("Delete assignment")
+    			.setMessage(String.format("Are you sure you want to delete '%s'?", mAssignment.getName()))
+    			.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+    				public void onClick(DialogInterface dialog, int which) {
+    					db.removeAssignment(mAssignment);
+    					getActivity().onBackPressed();
+    				}
+    			})
+    			.setNegativeButton("No", new DialogInterface.OnClickListener() {
+    				public void onClick(DialogInterface dialog, int which) {
+    					Toast.makeText(null, "Did not delete assignment.", Toast.LENGTH_SHORT).show();
+    				}
+    			})
+    			.show();
+    			
     		return true;
     	}
     	return super.onOptionsItemSelected(item);
