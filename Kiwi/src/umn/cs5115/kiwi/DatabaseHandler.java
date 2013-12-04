@@ -331,6 +331,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.delete(TABLE_ASSIGNMENTS, COURSE + " = ?", new String[] {String.valueOf(c.getId()) });
         db.close();//close the database
     }
+    
+    /**
+     * 
+     * @param c
+     */
+    public void removeAssignmentsWithNoCourse() {
+    	SQLiteDatabase db = this.getWritableDatabase();
+    	
+    	db.delete(TABLE_ASSIGNMENTS, COURSE + " < 1", null);
+    	
+    	db.close();
+    }
 
     //edit a course in the database
     public void editCourse(Course c) {

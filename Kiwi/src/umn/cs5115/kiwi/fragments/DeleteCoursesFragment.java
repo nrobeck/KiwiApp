@@ -44,17 +44,19 @@ public class DeleteCoursesFragment extends Fragment {
             
             courseCheckboxes[i] = cb;
 		}
+
+		final CheckBox noCourseCheckbox = (CheckBox)getView().findViewById(R.id.delete_assignments_no_course_cb);
 		
-		final Button tButton = (Button) getView().findViewById(R.id.select_all_courses);
-		tButton.setOnClickListener(new OnClickListener() {
+		final Button selectAllButton = (Button) getView().findViewById(R.id.select_all_courses);
+		selectAllButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				for(CheckBox cb : courseCheckboxes){
 					cb.setChecked(true);
+					noCourseCheckbox.setChecked(true);
 				}
 			}
 		});
-
 		
 		final Button button = (Button) getView().findViewById(R.id.delete_courses);
 		button.setOnClickListener(new OnClickListener() {
@@ -87,6 +89,11 @@ public class DeleteCoursesFragment extends Fragment {
 									l.removeView(cb);
 								}
 								i++;
+							}
+							
+							if (noCourseCheckbox.isChecked()) {
+								dbh.removeAssignmentsWithNoCourse();
+								l.removeView(noCourseCheckbox);
 							}
 						
 							if (l.getChildCount() == 0) {
