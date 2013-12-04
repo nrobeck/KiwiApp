@@ -37,7 +37,7 @@
 	        android:layout_marginBottom="4dp"
 	        android:maxLength="15"
 	        android:inputType="textCapCharacters|textNoSuggestions|textEmailSubject"
-	        android:hint="Course designation (e.g. CSCI 5115)" />
+	        android:hint="Short name (e.g. CSCI 5115, or UI)" />
 	    
 	    <!-- Scheduling -->
 	    <TextView
