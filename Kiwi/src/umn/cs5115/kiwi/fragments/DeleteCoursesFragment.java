@@ -69,7 +69,7 @@ public class DeleteCoursesFragment extends Fragment {
 						break;
 					}
 				}
-				if(count == 0){
+				if((count == 0) && !(noCourseCheckbox.isChecked())){
 					Toast.makeText(getActivity(), "No Courses Selected", Toast.LENGTH_SHORT).show();
 				}
 				else{
