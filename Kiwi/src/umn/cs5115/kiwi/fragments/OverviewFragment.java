@@ -26,7 +26,7 @@ public class OverviewFragment extends CustomOverviewListFragment {
 	private TileInteractionListener mListenerActivity;
 	private CustomEmptyViewButtonListener mEmptyViewListenerActivity;
 	private DbAndCursor assignments;
-	private boolean showFilterButton;
+	private boolean thereAreAssignments;
 	
 	private boolean shouldRefreshFilterUponResume;
 	
@@ -85,7 +85,9 @@ public class OverviewFragment extends CustomOverviewListFragment {
          * Hide or show the filter button, depending on the state of the
          * showFilterButton variable.
          */
-        menu.findItem(R.id.filter).setVisible(showFilterButton);
+        menu.findItem(R.id.filter).setVisible(thereAreAssignments);
+        menu.findItem(R.id.action_settings).setVisible(thereAreAssignments);
+        menu.findItem(R.id.action_delete_completed).setVisible(thereAreAssignments);
         
         super.onPrepareOptionsMenu(menu);
     }
@@ -141,9 +143,8 @@ public class OverviewFragment extends CustomOverviewListFragment {
 		 * Only show the Filter button if there are not zero assignments
 		 * in the database altogether.
 		 */
-		boolean thereAreAssignments = dbh.getAssignmentCount() > 0;
-		showFilterButton = thereAreAssignments;
-		getEmptyView().setFilterButtonShown(showFilterButton);
+		thereAreAssignments = dbh.getAssignmentCount() > 0;
+		getEmptyView().setFilterButtonShown(thereAreAssignments);
 		
 		/*
 		 * Cause the options menu to be re-upped, therefore allowing us to
