@@ -8,19 +8,19 @@
         android:id="@+id/select_all_courses"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Select all" />
+        android:text="Select All" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
         <!-- This button actually appears below the scroll view. -->
-        <Button
+        <Button
             android:id="@+id/delete_courses"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:text="Delete selected courses" />
+            android:text="Delete Selected Items" />
         
         <ScrollView
             android:id="@+id/delete_courses_cb_scrollview"
