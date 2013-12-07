@@ -6,6 +6,8 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import net.fortuna.ical4j.model.Recur;
+
 import umn.cs5115.kiwi.DatabaseHandler;
 import umn.cs5115.kiwi.EditAssignmentActivity;
 import umn.cs5115.kiwi.R;
@@ -31,7 +33,9 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -177,7 +181,32 @@ public class EditAssignmentFragment extends Fragment {
 			//TODO: Need to pass in the assignment ID
 			dbHandler.editAssignment(assignment);
 		} else {
-			dbHandler.addAssignment(assignment);
+			// Find out if this assignment is repeating or not.
+			CheckBox isRepeat = (CheckBox)findView(R.id.repeated_check_box);
+			boolean repeatme = isRepeat.isChecked();
+			
+			if (repeatme) {
+				// What frequency?
+				RadioGroup rg = (RadioGroup)findView(R.id.radioGroup2);
+				String freq = Recur.WEEKLY;
+				switch (rg.getCheckedRadioButtonId()) {
+				case -1:
+					return false;
+				case R.id.radioWeekly:
+					freq = Recur.WEEKLY;
+					break;
+				case R.id.radioBiweekly:
+					freq = "BIWEEKLY";
+					break;
+				default:
+					freq = Recur.MONTHLY;
+					break;
+				}
+				long[] whens = AssignmentUtils.getRecurrences(freq, ddb.toDate(), AssignmentUtils.END_OF_SEMESTER);
+				dbHandler.addRepeatingAssignment(assignment, whens);
+			} else {
+				dbHandler.addAssignment(assignment);
+			}
 		}
 		
 		Intent editedIntent = new Intent(Intent.ACTION_EDIT);
@@ -419,6 +448,10 @@ public class EditAssignmentFragment extends Fragment {
 		tb.setTime(cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE));
         
 		final boolean isEdit = eActivity.isEdit();
+
+		// Hide repeating assignment stuff if needed.
+		findView(R.id.repeat_assignment_holder).setVisibility(isEdit ? View.GONE : View.VISIBLE);
+		
 		if (isEdit) {
 		    int id = eActivity.getAssignmentId();
 		    Assignment as = dbHandler.getAssignment(id);
