@@ -51,9 +51,9 @@ public class DeleteCoursesFragment extends Fragment {
 		selectAllButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				noCourseCheckbox.setChecked(true);
 				for(CheckBox cb : courseCheckboxes){
 					cb.setChecked(true);
-					noCourseCheckbox.setChecked(true);
 				}
 			}
 		});
