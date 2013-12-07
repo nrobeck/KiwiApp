@@ -108,8 +108,6 @@ public class OverviewFragment extends CustomOverviewListFragment {
         super.onResume();
         if (isAdded()) {
             ActionBar ab = getActivity().getActionBar();
-            // Disable the Up button on the activity.
-            ab.setDisplayHomeAsUpEnabled(false);
 //            ab.setTitle(getActivity().getTitle());
             ab.setTitle("Assignments");
             ab.setSubtitle(null);

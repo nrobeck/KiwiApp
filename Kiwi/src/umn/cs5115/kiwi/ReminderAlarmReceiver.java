@@ -21,6 +21,7 @@ public class ReminderAlarmReceiver extends BroadcastReceiver {
 	public static final String EXTRA_REMINDER_TIME = "when";
 	
 	public static void removeNotifications(Context context) {
+		Log.d("ReminderAlarmReceiver", "removeNotifications");
         NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         manager.cancel(NOTIFICATION_ID);
 	}

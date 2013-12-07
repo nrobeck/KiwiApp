@@ -435,10 +435,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     //clear ALL database values
     public void clearDatabase(){
         SQLiteDatabase db = this.getWritableDatabase();//get the database
-        db.close();//close the database
         db.delete(TABLE_ASSIGNMENTS, null, null);//delete all data in the assignments table
         db.delete(TABLE_COURSES, null, null);//delete all data in the courses table
         DATABASE_EMPTY = true;//set the test variable for empty database to true
+        db.close();//close the database
     }
 
     //check if database is empty

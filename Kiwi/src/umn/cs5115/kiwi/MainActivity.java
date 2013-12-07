@@ -13,6 +13,7 @@ import umn.cs5115.kiwi.ui.OverviewEmptyView.CustomEmptyViewButtonListener;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentManager.OnBackStackChangedListener;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -27,6 +28,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.cocosw.undobar.UndoBarController;
@@ -34,7 +36,7 @@ import com.cocosw.undobar.UndoBarController.UndoListener;
 
 public class MainActivity extends KiwiActivity
             implements FilterListener, TileInteractionListener,
-                        CustomEmptyViewButtonListener {
+                        CustomEmptyViewButtonListener, OnBackStackChangedListener {
 	private FilterDefinition filter;
 	private DatabaseHandler database;
 
@@ -241,7 +243,11 @@ public class MainActivity extends KiwiActivity
         }
 
         ReminderAlarmReceiver.removeNotifications(this);
-        ReminderUtils.autoScheduleReminders(this);
+//        ReminderUtils.autoScheduleReminders(this);
+        
+        getFragmentManager().addOnBackStackChangedListener(this);
+        
+        getActionBar().setDisplayHomeAsUpEnabled(shouldShowUp());
     }
 
     private void refreshOverviewFragment() {
@@ -328,13 +334,11 @@ public class MainActivity extends KiwiActivity
         		refreshOverviewFragment();
         		return true;
         	case R.id.presentation_force_notification:
-        	    ReminderUtils.scheduleReminders(this, null, -1);
+        	    ReminderUtils.scheduleReminders(this, null, System.currentTimeMillis() + 1000);
         	    return true;
         	case R.id.action_delete_completed:
         	    deleteCompleted();
         	    return true;
-        	case android.R.id.home:
-        	    onBackPressed();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -354,29 +358,23 @@ public class MainActivity extends KiwiActivity
 
     @Override
     public void onClickAddCourses(View buttonView) {
-//        PopupMenu popup = new PopupMenu(this, buttonView);
-//        popup.getMenuInflater().inflate(R.menu.overview_add_course_popup_menu, popup.getMenu());
-//
-//        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-//            public boolean onMenuItemClick(final MenuItem item) {
-//                switch (item.getItemId()) {
-//                case R.id.add_course_menu_add:
-//                    Utils.goToAddCourse(MainActivity.this);
-//                    return true;
-//                case R.id.add_menu_course_import:
-//                    startActivity(new Intent(MainActivity.this, ImportCoursesActivity.class));
-//                    return true;
-//                }
-//                return true;
-//            }
-//        });
-//        popup.show();
+        PopupMenu popup = new PopupMenu(this, buttonView);
+        popup.getMenuInflater().inflate(R.menu.overview_add_course_popup_menu, popup.getMenu());
 
-        /*
-         * Until we have importing from calendar working, just go directly
-         * to the Add course activity.
-         */
-        Utils.goToAddCourse(this);
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            public boolean onMenuItemClick(final MenuItem item) {
+                switch (item.getItemId()) {
+                case R.id.add_course_menu_add:
+                    Utils.goToAddCourse(MainActivity.this);
+                    return true;
+                case R.id.add_menu_course_import:
+                    startActivity(new Intent(MainActivity.this, ImportCoursesActivity.class));
+                    return true;
+                }
+                return true;
+            }
+        });
+        popup.show();
     }
 
     @Override
@@ -401,4 +399,38 @@ public class MainActivity extends KiwiActivity
             super.onBackPressed();
         }
     }
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		Log.d("MainActivity", "onActivityResult: " + requestCode + " " + resultCode);
+		if (requestCode == ViewAssignmentFragment.EDIT_ASSIGNMENT_REQCODE) {
+			if (resultCode == RESULT_OK) {
+				refreshOverviewFragment();
+				Assignment assignment = (Assignment) data.getParcelableExtra("assignment");
+				ViewAssignmentFragment vaf = (ViewAssignmentFragment)getFragmentManager().findFragmentByTag(VIEW_ASSIGN_TAG);
+				if (vaf != null) {
+					vaf.updateAssignment(assignment);
+				} else {
+					Log.d("MainActivity", "ViewAssignmentFragment doesn't exist...");
+				}
+			}
+		}
+
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+	
+	private boolean shouldShowUp() {
+		return getFragmentManager().getBackStackEntryCount() > 0;
+	}
+
+	@Override
+	public void onBackStackChanged() {
+		getActionBar().setDisplayHomeAsUpEnabled(shouldShowUp());
+	}
+
+	@Override
+	public boolean onNavigateUp() {
+		getFragmentManager().popBackStack();
+		return true;
+	}
 }

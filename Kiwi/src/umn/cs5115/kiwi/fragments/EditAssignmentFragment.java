@@ -21,6 +21,7 @@ import umn.cs5115.kiwi.ui.DoneBar.DoneBarListener;
 import umn.cs5115.kiwi.ui.TimeButton;
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -178,6 +179,10 @@ public class EditAssignmentFragment extends Fragment {
 		} else {
 			dbHandler.addAssignment(assignment);
 		}
+		
+		Intent editedIntent = new Intent(Intent.ACTION_EDIT);
+		editedIntent.putExtra("assignment", assignment);
+		getActivity().setResult(Activity.RESULT_OK, editedIntent);
 		
 		return true;
 	}
@@ -393,6 +398,7 @@ public class EditAssignmentFragment extends Fragment {
 				@Override
 				public void onCancel() {
 					Log.i("EditAssignmentFragment", "DoneBarListener.onCancel()");
+					getActivity().setResult(Activity.RESULT_CANCELED);
 				}
 			});
 		}

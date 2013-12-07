@@ -8,6 +8,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.util.Pair;
 
 /**
@@ -43,6 +44,7 @@ public class ReminderUtils {
 	 * @param when the time to schedule a reminder for
 	 */
 	public static void scheduleReminders(Context context, AlarmManager manager, long when) {
+		Log.d("ReminderUtils", "scheduleReminders...");
 		if (context == null) {
 			throw new NullPointerException("context must not be null!");
 		}
@@ -54,7 +56,7 @@ public class ReminderUtils {
 		}
 		
 		// Cancel any pre-scheduled notifications
-		manager.cancel(pair.second);
+//		manager.cancel(pair.second);
 		
 		// Schedule this next one.
 		manager.set(AlarmManager.RTC_WAKEUP, when, pair.second);
