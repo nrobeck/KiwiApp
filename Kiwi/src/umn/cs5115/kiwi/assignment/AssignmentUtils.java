@@ -1,5 +1,6 @@
 package umn.cs5115.kiwi.assignment;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -13,6 +14,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.EditText;
 
 import com.android.datetimepicker.date.DatePickerDialog;
@@ -26,7 +28,7 @@ public class AssignmentUtils {
     static {
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.YEAR, 2013);
-        cal.set(Calendar.MONTH, 11); // december. it's stupid
+        cal.set(Calendar.MONTH, 11); // 11 is december. it's stupid
         cal.set(Calendar.DAY_OF_MONTH, 31);
         cal.set(Calendar.HOUR_OF_DAY, 23);
         cal.set(Calendar.MINUTE, 59);
@@ -143,7 +145,7 @@ public class AssignmentUtils {
 
         public String toString() {
             return String.format(Locale.US, "<DueDateBuilder: %d/%d/%d @ %d:%d>",
-                    month, day, year, hour, minute);
+                    month+1, day, year, hour, minute);
         }
     }
 
@@ -193,13 +195,20 @@ public class AssignmentUtils {
             throw new IllegalArgumentException("frequency must be monthly, weekly, or daily!");
         }
         
+        boolean isBiweekly = "BIWEEKLY".equals(frequency);
+        if (isBiweekly) {
+        	frequency = "WEEKLY";
+        }
+        
         Calendar cal = Calendar.getInstance();
         cal.setTime(repeatingTime);
+        
+//        Log.d("AssignmentUtils", "Repeating time: " + new DueDateBuilder(cal.getTimeInMillis()).toString());
         
         Recur recur = new Recur();
         recur.setFrequency(frequency);
         // Handle choosing biweekly.
-        recur.setInterval(frequency.equals("BIWEEKLY") ? 2 : 1);
+        recur.setInterval(isBiweekly ? 2 : 1);
         // Set up the recurrence with the date/time of repeatingTime
         recur.getHourList().clear();
         recur.getHourList().add(cal.get(Calendar.HOUR_OF_DAY));
@@ -211,14 +220,31 @@ public class AssignmentUtils {
         
         DateList ds = recur.getDates(repeater, repeater, end, Value.DATE_TIME);
         
-        long[] millis = new long[ds.size()];
+        ArrayList<Long> millis = new ArrayList<Long>();
+        
+//        Log.d("AssignmentUtils", "intended end search: " + new DueDateBuilder(endTime.getTime()));
 
-        for (int i = 0; i < millis.length; i++) {
-            cal.setTime((Date) ds.get(i));
-            millis[i] = cal.getTimeInMillis();
+        for (Object d : ds) {
+        	// A most horrible hack. iCal4j Date objects are off by one day. So let's fix that.
+        	long dayFix = 1000 * 60 * 60 * 24;
+        	Date thisOne = (Date) d;
+        	
+        	cal.setTimeInMillis(thisOne.getTime() + dayFix);
+
+//            Log.d("AssignmentUtils", "before-fix recurrence: " + new DueDateBuilder(cal.getTimeInMillis()).toString());
+        	if (cal.getTimeInMillis() > endTime.getTime()) {
+//        		Log.d("AssignmentUtils", "That's after the end! Skip that.");
+        		continue;
+        	}
+        	millis.add(cal.getTimeInMillis());
         }
         
-        return millis;
+        long[] result = new long[millis.size()];
+        for (int i = 0; i < result.length; i++) {
+        	result[i] = millis.get(i);
+        }
+        
+        return result;
     }
     
     public static long[] getDailyRecurrences(java.util.Date repeatingTime, java.util.Date endTime) {

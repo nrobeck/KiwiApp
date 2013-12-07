@@ -189,6 +189,48 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();//close the database
         DATABASE_EMPTY = false;//sets the database empty variable to be true since data has been added
     }
+    
+    public void addRepeatingAssignment(Assignment a, long[] times) {
+    	SQLiteDatabase db = this.getWritableDatabase();
+    	ContentValues cv = new ContentValues();
+        //store assignment values from Assignment object a in the ContentValues object cv
+      //  cv.put(KEY_ID, a.getId());//assignment id
+        cv.put(NAME, a.getName());//assignment name
+        cv.put(COURSE, a.getCourse());//assignment course
+        cv.put(TYPE, a.getType());//assignment type
+        cv.put(REMINDER, a.getReminder());//assignment reminder value
+        cv.put(NOTES, a.getNotes());//assignment notes
+        cv.put(TEXTBOOKS, a.getTextbook());//assignment textbook
+        cv.put(COMPLETED, a.isCompleted());//assignment done
+        
+        db.beginTransaction();
+        
+        
+        long givenTime = a.getDueMillis();
+        boolean handledGiven = false;
+        
+        for (long time : times) {
+        	cv.put(DUE_MILLIS, time);
+        	
+        	db.insert(TABLE_ASSIGNMENTS, null, cv);
+        	
+        	if (time == givenTime) {
+        		handledGiven = true;
+        	}
+        }
+        
+        if (!handledGiven) {
+        	cv.put(DUE_MILLIS, givenTime);
+        	db.insert(TABLE_ASSIGNMENTS, null, cv);
+        }
+        
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        
+        db.close();
+        
+        DATABASE_EMPTY = false;
+    }
 
     //remove assignment
     public void removeAssignment(Assignment a){
