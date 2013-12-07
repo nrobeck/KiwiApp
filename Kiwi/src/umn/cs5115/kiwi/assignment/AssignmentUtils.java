@@ -186,7 +186,7 @@ public class AssignmentUtils {
     public static long[] getRecurrences(String frequency, java.util.Date repeatingTime,
                                             java.util.Date endTime) {
         String[] permittedFrequences = new String[] {
-                Recur.MONTHLY, Recur.WEEKLY, Recur.DAILY
+                Recur.MONTHLY, Recur.WEEKLY, Recur.DAILY, "BIWEEKLY"
         };
         if (!Arrays.asList(permittedFrequences).contains(frequency)) {
             // Trying to get recurrences on a non-supported frequency!
@@ -198,6 +198,8 @@ public class AssignmentUtils {
         
         Recur recur = new Recur();
         recur.setFrequency(frequency);
+        // Handle choosing biweekly.
+        recur.setInterval(frequency.equals("BIWEEKLY") ? 2 : 1);
         // Set up the recurrence with the date/time of repeatingTime
         recur.getHourList().clear();
         recur.getHourList().add(cal.get(Calendar.HOUR_OF_DAY));
@@ -225,6 +227,10 @@ public class AssignmentUtils {
 
     public static long[] getWeeklyRecurrences(java.util.Date repeatingTime, java.util.Date endTime) {
         return getRecurrences(Recur.WEEKLY, repeatingTime, endTime);
+    }
+    
+    public static long[] getBiweeklyRecurrences(java.util.Date repeatingTime, java.util.Date endTime) {
+    	return getRecurrences("BIWEEKLY", repeatingTime, endTime);
     }
     
     public static long[] getMonthlyRecurrences(java.util.Date repeatingTime, java.util.Date endTime) {
