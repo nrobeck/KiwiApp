@@ -161,6 +161,8 @@ public class EditAssignmentFragment extends Fragment {
 
 		final DateButton db = (DateButton)findView(R.id.date_button);
 		final TimeButton tb = (TimeButton)findView(R.id.time_button);
+
+		final DateButton repeatEnd = (DateButton)findView(R.id.repeat_end_date_button);
 		
 		DueDateBuilder ddb = new DueDateBuilder();
 		ddb.setYear(db.getYear())
@@ -181,28 +183,19 @@ public class EditAssignmentFragment extends Fragment {
 			//TODO: Need to pass in the assignment ID
 			dbHandler.editAssignment(assignment);
 		} else {
-			// Find out if this assignment is repeating or not.
-			CheckBox isRepeat = (CheckBox)findView(R.id.repeated_check_box);
-			boolean repeatme = isRepeat.isChecked();
-			
-			if (repeatme) {
-				// What frequency?
-				RadioGroup rg = (RadioGroup)findView(R.id.radioGroup2);
-				String freq = Recur.WEEKLY;
-				switch (rg.getCheckedRadioButtonId()) {
-				case -1:
-					return false;
-				case R.id.radioWeekly:
-					freq = Recur.WEEKLY;
-					break;
-				case R.id.radioBiweekly:
-					freq = "BIWEEKLY";
-					break;
-				default:
-					freq = Recur.MONTHLY;
-					break;
-				}
-				long[] whens = AssignmentUtils.getRecurrences(freq, ddb.toDate(), AssignmentUtils.END_OF_SEMESTER);
+			Spinner repeatSpinner  = (Spinner)findView(R.id.repeat_assignment_spinner);
+			int index = repeatSpinner.getSelectedItemPosition();
+			if (index > 0) {
+				String freq = getResources().getStringArray(R.array.repetition_frequencies)[index];
+				DueDateBuilder endbuilder = new DueDateBuilder();
+				endbuilder.setHour(23);
+				endbuilder.setMinute(59);
+				endbuilder.setDayOfMonth(repeatEnd.getDay());
+				endbuilder.setMonth(repeatEnd.getMonth());
+				endbuilder.setYear(repeatEnd.getYear());
+				
+				long[] whens = AssignmentUtils.getRecurrences(freq, ddb.toDate(), endbuilder.toDate());
+				
 				dbHandler.addRepeatingAssignment(assignment, whens);
 			} else {
 				dbHandler.addAssignment(assignment);
@@ -250,6 +243,8 @@ public class EditAssignmentFragment extends Fragment {
 		
 		final DateButton db = (DateButton)layout.findViewById(R.id.date_button);
 		final TimeButton tb = (TimeButton)layout.findViewById(R.id.time_button);
+		
+		final DateButton repeatUntil = (DateButton)layout.findViewById(R.id.repeat_end_date_button);
 
 		db.setOnClickListener(new OnClickListener() {
 			@Override
@@ -276,6 +271,37 @@ public class EditAssignmentFragment extends Fragment {
 				});
 			}
 		});
+		
+		repeatUntil.prefix = "Until ";
+		repeatUntil.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				AssignmentUtils.showDateEditDialog(getFragmentManager(), db.getYear(), db.getMonth(), db.getDay(), new OnDateSetListener() {
+					@Override
+					public void onDateSet(DatePickerDialog dialog, int year, int monthOfYear,
+							int dayOfMonth) {
+						repeatUntil.setDate(year, monthOfYear, dayOfMonth);
+					}
+				});
+			}
+		});
+		repeatUntil.setDate(2013, 11, 31);
+		
+		Spinner repeatSpinner  = (Spinner)layout.findViewById(R.id.repeat_assignment_spinner);
+		typesArray = getResources().getStringArray(R.array.repetition_entries);
+		DummyItemAdapter<String> repeatAdapter = new DummyItemAdapter<String>(getActivity(),
+				android.R.layout.simple_spinner_dropdown_item, typesArray, "Don't repeat") {
+			@Override
+			public Object getViewTag(String obj) {
+				return obj;
+			}
+
+			@Override
+			public String getViewText(int position, String obj, boolean isDummy) {
+				return obj;
+			}
+		};
+		repeatSpinner.setAdapter(repeatAdapter);
 
 		return layout;
 	}
@@ -406,6 +432,20 @@ public class EditAssignmentFragment extends Fragment {
             public void onNothingSelected(AdapterView<?> arg0) {
             }
         });
+        
+		Spinner repeatSpinner  = (Spinner) findView(R.id.repeat_assignment_spinner);
+		repeatSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View selectedview,
+					int pos, long arg3) {
+				findView(R.id.repeat_end_date_button).setVisibility(pos > 0 ? View.VISIBLE : View.GONE);
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+			}
+		});
 
 		if (activity instanceof DoneBarListenable) {
 			final DoneBarListenable listenable = (DoneBarListenable) getActivity();
@@ -448,11 +488,13 @@ public class EditAssignmentFragment extends Fragment {
 		tb.setTime(cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE));
         
 		final boolean isEdit = eActivity.isEdit();
-
-		// Hide repeating assignment stuff if needed.
-		findView(R.id.repeat_assignment_holder).setVisibility(isEdit ? View.GONE : View.VISIBLE);
+		
+		if (!isEdit) {
+			repeatSpinner.setVisibility(View.VISIBLE);
+		}
 		
 		if (isEdit) {
+			// Show the repeat-assignment spinner
 		    int id = eActivity.getAssignmentId();
 		    Assignment as = dbHandler.getAssignment(id);
 		    if (as == null) {

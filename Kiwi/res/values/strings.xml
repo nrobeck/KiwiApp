@@ -67,4 +67,16 @@
     <string name="presentation_button_string">Jump-start</string>
     <string name="presentation_force_notification">Force notification</string>
     <string name="delete_completed">Delete completed</string>
+    
+    <string-array name="repetition_entries">
+        <item>Repeat weekly</item>
+        <item>Repeat bi-weekly</item>
+        <item>Repeat monthly</item>
+    </string-array>
+    <string-array name="repetition_frequencies">
+        <item>NULL</item>
+        <item>WEEKLY</item>
+        <item>BIWEEKLY</item>
+        <item>MONTHLY</item>
+    </string-array>
 </resources>

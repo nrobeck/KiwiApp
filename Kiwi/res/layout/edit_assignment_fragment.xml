@@ -42,8 +42,7 @@
 	        android:id="@+id/textbook_spinner"
 	        style="@style/KiwiSpinnerButton"
 	        android:layout_width="match_parent"
-	        android:layout_height="@dimen/form_spinner_button_height"
-	        android:text="(Textbook selector)" />
+	        android:layout_height="@dimen/form_spinner_button_height" />
 	
 	    <!-- Due date/time -->
 	
@@ -106,6 +105,25 @@
 
 	    </LinearLayout>
 	    
+	    <!-- Repeating (underneath Due date/time) -->
+	    
+	    <Spinner
+	        android:id="@+id/repeat_assignment_spinner"
+	        style="@style/KiwiSpinnerButton"
+	        android:layout_width="match_parent"
+	        android:visibility="gone"
+	        android:layout_height="@dimen/form_spinner_button_height" />
+
+        <umn.cs5115.kiwi.ui.DateButton
+            android:id="@+id/repeat_end_date_button"
+            style="@style/KiwiSpinner"
+            android:gravity="center"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_weight="1" />
+        
+        <!-- Reminders -->
+	    
 	    <TextView
 	        style="?android:attr/listSeparatorTextViewStyle"
 	        android:layout_width="match_parent"
@@ -143,61 +161,5 @@
 	        android:padding="16sp"
 	        android:imeOptions="actionDone" />
 	    
-	    
-	    <!-- Repeating -->
-
-	    <LinearLayout
-	        android:id="@+id/repeat_assignment_holder"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:orientation="vertical" >
-
-	        <TextView
-	            style="?android:attr/listSeparatorTextViewStyle"
-	            android:layout_width="match_parent"
-	            android:layout_height="wrap_content"
-	            android:layout_marginTop="@dimen/form_section_spacing"
-	            android:text="Repeat Assignment"
-	            android:textAppearance="?android:attr/textAppearanceSmall" />
-
-	        <CheckBox
-	            android:id="@+id/repeated_check_box"
-	            android:layout_width="wrap_content"
-	            android:layout_height="match_parent"
-	            android:focusable="false"
-	            android:focusableInTouchMode="false"
-	            android:gravity="center_vertical"
-	            android:paddingBottom="8dp"
-	            android:paddingRight="8dp"
-	            android:paddingTop="8dp"
-	            android:text="Repeat Assignment"
-	            android:textSize="18sp" />
-
-	        <RadioGroup
-	            android:id="@+id/radioGroup2"
-	            android:layout_width="match_parent"
-	            android:layout_height="wrap_content" >
-
-	            <RadioButton
-	                android:id="@+id/radioWeekly"
-	                android:layout_width="match_parent"
-	                android:layout_height="48dp"
-	                android:checked="true"
-	                android:text="Every week" />
-	            
-	            <RadioButton
-	                android:id="@+id/radioBiweekly"
-	                android:layout_width="match_parent"
-	                android:layout_height="48dp"
-	                android:text="Every other week" />
-
-	            <RadioButton
-	                android:id="@+id/radioMonthly"
-	                android:layout_width="match_parent"
-	                android:layout_height="48dp"
-	                android:text="Every month" />
-	        </RadioGroup>
-	    </LinearLayout>
-	
     </LinearLayout>
 </ScrollView>

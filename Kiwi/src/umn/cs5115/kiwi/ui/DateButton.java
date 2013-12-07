@@ -11,6 +11,8 @@ import android.widget.Button;
 
 public class DateButton extends Button {
 	private final Calendar mCal = Calendar.getInstance(Locale.US);
+	
+	public CharSequence prefix = "";
 
 	public DateButton(Context context) {
 		super(context);
@@ -25,7 +27,7 @@ public class DateButton extends Button {
 	}
 	
 	private void refreshView() {
-		setText(new SimpleDateFormat("EEE, MMM dd, ''yy", Locale.US).format(getDateObject()));
+		setText(prefix + new SimpleDateFormat("EEE, MMM dd, ''yy", Locale.US).format(getDateObject()));
 	}
 	
 	/**

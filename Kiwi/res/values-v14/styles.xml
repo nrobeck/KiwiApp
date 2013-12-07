@@ -69,6 +69,7 @@
         <item name="android:background">@drawable/spinner_background_holo_light</item>
         <item name="android:textColor">?android:attr/textColorHint</item>
         <item name="android:gravity">left|center_vertical</item>
+        <item name="android:layout_height">48dp</item>
     </style>
     
     <style name="KiwiSpinner" parent="android:Widget.Holo.Light.Spinner">
