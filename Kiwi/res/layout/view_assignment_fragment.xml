@@ -1,8 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?><umn.cs5115.kiwi.ui.SlidingFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<umn.cs5115.kiwi.ui.SlidingFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
-    
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    style="@style/KiwiCardFragmentStyle">
+    <LinearLayout
+    style="@style/KiwiCardFragmentInnardsStyle"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingTop="4dp"

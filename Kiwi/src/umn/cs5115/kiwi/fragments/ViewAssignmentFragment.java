@@ -15,6 +15,7 @@ import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
@@ -28,14 +29,14 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.b50.gesticulate.SwipeDetector;
 
 public class ViewAssignmentFragment extends Fragment {
     public static final String ASSIGNMENT_ARG = "assignment";
+    public static final int EDIT_ASSIGNMENT_REQCODE = 0x1453;
+    
     private Assignment mAssignment;
-    private DatabaseHandler db; 
     
     public static ViewAssignmentFragment newInstance(Assignment assignment) {
         ViewAssignmentFragment fragment = new ViewAssignmentFragment();
@@ -56,8 +57,14 @@ public class ViewAssignmentFragment extends Fragment {
         if (args != null) {
             mAssignment = (Assignment)args.getParcelable(ASSIGNMENT_ARG);
         }
-        
-        
+    }
+    
+    private void startEditing() {
+		Intent editIntent = Utils.goToAddAssignment(getActivity().getBaseContext());
+    	editIntent
+        	.putExtra(EditAssignmentActivity.EXTRA_IS_EDIT, true)
+        	.putExtra(EditAssignmentActivity.EXTRA_ASSIGNMENT, mAssignment.getId());
+    	getActivity().startActivityForResult(editIntent, EDIT_ASSIGNMENT_REQCODE);
     }
     
     @Override
@@ -70,27 +77,24 @@ public class ViewAssignmentFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
     	switch(item.getItemId()) {
     	case R.id.assignment_view_menu_edit:
-    		Intent editIntent = Utils.goToAddAssignment(getActivity().getBaseContext());
-            	editIntent
-                	.putExtra(EditAssignmentActivity.EXTRA_IS_EDIT, true)
-                	.putExtra(EditAssignmentActivity.EXTRA_ASSIGNMENT, mAssignment.getId());
-            	getActivity().startActivity(editIntent);
+    		startEditing();
     		return true;
     		
     		case R.id.assignment_view_menu_delete:
     			
-    			new AlertDialog.Builder(null)
+    			new AlertDialog.Builder(getActivity())
     			.setTitle("Delete assignment")
     			.setMessage(String.format("Are you sure you want to delete '%s'?", mAssignment.getName()))
     			.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
     				public void onClick(DialogInterface dialog, int which) {
-    					db.removeAssignment(mAssignment);
+    					new DatabaseHandler(getActivity()).removeAssignment(mAssignment);
     					getActivity().onBackPressed();
+    					Utils.shortToast(getActivity(), "Deleted assignment.");
     				}
     			})
     			.setNegativeButton("No", new DialogInterface.OnClickListener() {
     				public void onClick(DialogInterface dialog, int which) {
-    					Toast.makeText(null, "Did not delete assignment.", Toast.LENGTH_SHORT).show();
+    					Utils.shortToast(getActivity(), "Did not delete assignment.");
     				}
     			})
     			.show();
@@ -105,8 +109,7 @@ public class ViewAssignmentFragment extends Fragment {
         super.onResume();
         if (isAdded()) {
             ActionBar ab = getActivity().getActionBar();
-            // Enable the 'Up' button on the activity.
-            ab.setDisplayHomeAsUpEnabled(true);
+            
             if (mAssignment == null) {
                 ab.setTitle("Viewing assignment");
             } else {
@@ -114,14 +117,22 @@ public class ViewAssignmentFragment extends Fragment {
             }
         }
     }
-
-    // Note: onCreateView is called after onCreate, so mAssignment will be
-    // available here.
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.view_assignment_fragment, null);
-        
+    
+    public void updateAssignment(Assignment assignment) {
+    	mAssignment = assignment;
+    	fillInAssignment(null);
+    	ActionBar ab = getActivity().getActionBar();
+        if (mAssignment == null) {
+            ab.setTitle("Viewing assignment");
+        } else {
+            ab.setTitle(mAssignment.getName());
+        }
+    }
+    
+    private void fillInAssignment(View view) {
+    	if (view == null) {
+    		view = getView();
+    	}
         if (mAssignment != null) {
             //assignment name
         	TextView assignmentNameTextView = (TextView) view.findViewById(R.id.assignmentName);
@@ -130,14 +141,17 @@ public class ViewAssignmentFragment extends Fragment {
         	//assignment course
         	TextView assignmentCourseTextView = (TextView) view.findViewById(R.id.assignmentCourse);
         	assignmentCourseTextView.setText("Course: " + mAssignment.getCourseDesignation());
+        	assignmentCourseTextView.setVisibility(mAssignment.getCourseDesignation() == null ? View.GONE : View.VISIBLE);
         	
         	//assignment type
         	TextView assignmentTypeTextView = (TextView) view.findViewById(R.id.assignmentType);
         	assignmentTypeTextView.setText("Type: " + mAssignment.getType());
+        	assignmentTypeTextView.setVisibility(mAssignment.getType() == null ? View.GONE : View.VISIBLE);
         	
         	//assignment book
         	TextView assignmentBookTextView = (TextView) view.findViewById(R.id.assignmentBook);
         	assignmentBookTextView.setText("TextBook: " + mAssignment.getTextbook());
+        	assignmentBookTextView.setVisibility(TextUtils.isEmpty(mAssignment.getTextbook()) ? View.GONE : View.VISIBLE);
         	
         	//assignment due date
         	TextView assignmentDueTextView = (TextView) view.findViewById(R.id.assignmentDue);
@@ -152,6 +166,16 @@ public class ViewAssignmentFragment extends Fragment {
             // But if we are, log it.
             Log.e("ViewAssignmentFragment", "Assignment is null.");
         }
+    }
+
+    // Note: onCreateView is called after onCreate, so mAssignment will be
+    // available here.
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.view_assignment_fragment, null);
+
+        fillInAssignment(view);
         
         final GestureDetector gestureDetector = new GestureDetector(getActivity(), new SimpleOnGestureListener() {
             @Override
@@ -164,13 +188,7 @@ public class ViewAssignmentFragment extends Fragment {
                         getActivity().onBackPressed();
                     } else if (detector.isLeftSwipe()) {
                         // Swipe to left -> launch edit assignment activity.
-                        Intent editIntent = Utils.goToAddAssignment(getActivity().getBaseContext());
-                        editIntent
-                            .putExtra(EditAssignmentActivity.EXTRA_IS_EDIT, true)
-                            .putExtra(EditAssignmentActivity.EXTRA_ASSIGNMENT, mAssignment.getId());
-                        // Start the edit activity from the main activity, so the
-                        // launch animation is used (sliding views)
-                        getActivity().startActivity(editIntent);
+                        startEditing();
                     } else {
                         return false;
                     }

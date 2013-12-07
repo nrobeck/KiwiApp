@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 /**
  * Created by Mike on 10/13/13.
@@ -114,14 +115,15 @@ public class Utils {
         activity.startActivity(new Intent(activity, EditAssignmentActivity.class));
     }
     
+    public static void shortToast(Context context, CharSequence message) {
+    	Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+    }
+    
     public static void presentationDatabase(Context context) {
     	DatabaseHandler dbHandler = new DatabaseHandler(context);
     	
     	//Deleting all the information from the database to make the database the way we want it
-    	Course[] courses = dbHandler.getCourses();
-    	for(int i = 0; i < courses.length; i++) {
-    		dbHandler.removeCourse(courses[i]);
-    	}
+    	dbHandler.clearDatabase();
     	
     	//Adding courses
     	dbHandler.addCourse(new Course(0, //ID
