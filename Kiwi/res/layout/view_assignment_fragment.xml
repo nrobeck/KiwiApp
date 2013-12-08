@@ -68,7 +68,7 @@
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:paddingTop="20sp"
-            android:text="Notes"
+            android:text="Notes/Webs Resources"
             style="?android:attr/listSeparatorTextViewStyle"
             />
         

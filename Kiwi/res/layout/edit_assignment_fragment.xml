@@ -144,7 +144,7 @@
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:layout_marginTop="@dimen/form_section_spacing"
-	        android:text="Notes (optional)"
+	        android:text="Notes/Web Resources (optional)"
 	        android:textAppearance="?android:attr/textAppearanceSmall" />
 	
 	    <EditText
