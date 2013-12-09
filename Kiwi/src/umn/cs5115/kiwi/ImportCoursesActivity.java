@@ -1,22 +1,17 @@
 package umn.cs5115.kiwi;
 
+import umn.cs5115.kiwi.app.KiwiActivity;
 import umn.cs5115.kiwi.app.KiwiDoneCancelActivity;
+import android.os.Bundle;
 import android.widget.Toast;
 
-public class ImportCoursesActivity extends KiwiDoneCancelActivity {
-	@Override
-	protected int getLayoutResource() {
-		return R.layout.activity_import_courses;
-	}
+public class ImportCoursesActivity extends KiwiActivity {
 
     @Override
-    public void onDone() {
-        Toast.makeText(getApplicationContext(), "Done!", Toast.LENGTH_SHORT).show();
-        finish();
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        
+        setContentView(R.layout.activity_import_courses);
     }
     
-    @Override
-    public void onCancel() {
-        finish();
-    }
 }

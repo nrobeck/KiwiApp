@@ -17,6 +17,10 @@ public class CalendarUtils {
     public static final String[] EVENT_QUERY_COLS = new String[] {
         CalendarContract.Events.TITLE,
         CalendarContract.Events.RRULE,
+        CalendarContract.Events.EVENT_LOCATION,
+        CalendarContract.Events.DTSTART,
+        CalendarContract.Events.DTEND,
+        CalendarContract.Events.DURATION,
         CalendarContract.Events._ID
     };
     

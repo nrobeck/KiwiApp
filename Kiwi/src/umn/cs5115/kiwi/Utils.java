@@ -100,7 +100,7 @@ public class Utils {
     // Exist to make getting around the app simpler, for us.
 
     public static Intent goToAddCourse(Context context) {
-        return new Intent(context, ImportCoursesActivity.class);
+        return new Intent(context, EditCourseActivity.class);
     }
 
     public static void goToAddCourse(Activity activity) {

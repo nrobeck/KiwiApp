@@ -1,6 +1,7 @@
 package umn.cs5115.kiwi;
 
 import umn.cs5115.kiwi.app.KiwiDoneCancelActivity;
+import umn.cs5115.kiwi.fragments.ImportCoursesFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,7 +9,13 @@ import android.widget.Toast;
 
 public class EditCourseActivity extends KiwiDoneCancelActivity {
 	public static final String EXTRA_IS_EDIT = "i_am_edit";
-	public static final String EXTRA_COURSE = "course";
+	public static final String EXTRA_COURSE_ID = "course";
+	public static final String EXTRA_EVENT_NAME = "event_name",
+	                             EXTRA_EVENT_LOC = "event_location",
+	                             EXTRA_EVENT_RRULE = "rrule",
+	                             EXTRA_EVENT_START = "event_start",
+	                             EXTRA_EVENT_END = "event_end",
+	                             EXTRA_EVENT_DURATION = "event_duration";
 
 	private boolean isEdit;
 	private int courseId;
@@ -26,7 +33,7 @@ public class EditCourseActivity extends KiwiDoneCancelActivity {
 				isEdit = false;
 			}
 			
-			courseId = incomingIntent.getIntExtra(EXTRA_COURSE, -1);
+			courseId = incomingIntent.getIntExtra(EXTRA_COURSE_ID, -1);
 		}
 	}
 
@@ -48,7 +55,6 @@ public class EditCourseActivity extends KiwiDoneCancelActivity {
     
     @Override
     public void onDone() {
-        Toast.makeText(EditCourseActivity.this, "New course added.", Toast.LENGTH_SHORT).show();
         finish();
     }
 

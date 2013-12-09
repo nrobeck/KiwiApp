@@ -50,7 +50,7 @@
 	        android:textAppearance="?android:attr/textAppearanceSmall" />
 	    
 	    <EditText
-	        android:id="@+id/editText3"
+	        android:id="@+id/course_location"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:ems="10"

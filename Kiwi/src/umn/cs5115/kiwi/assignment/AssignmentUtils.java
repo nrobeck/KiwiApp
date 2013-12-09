@@ -144,8 +144,8 @@ public class AssignmentUtils {
         }
 
         public String toString() {
-            return String.format(Locale.US, "<DueDateBuilder: %d/%d/%d @ %d:%d>",
-                    month+1, day, year, hour, minute);
+            return String.format(Locale.US, "<DueDateBuilder: %d/%d/%d @ %d:%d (%d)>",
+                    month+1, day, year, hour, minute, toMilliseconds());
         }
     }
 

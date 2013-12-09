@@ -180,7 +180,6 @@ public class EditAssignmentFragment extends Fragment {
         //Store the assignment
         
 		if (activity.isEdit()) {
-			//TODO: Need to pass in the assignment ID
 			dbHandler.editAssignment(assignment);
 		} else {
 			Spinner repeatSpinner  = (Spinner)findView(R.id.repeat_assignment_spinner);
