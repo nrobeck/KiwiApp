@@ -42,7 +42,9 @@ public class ImportCoursesFragment extends ListFragment implements LoaderManager
         
 //        setListShownNoAnimation(true);
         
-        mAdapter = null;
+        mAdapter = new SimpleCursorAdapter(
+                getActivity(), R.layout.import_course_item, null,
+                CalendarUtils.EVENT_QUERY_COLS, new int[] {R.id.title, R.id.content}, 0);
 
         // Set the adapter
         setListAdapter(mAdapter);
