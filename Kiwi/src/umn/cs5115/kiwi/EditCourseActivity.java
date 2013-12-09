@@ -1,7 +1,6 @@
 package umn.cs5115.kiwi;
 
 import umn.cs5115.kiwi.app.KiwiDoneCancelActivity;
-import umn.cs5115.kiwi.fragments.ImportCoursesFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;

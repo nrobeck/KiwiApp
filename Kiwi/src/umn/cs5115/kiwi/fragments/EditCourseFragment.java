@@ -51,7 +51,6 @@ public class EditCourseFragment extends Fragment {
 	private boolean onDone(Activity activity) {
         Log.i("EditCourseFragment", "DoneBarListener.onDone()");
         
-        boolean isValidInput = false;
         String courseName;
         String courseDesignation;
         String startTime = "";
@@ -260,7 +259,6 @@ public class EditCourseFragment extends Fragment {
         final Activity activity = getActivity();
         final EditCourseActivity eActivity = (EditCourseActivity) activity;
         
-        final boolean isEdit = eActivity.isEdit();
         final boolean isImport = eActivity.isImport();
         
         EditText courseName = (EditText)getView().findViewById(R.id.editText1);

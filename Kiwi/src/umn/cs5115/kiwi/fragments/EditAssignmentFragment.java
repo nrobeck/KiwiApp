@@ -6,8 +6,6 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import net.fortuna.ical4j.model.Recur;
-
 import umn.cs5115.kiwi.DatabaseHandler;
 import umn.cs5115.kiwi.EditAssignmentActivity;
 import umn.cs5115.kiwi.R;
@@ -33,9 +31,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -534,14 +530,6 @@ public class EditAssignmentFragment extends Fragment {
 		    }
 		    typesSpinner.setSelection(assignmentTypePos);
 		    
-		    int assignmentCoursePos = 0;
-		    for(int i = 0; i < coursesArray.length; i++) {
-		    	if(coursesArray[i].getCourseDesignation().equals(as.getCourseDesignation())) { //This is assuming all are unique
-		    		assignmentCoursePos = i;
-		    		assignmentCoursePos++; //This is because of the hint dummy item in the spinner
-		    	}
-		    }
-		    
 		    int courseCount = coursesAdapter.getCount();
 		    int courseSelectionIndex = 0;
 		    Course selectedCourse = null;
@@ -612,7 +600,7 @@ public class EditAssignmentFragment extends Fragment {
                 }
             }
 
-            ((DummyItemAdapter)textbooks.getAdapter()).notifyDataSetChanged();
+            textbooksAdapter.notifyDataSetChanged();
             textbooks.setSelection(textbookIndex, false);
 		    
 		    ((EditText)findView(R.id.assignment_notes_field)).setText(as.getNotes());

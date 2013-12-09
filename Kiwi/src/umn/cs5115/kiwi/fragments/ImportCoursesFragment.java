@@ -5,25 +5,24 @@ import umn.cs5115.kiwi.CalendarUtils.EventCursorWrapper;
 import umn.cs5115.kiwi.EditCourseActivity;
 import umn.cs5115.kiwi.R;
 import umn.cs5115.kiwi.Utils;
-import umn.cs5115.kiwi.ui.DoneBar.DoneBarListenable;
-import umn.cs5115.kiwi.ui.DoneBar.DoneBarListener;
-import android.app.Activity;
 import android.app.ListFragment;
+import android.app.LoaderManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.CalendarContract.Events;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
-import android.widget.Toast;
 
-public class ImportCoursesFragment extends ListFragment {
+public class ImportCoursesFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
+	SimpleCursorAdapter mAdapter;
+	
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
@@ -33,29 +32,23 @@ public class ImportCoursesFragment extends ListFragment {
         return layout;
     }
 
-    @Override
+	@Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        setListShown(true);
+        setListShown(false);
         setEmptyText(getResources().getString(R.string.import_courses_nothing_to_import));
         
         final ListView lv = getListView();
         
 //        setListShownNoAnimation(true);
         
-        // Set up the calendar cursor
-        Cursor mCursor = CalendarUtils.getCourseEventCursor(getActivity());
-        
-        // http://stackoverflow.com/a/6156962
-        getActivity().startManagingCursor(mCursor);
-        
-        final EventCursorWrapper wrapper = new EventCursorWrapper(mCursor);
-        final SimpleCursorAdapter adapter = new SimpleCursorAdapter(
-                getActivity(), R.layout.import_course_item, wrapper,
-                CalendarUtils.EVENT_QUERY_COLS, new int[] {R.id.title, R.id.content});
+        mAdapter = null;
 
         // Set the adapter
-        lv.setAdapter(adapter);
+        setListAdapter(mAdapter);
+        
+        getLoaderManager().initLoader(0, null, this);
+        
 //        lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -70,7 +63,7 @@ public class ImportCoursesFragment extends ListFragment {
 //                adapter.notifyDataSetChanged();
                 Intent makeNewIntent = Utils.goToAddCourse((Context)getActivity());
                 
-                Cursor c = adapter.getCursor();
+                Cursor c = mAdapter.getCursor();
                 c.moveToPosition(i);
                 
                 String location = c.getString(c.getColumnIndex(Events.EVENT_LOCATION));
@@ -92,36 +85,30 @@ public class ImportCoursesFragment extends ListFragment {
                 startActivity(makeNewIntent);
             }
         });
-        
-        if (getActivity() instanceof DoneBarListenable) {
-            final Activity activity = getActivity();
-            final DoneBarListenable listenable = (DoneBarListenable) getActivity();
-            Log.i("EditAssignmentFragment", "Registering listener.");
-            listenable.addDoneBarListener(new DoneBarListener() {
-                @Override
-                public boolean onDone() {
-                    Log.i("EditAssignmentFragment", "DoneBarListener.onDone()");
-                    boolean returnValue = onActionBarDone(activity);
-                    if (!returnValue) {
-                        /*
-                         * One or more input fields are in error.
-                         */
-                        Toast.makeText(activity, "You must select a course to import.", Toast.LENGTH_SHORT).show();
-                    }
-                    return returnValue;
-                }
-
-                @Override
-                public void onCancel() {
-                    Log.i("EditAssignmentFragment", "DoneBarListener.onCancel()");
-                }
-            });
-        }
     }
 
-    protected boolean onActionBarDone(Activity activity) {
-        // TODO Auto-generated method stub
-        return false;
-    }
+	@Override
+	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
+		return CalendarUtils.getCourseEventCursorLoader(getActivity());
+	}
+
+	@Override
+	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+		data.moveToFirst();
+		
+		EventCursorWrapper wrapper = new EventCursorWrapper(data);
+		
+		mAdapter.swapCursor(wrapper);
+		
+		setListShownNoAnimation(true);
+	}
+
+	@Override
+	public void onLoaderReset(Loader<Cursor> arg0) {
+		// This is called when the last Cursor provided to onLoadFinished()
+        // above is about to be closed.  We need to make sure we are no
+        // longer using it.
+        mAdapter.swapCursor(null);
+	}
     
 }

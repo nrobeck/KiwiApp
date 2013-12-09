@@ -6,12 +6,14 @@ import java.util.Date;
 import java.util.Locale;
 
 import net.fortuna.ical4j.model.Recur;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.CursorLoader;
 import android.database.Cursor;
 import android.database.CursorWrapper;
+import android.net.Uri;
 import android.provider.CalendarContract;
+import android.provider.CalendarContract.Events;
 
 public class CalendarUtils {
     public static final String[] EVENT_QUERY_COLS = new String[] {
@@ -34,11 +36,11 @@ public class CalendarUtils {
     public static Cursor getCourseEventCursor(Context context) {
     	Cursor mCursor;
     	
-        String query = CalendarContract.Events.RRULE + "<> ''";
-        query += " AND " + CalendarContract.Events.ALL_DAY + "=0";
+        String query = Events.RRULE + "<> ''";
+        query += " AND " + Events.ALL_DAY + "=0";
 
         mCursor = context.getContentResolver().query(
-                CalendarContract.Events.CONTENT_URI, EVENT_QUERY_COLS,
+                Events.CONTENT_URI, EVENT_QUERY_COLS,
                 query, null, null
         );
         if (mCursor == null) {
@@ -47,6 +49,14 @@ public class CalendarUtils {
         mCursor.moveToFirst();
         
         return mCursor;
+    }
+    
+    public static CursorLoader getCourseEventCursorLoader(Context context) {
+    	Uri uri = CalendarContract.Events.CONTENT_URI;
+    	
+    	String query = String.format("%s <> '' AND %s = 0", Events.RRULE, Events.ALL_DAY);
+    	
+    	return new CursorLoader(context, uri, EVENT_QUERY_COLS, query, null, null);
     }
     
     // https://gist.github.com/ramzes642/5400792

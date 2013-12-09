@@ -14,7 +14,6 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.EditText;
 
 import com.android.datetimepicker.date.DatePickerDialog;

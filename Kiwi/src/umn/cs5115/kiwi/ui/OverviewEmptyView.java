@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class OverviewEmptyView extends LinearLayout {
-    private static final String TAG = OverviewEmptyView.class.getCanonicalName();
+//    private static final String TAG = OverviewEmptyView.class.getCanonicalName();
     private static final int EMPTY_LAYOUT_RES_ID = R.layout.overview_empty_layout,
                                 EMPTY_ICON_VIEW = R.id.overview_empty_icon,
                                 EMPTY_TEXT_VIEW = R.id.overview_empty_text,
