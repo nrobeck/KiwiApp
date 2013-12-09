@@ -52,7 +52,8 @@ import java.util.Locale;
  * within the specified month.
  */
 public class SimpleMonthView extends View {
-    private static final String TAG = "SimpleMonthView";
+    @SuppressWarnings("unused")
+	private static final String TAG = "SimpleMonthView";
 
     /**
      * These params can be passed into the view to control how it appears.

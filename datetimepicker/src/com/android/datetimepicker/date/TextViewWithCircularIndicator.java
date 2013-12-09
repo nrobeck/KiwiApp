@@ -36,7 +36,8 @@ public class TextViewWithCircularIndicator extends TextView {
 
     Paint mCirclePaint = new Paint();
 
-    private final int mRadius;
+    @SuppressWarnings("unused")
+	private final int mRadius;
     private final int mCircleColor;
     private final String mItemIsSelectedText;
 

@@ -75,7 +75,8 @@ public class DayPickerView extends ListView implements OnScrollListener, OnDateC
 
     protected CalendarDay mTempDay = new CalendarDay();
 
-    private static float mScale = 0;
+    @SuppressWarnings("unused")
+	private static float mScale = 0;
     // When the week starts; numbered like Time.<WEEKDAY> (e.g. SUNDAY=0).
     protected int mFirstDayOfWeek;
     // The last name announced by accessibility
