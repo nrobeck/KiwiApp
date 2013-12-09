@@ -183,7 +183,7 @@ public class Utils {
     										   "Presentation", //Assignment Type
     										   1386655140000l, //Due in Milliseconds
     										   72, //Reminder
-    										   "Remember to submit and print out all the stuff for the presentation!", //Notes
+    										   "Remember to submit and print out all the stuff for the presentation!\nhttp://www-users.cselabs.umn.edu/classes/Fall-2013/csci5115/index.php", //Notes
     										   "")); //Textbook
     	dbHandler.addAssignment(new Assignment(0, //ID
 											   "Evaluations", //Assignment Name
