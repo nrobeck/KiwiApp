@@ -261,89 +261,91 @@ public class EditCourseFragment extends Fragment {
         final EditCourseActivity eActivity = (EditCourseActivity) activity;
         
         final boolean isEdit = eActivity.isEdit();
+        final boolean isImport = eActivity.isImport();
         
         EditText courseName = (EditText)getView().findViewById(R.id.editText1);
         courseName.addTextChangedListener(new EmptyErrorTextWatcher(courseName, "Must give a course name."));
         EditText courseDes = (EditText)getView().findViewById(R.id.editText2);
         courseDes.addTextChangedListener(new EmptyErrorTextWatcher(courseDes, "Must give a course designation."));
         
-        // TODO: Parse name and designation out of name
-        String eventName = eActivity.getIntent().getStringExtra(EditCourseActivity.EXTRA_EVENT_NAME);
-        
-        // Matches the following pattern:
-        // <course designation><space?><colon or dash><space?><course name>
-        String namePattern = "(.*?)\\s?[-:]\\s?(.*)";
-        Matcher matcher = Pattern.compile(namePattern).matcher(eventName);
-        if (matcher.find()) {
-            courseName.setText(matcher.group(2).trim());
-            courseDes.setText(matcher.group(1).trim());
-        } else {
-            courseName.setText(eventName);
-        }
-        
-        String eventLoc = eActivity.getIntent().getStringExtra(EditCourseActivity.EXTRA_EVENT_LOC);
-        EditText location = (EditText)getView().findViewById(R.id.course_location);
-        location.setText(eventLoc);
-        
-        final DateButton startDB = (DateButton)getView().findViewById(R.id.start_date_button);
-        final DateButton endDB = (DateButton)getView().findViewById(R.id.end_date_button);
-        final TimeButton startTB = (TimeButton)getView().findViewById(R.id.start_time_button);
-        final TimeButton endTB = (TimeButton)getView().findViewById(R.id.end_time_button);
-        
-        long startTime = eActivity.getIntent().getLongExtra(EditCourseActivity.EXTRA_EVENT_START, System.currentTimeMillis());
-        long endTime = eActivity.getIntent().getLongExtra(EditCourseActivity.EXTRA_EVENT_END, System.currentTimeMillis());
-        
-        Log.d("EditCourseFragment", "Start: " + new AssignmentUtils.DueDateBuilder(startTime).toString());
-        Log.d("EditCourseFragment", "End: " + new AssignmentUtils.DueDateBuilder(endTime).toString());
-        
-        String duration = eActivity.getIntent().getStringExtra(EditCourseActivity.EXTRA_EVENT_DURATION);
-        Log.d("EditCourseFragment", "duration: " + duration);
-        
-        // If the end time is quite a long time ago, then calculate the end time
-        // from the start time + duration
-        if (endTime < 5000000 && duration != null) {
-            // This assumes the duration is being specified in seconds...
+        if (isImport) {
+            String eventName = eActivity.getIntent().getStringExtra(EditCourseActivity.EXTRA_EVENT_NAME);
+            
+            // Matches the following pattern:
+            // <course designation><space?><colon or dash><space?><course name>
+            String namePattern = "(.*?)\\s?[-:]\\s?(.*)";
+            Matcher matcher = Pattern.compile(namePattern).matcher(eventName);
+            if (matcher.find()) {
+                courseName.setText(matcher.group(2).trim());
+                courseDes.setText(matcher.group(1).trim());
+            } else {
+                courseName.setText(eventName);
+            }
+            
+            String eventLoc = eActivity.getIntent().getStringExtra(EditCourseActivity.EXTRA_EVENT_LOC);
+            EditText location = (EditText)getView().findViewById(R.id.course_location);
+            location.setText(eventLoc);
+            
+            final DateButton startDB = (DateButton)getView().findViewById(R.id.start_date_button);
+            final DateButton endDB = (DateButton)getView().findViewById(R.id.end_date_button);
+            final TimeButton startTB = (TimeButton)getView().findViewById(R.id.start_time_button);
+            final TimeButton endTB = (TimeButton)getView().findViewById(R.id.end_time_button);
+            
+            long startTime = eActivity.getIntent().getLongExtra(EditCourseActivity.EXTRA_EVENT_START, System.currentTimeMillis());
+            long endTime = eActivity.getIntent().getLongExtra(EditCourseActivity.EXTRA_EVENT_END, System.currentTimeMillis());
+            
+            Log.d("EditCourseFragment", "Start: " + new AssignmentUtils.DueDateBuilder(startTime).toString());
+            Log.d("EditCourseFragment", "End: " + new AssignmentUtils.DueDateBuilder(endTime).toString());
+            
+            String duration = eActivity.getIntent().getStringExtra(EditCourseActivity.EXTRA_EVENT_DURATION);
+            Log.d("EditCourseFragment", "duration: " + duration);
+            
+            // If the end time is quite a long time ago, then calculate the end time
+            // from the start time + duration
+            if (endTime < 5000000 && duration != null) {
+                // This assumes the duration is being specified in seconds...
+                Calendar cal = Calendar.getInstance();
+                cal.setTimeInMillis(startTime);
+                cal.add(Calendar.SECOND, new Dur(duration).getSeconds());
+                endTime = cal.getTimeInMillis();
+            }
+            Log.d("EditCourseFragment", "End: " + new AssignmentUtils.DueDateBuilder(endTime).toString());
+
+            
+            Recur r;
+            try {
+                r = new Recur(eActivity.getIntent().getStringExtra(EditCourseActivity.EXTRA_EVENT_RRULE));
+            } catch (Exception e) {
+                r = new Recur();
+                r.setUntil(new Date(AssignmentUtils.END_OF_SEMESTER));
+            }
+            
             Calendar cal = Calendar.getInstance();
             cal.setTimeInMillis(startTime);
-            cal.add(Calendar.SECOND, new Dur(duration).getSeconds());
-            endTime = cal.getTimeInMillis();
-        }
-        Log.d("EditCourseFragment", "End: " + new AssignmentUtils.DueDateBuilder(endTime).toString());
-
-        
-        Recur r;
-        try {
-            r = new Recur(eActivity.getIntent().getStringExtra(EditCourseActivity.EXTRA_EVENT_RRULE));
-        } catch (Exception e) {
-            r = new Recur();
-            r.setUntil(new Date(AssignmentUtils.END_OF_SEMESTER));
-        }
-        
-        Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(startTime);
-        startDB.setDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
-        startTB.setTime(cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE));
-        
-        cal.setTimeInMillis(r.getUntil().getTime());
-        endDB.setDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
-        
-        cal.setTimeInMillis(endTime);
-        endTB.setTime(cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE));
-        
-        int[] dayCbIds = new int[] {
-                R.id.check_box_sunday, R.id.check_box_monday, R.id.check_box_tuesday,
-                R.id.check_box_wednesday, R.id.check_box_thursday, R.id.check_box_friday,
-                R.id.check_box_saturday
-        };
-        WeekDay[] dayList = new WeekDay[] {
-                WeekDay.SU, WeekDay.MO, WeekDay.TU, WeekDay.WE, WeekDay.TH,
-                WeekDay.FR, WeekDay.SA
-        };
-        
-        for (int i = 0; i < 7; i++) {
-            if (r.getDayList().contains(dayList[i])) {
-                CheckBox cb = (CheckBox) getView().findViewById(dayCbIds[i]);
-                cb.setChecked(true);
+            startDB.setDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
+            startTB.setTime(cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE));
+            
+            cal.setTimeInMillis(r.getUntil().getTime());
+            endDB.setDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
+            
+            cal.setTimeInMillis(endTime);
+            endTB.setTime(cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE));
+            
+            int[] dayCbIds = new int[] {
+                    R.id.check_box_sunday, R.id.check_box_monday, R.id.check_box_tuesday,
+                    R.id.check_box_wednesday, R.id.check_box_thursday, R.id.check_box_friday,
+                    R.id.check_box_saturday
+            };
+            WeekDay[] dayList = new WeekDay[] {
+                    WeekDay.SU, WeekDay.MO, WeekDay.TU, WeekDay.WE, WeekDay.TH,
+                    WeekDay.FR, WeekDay.SA
+            };
+            
+            for (int i = 0; i < 7; i++) {
+                if (r.getDayList().contains(dayList[i])) {
+                    CheckBox cb = (CheckBox) getView().findViewById(dayCbIds[i]);
+                    cb.setChecked(true);
+                }
             }
         }
         

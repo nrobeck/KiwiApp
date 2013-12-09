@@ -315,6 +315,15 @@ public class MainActivity extends KiwiActivity
 	             */
 	            onClickAddAssignment();
 	        	return true;
+	        	
+	        // Add course submenu
+            case R.id.add_course_menu_add:
+                Utils.goToAddCourse(MainActivity.this);
+                return true;
+            case R.id.add_menu_course_import:
+                startActivity(new Intent(MainActivity.this, ImportCoursesActivity.class));
+                return true;
+                
 	        case R.id.filter:
 	            /*
 	             * We may as well reuse the interface method for requesting the
@@ -322,9 +331,9 @@ public class MainActivity extends KiwiActivity
 	             */
 	            onClickFilter();
 	            return true;
-        	case R.id.add_course:
-        		Utils.goToAddCourse(this);
-        		return true;
+//        	case R.id.add_course:
+//        		Utils.goToAddCourse(this);
+//        		return true;
         	case R.id.action_settings:
         		startActivity(new Intent(this, AdvancedOptionsActivity.class));
         		return true;

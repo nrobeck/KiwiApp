@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 public class EditCourseActivity extends KiwiDoneCancelActivity {
 	public static final String EXTRA_IS_EDIT = "i_am_edit";
+	public static final String EXTRA_IS_IMPORT = "is_import";
 	public static final String EXTRA_COURSE_ID = "course";
 	public static final String EXTRA_EVENT_NAME = "event_name",
 	                             EXTRA_EVENT_LOC = "event_location",
@@ -18,6 +19,7 @@ public class EditCourseActivity extends KiwiDoneCancelActivity {
 	                             EXTRA_EVENT_DURATION = "event_duration";
 
 	private boolean isEdit;
+	private boolean isImport;
 	private int courseId;
 	
     @Override
@@ -26,6 +28,7 @@ public class EditCourseActivity extends KiwiDoneCancelActivity {
 		
 		Intent incomingIntent = getIntent();
 		if (incomingIntent != null) {
+		    isImport = incomingIntent.getBooleanExtra(EXTRA_IS_IMPORT, false);
 			if (incomingIntent.getBooleanExtra(EXTRA_IS_EDIT, false)) {
 				Toast.makeText(this, "Editing the course", Toast.LENGTH_SHORT).show();
 				isEdit = true;
@@ -39,6 +42,10 @@ public class EditCourseActivity extends KiwiDoneCancelActivity {
 
     public boolean isEdit() {
     	return isEdit;
+    }
+    
+    public boolean isImport() {
+        return isImport;
     }
     
     public int getCourseId() {

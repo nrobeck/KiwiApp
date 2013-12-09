@@ -37,7 +37,7 @@ public class ImportCoursesFragment extends ListFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setListShown(true);
-//        setEmptyText(getResources().getString(R.string.import_courses_nothing_to_import));
+        setEmptyText(getResources().getString(R.string.import_courses_nothing_to_import));
         
         final ListView lv = getListView();
         
@@ -86,7 +86,8 @@ public class ImportCoursesFragment extends ListFragment {
                 .putExtra(EditCourseActivity.EXTRA_EVENT_END, end)
                 .putExtra(EditCourseActivity.EXTRA_EVENT_DURATION, duration)
                 .putExtra(EditCourseActivity.EXTRA_EVENT_RRULE, rrule)
-                .putExtra(EditCourseActivity.EXTRA_EVENT_NAME, c.getString(c.getColumnIndex(Events.TITLE)));
+                .putExtra(EditCourseActivity.EXTRA_EVENT_NAME, c.getString(c.getColumnIndex(Events.TITLE)))
+                .putExtra(EditCourseActivity.EXTRA_IS_IMPORT, true);
                 
                 startActivity(makeNewIntent);
             }

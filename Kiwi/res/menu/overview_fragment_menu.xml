@@ -13,9 +13,20 @@
     
     <item
         android:id="@+id/add_course"
-        android:title="Add course"
         android:icon="@drawable/ic_action_new_course"
-        android:showAsAction="ifRoom|withText" />
+        android:showAsAction="ifRoom|withText"
+        android:title="Add course">
+        <menu xmlns:android="http://schemas.android.com/apk/res/android" >
+            <item
+                android:id="@+id/add_course_menu_add"
+                android:title="Add manually">
+            </item>
+            <item
+                android:id="@+id/add_menu_course_import"
+                android:title="Import from calendar">
+            </item>
+        </menu>
+    </item>
     
     <item
         android:id="@+id/action_settings"
