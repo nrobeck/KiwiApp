@@ -1,0 +1,54 @@
+How to build and run Kiwi on your own Android device
+####################################################
+
+These directions assume that you already have downloaded and installed the
+Android Developer Tools (ADT) Eclipse bundle. If not, you can download it at
+developer.android.com/sdk/index.html
+
+We also assume that your Android device (be it a tablet or a phone) is running
+at least Android 4.0.3. (If your device is less than around two years old, it
+almost certainly will be.) If it is running an older version of Android, ADT
+will not allow you to install Kiwi on your device.
+
+
+Code import, build, run instructions
+------------------------------------
+
+1.  Open Android Developer Tools
+
+2.  You may need to install the Android API 17 SDK. Go to Window -> Android SDK
+    Manager to launch the SDK manager.
+    a. If there are any "packages" listed that say there are available updates,
+        mark the checkbox next to them.
+    b. Expand the list under Android 4.2.2 (API 17) and mark the checkboxes
+        next to SDK Platform and Google APIs.
+
+    NOTE: The ADT bundle should come with API 19 pre-installed. If you do not
+    see API 19 as installed in the SDK manager, you should choose to install
+    this too. (It shouldn't cause any problems not to have it, but it won't
+    hurt to have it installed.)
+
+    c. Click the "Install [X] packages..." button to install.
+    d. Close the SDK manager, and restart ADT (File -> Restart)
+
+3.  File -> Import... -> Android -> Existing Android Code Into Workspace.
+    a. Click "Browse..." and check the directory where you extracted this zip
+        file (i.e. the directory that contains this file)
+    b. Mark the checkboxes next to "datetimepicker" and "Kiwi".
+    c. Click Finish
+
+4.  In the "Package Explorer" view in ADT, you should now see "datetimepicker"
+    and "Kiwi". If you wait a few moment, any in-progress work Eclipse might be
+    doing (look to the bottom right hand corner of the window) should complete,
+    and both the datetimepicker and Kiwi projects should show no warnings or
+    errors (errors being little red X's on the folder, warnings being yellow
+    exclamation marks). If there are any errors, open the "Problems" view
+    (Window -> Show View -> Problems) and see what the error is. (The code for
+    Kiwi should work just fine, so if there are errors, something is amiss with
+    your ADT installation or API installs.)
+
+5.  In the Package Explorer view, right click on "Kiwi", and choose Run As ->
+    Android Application. If you have an Android device connected to the
+    computer (and ADB works with it), you should see a menu prompting you to
+    select the device to run the application on. Choose your Android device and
+    click the button to run the app.
